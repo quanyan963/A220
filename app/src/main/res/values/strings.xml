@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">GPA220</string>
+
+    //start
+    <string name="ok">允许</string>
+    <string name="cancel">不允许</string>
+    <string name="allow_ble_title">允许此装置开启你的\n蓝牙吗？</string>
+    <string name="alow_ble_msg">应用程序正在请求许可开启蓝牙，\n是否允许？</string>
+
+    //main
+    <string name="exit_program_hint">再按一次退出程序</string>
+    <string name="ble">蓝牙</string>
+    <string name="find_by">现时可被侦测为「%s」</string>
+
+
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Roman">
+        <attr name="text_type" format="enum">
+            <enum name="one" value="0"/>
+            <enum name="two" value="1"/>
+            <enum name="three" value="2"/>
+        </attr>
+    </declare-styleable>
+</resources>

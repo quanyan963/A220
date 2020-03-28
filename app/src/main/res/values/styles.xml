@@ -1,0 +1,84 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="GreenTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/text_black</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+
+<!--    <style name="GreenTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
+<!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/green_bg</item>-->
+<!--        <item name="colorPrimaryDark">@color/green_bg</item>-->
+<!--        <item name="colorAccent">@color/text_black</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+<!--        <item name="android:windowDisablePreview">true</item>-->
+<!--    </style>-->
+
+    <style name="ToolbarPopupTheme" parent="@style/ThemeOverlay.AppCompat.Dark">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:colorBackground">@color/colorPrimary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="overlapAnchor">false</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/dp_20_x</item>
+    </style>
+
+    <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionMenuTextColor">@color/white</item>
+    </style>
+
+    <style name="dialogWindowAnimInToOut" parent="android:Animation" mce_bogus="1">
+        <item name="android:windowEnterAnimation">@anim/anim_out</item>
+        <item name="android:windowExitAnimation">@anim/anim_in</item>
+    </style>
+
+    <style name="Dialog_Fullscreen">
+        <item name="android:windowFullscreen">false</item>
+    </style>
+
+    <style name="main_tv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="text_type">one</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+<!--    <style name="main_rb">-->
+<!--        <item name="android:layout_width">0dp</item>-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--        <item name="android:textSize">14sp</item>-->
+<!--        <item name="android:textColor">@color/text_un</item>-->
+<!--        <item name="android:lineSpacingMultiplier">1.2</item>-->
+<!--        <item name="text_type">thin</item>-->
+<!--        <item name="android:gravity">center</item>-->
+<!--        <item name="android:background">@null</item>-->
+<!--        <item name="android:button">@null</item>-->
+<!--        <item name="android:layout_weight">1</item>-->
+<!--    </style>-->
+
+    <style name="main_btn">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingBottom">@dimen/dp_6_x</item>
+        <item name="android:paddingTop">@dimen/dp_6_x</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textAppearance">?android:attr/textAppearance</item>
+        <item name="text_type">one</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="TransparentDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+</resources>
