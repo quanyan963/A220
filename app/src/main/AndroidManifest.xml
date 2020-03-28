@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.txtled.gpa220">
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:name=".application.MyApplication"
@@ -26,6 +28,8 @@
         <activity android:name=".ble.BleActivity"
             android:configChanges="layoutDirection|locale"
             android:screenOrientation="portrait"/>
+<!--        <receiver android:name=".broadcast.BlueToothStateReceiver"-->
+<!--            android:enabled="true"/>-->
     </application>
 
 </manifest>

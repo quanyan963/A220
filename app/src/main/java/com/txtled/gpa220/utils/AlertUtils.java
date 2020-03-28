@@ -93,7 +93,7 @@ public class AlertUtils {
             AlertDialog dialog = new AlertDialog.Builder(context)
                     .setView(view)
                     .create();
-            dialog.setCancelable(true);
+            dialog.setCancelable(false                    );
             dialog.show();
             Window window = dialog.getWindow();
             window.setWindowAnimations(R.style.dialogWindowAnimInToOut);

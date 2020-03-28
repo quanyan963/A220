@@ -9,9 +9,17 @@ import com.txtled.gpa220.base.BaseView;
 public interface StartContract {
     interface View extends BaseView{
 
+        void toMain();
+
+        void notHaveBle();
+
+        void showAlert();
     }
 
     interface Presenter extends BasePresenter<View>{
 
+        void checkBle();
+
+        boolean turnOnBluetooth();
     }
 }

@@ -2,6 +2,8 @@ package com.txtled.gpa220.di.module;
 
 import com.txtled.gpa220.application.MyApplication;
 import com.txtled.gpa220.model.DataManagerModel;
+import com.txtled.gpa220.model.ble.BleHelper;
+import com.txtled.gpa220.model.ble.BleHelperImpl;
 import com.txtled.gpa220.model.db.DBHelper;
 import com.txtled.gpa220.model.db.DBHelperImpl;
 import com.txtled.gpa220.model.net.NetHelper;
@@ -60,9 +62,16 @@ public class AppModule {
 
     @Provides
     @Singleton
+    BleHelper provideBleHelper(BleHelperImpl bleHelper){
+        return bleHelper;
+    }
+
+    @Provides
+    @Singleton
     DataManagerModel provideDataManagerModel(DBHelperImpl dbHelper,
                                              PreferencesHelperImpl preferencesHelper,
-                                             NetHelperImpl netHelper, OperateHelperImpl operateHelper) {
-        return new DataManagerModel(dbHelper, preferencesHelper,netHelper,operateHelper);
+                                             NetHelperImpl netHelper, OperateHelperImpl operateHelper,
+                                             BleHelperImpl bleHelper) {
+        return new DataManagerModel(dbHelper, preferencesHelper,netHelper,operateHelper,bleHelper);
     }
 }

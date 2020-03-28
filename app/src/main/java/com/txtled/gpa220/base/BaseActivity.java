@@ -87,11 +87,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void setNavigationIcon(boolean isBack) {
         this.isBack = isBack;
-//        if (isBack) {
-//            toolbar.setNavigationIcon(R.mipmap.back);
-//        } else {
-//            toolbar.setNavigationIcon(R.mipmap.schedule);
-//        }
+        if (isBack) {
+            toolbar.setNavigationIcon(R.mipmap.back_btnxhdpi);
+        } else {
+            toolbar.setNavigationIcon(R.mipmap.home_addxhdpi);
+        }
 
     }
 

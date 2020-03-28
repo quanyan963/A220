@@ -12,6 +12,8 @@
         android:endColor="#f1f5f8"
         android:startColor="#f1f5f8" />
 
+    <size android:width="@dimen/dp_20_x"
+        android:height="@dimen/dp_20_x"/>
     <stroke android:width="@dimen/dp_2_x"
         android:color="@android:color/transparent"/>
 
