@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.txtled.gpa220.widget.CustomTextView
+        android:id="@+id/ctv_ble_name"
+        style="@style/main_tv"
+        android:layout_width="0dp"
+        android:gravity="left"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/ctv_connect"
+        android:layout_marginLeft="@dimen/dp_16_x"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/dp_12_x"
+        android:layout_marginBottom="@dimen/dp_12_x"
+        android:text="BLE_NAME"/>
+    <CheckedTextView
+        android:id="@+id/ctv_connect"
+        style="@style/main_tv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/img_ble_i"
+        android:layout_marginRight="@dimen/dp_8_x"
+        android:text="@string/dis_conn"/>
+    <ImageView
+        android:id="@+id/img_ble_i"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/home_menuconectxhdpi"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="@dimen/dp_16_x"
+        android:layout_marginTop="@dimen/dp_12_x"
+        android:layout_marginBottom="@dimen/dp_12_x"/>
+    <View
+        android:id="@+id/v_line_item"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1_x"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/ctv_ble_name"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@color/color_line"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

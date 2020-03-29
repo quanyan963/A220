@@ -1,5 +1,8 @@
 package com.txtled.gpa220.main.mvp;
 
+import android.view.View;
+
+import com.txtled.gpa220.R;
 import com.txtled.gpa220.base.RxPresenter;
 import com.txtled.gpa220.model.DataManagerModel;
 
@@ -15,5 +18,14 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
     @Inject
     public MainPresenter(DataManagerModel mDataManagerModel) {
         this.mDataManagerModel = mDataManagerModel;
+    }
+
+    @Override
+    public void onViewClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_right:
+
+                break;
+        }
     }
 }

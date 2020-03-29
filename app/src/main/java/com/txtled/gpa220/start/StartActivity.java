@@ -61,6 +61,7 @@ public class StartActivity extends MvpBaseActivity<StartPresenter> implements St
 
     @Override
     public void onCancel() {
+        unRegister();
         startActivity(new Intent(this, MainActivity.class));
         this.finish();
     }
@@ -73,6 +74,7 @@ public class StartActivity extends MvpBaseActivity<StartPresenter> implements St
     @Override
     public void notHaveBle() {
         hideSnackBar();
+        unRegister();
         showSnackBar(clStart, R.string.not_have_ble, R.string.exit, v ->
                 StartActivity.this.finish());
     }
@@ -90,13 +92,12 @@ public class StartActivity extends MvpBaseActivity<StartPresenter> implements St
 
     @Override
     public void onStateOn() {
+        unRegister();
         startActivity(new Intent(this, BleActivity.class));
         this.finish();
     }
 
-    @Override
-    public void onDestroy() {
+    private void unRegister(){
         BleUtils.getInstance().unregisterBlueToothStateReceiver(this);
-        super.onDestroy();
     }
 }

@@ -1,6 +1,8 @@
 package com.txtled.gpa220.main.mvp;
 
 
+import android.view.View;
+
 import com.txtled.gpa220.base.BasePresenter;
 import com.txtled.gpa220.base.BaseView;
 
@@ -15,5 +17,6 @@ public interface MainContract {
 
     interface Presenter extends BasePresenter<View> {
 
+        void onViewClick(android.view.View v);
     }
 }

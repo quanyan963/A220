@@ -9,12 +9,20 @@
     <string name="not_have_ble">您的手机不支持蓝牙或没有蓝牙模块，将无法使用本产品。</string>
     <string name="exit">退出</string>
     <string name="ble_open_fail">蓝牙开启失败，请前往设置界面动手动开启蓝牙。</string>
-
-    //main
     <string name="exit_program_hint">再按一次退出程序</string>
+
+    //ble
     <string name="ble">蓝牙</string>
     <string name="find_by">现时可被侦测为「%s」</string>
     <string name="my_device">我的装置</string>
+    <string name="dis_conn">未连接</string>
+    <string name="connected">已连接</string>
+    <string name="member">人员列表</string>
+    <string name="conn_device">连接设备</string>
+    <string name="sync_data">同步数据</string>
+    <string name="export">导出数据</string>
+    <string name="instruction">操作说明</string>
+    <string name="setting">设定</string>
 
 
 </resources>
