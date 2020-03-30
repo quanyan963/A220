@@ -14,6 +14,7 @@
         android:id="@+id/rlv_member"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingTop="@dimen/dp_16_x"
         app:layout_constraintTop_toBottomOf="@+id/i_main_tool"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@ package com.txtled.gpa220.model;
 import android.app.Activity;
 import android.content.Context;
 
+import com.txtled.gpa220.bean.UserData;
 import com.txtled.gpa220.model.ble.BleHelper;
 import com.txtled.gpa220.model.db.DBHelper;
 import com.txtled.gpa220.model.net.NetHelper;
@@ -87,5 +88,25 @@ public class DataManagerModel implements DBHelper, PreferencesHelper, NetHelper,
     @Override
     public void unRegisterConn() {
         mBleHelper.unRegisterConn();
+    }
+
+    @Override
+    public void setUserData(UserData data) {
+        mDBDbHelper.setUserData(data);
+    }
+
+    @Override
+    public List<UserData> getUserData() {
+        return mDBDbHelper.getUserData();
+    }
+
+    @Override
+    public void deleteUserData(UserData data) {
+        mDBDbHelper.deleteUserData(data);
+    }
+
+    @Override
+    public void updateUserData(UserData data) {
+        mDBDbHelper.updateUserData(data);
     }
 }

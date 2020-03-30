@@ -1,15 +1,12 @@
 package com.txtled.gpa220.start;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
 import android.view.WindowManager;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.txtled.gpa220.R;
 import com.txtled.gpa220.base.MvpBaseActivity;
-import com.txtled.gpa220.ble.BleActivity;
 import com.txtled.gpa220.broadcast.BlueToothStateReceiver;
 import com.txtled.gpa220.main.MainActivity;
 import com.txtled.gpa220.start.mvp.StartContract;
@@ -18,7 +15,6 @@ import com.txtled.gpa220.utils.AlertUtils;
 import com.txtled.gpa220.utils.BleUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Mr.Quan on 2020/3/25.
@@ -93,7 +89,7 @@ public class StartActivity extends MvpBaseActivity<StartPresenter> implements St
     @Override
     public void onStateOn() {
         unRegister();
-        startActivity(new Intent(this, BleActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
         this.finish();
     }
 

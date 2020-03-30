@@ -42,16 +42,6 @@ public class PreferencesHelperImpl implements PreferencesHelper {
     public void setFirstIn(boolean first) {
         mSharedPreferences.edit().putBoolean(IS_FIRST_APP,first).apply();
     }
-
-//    @Override
-//    public void setIsFirstApp(boolean b) {
-//        mSharedPreferences.edit().putBoolean(IS_FIRST_APP,b).apply();
-//    }
-//
-//    @Override
-//    public boolean getIsFirstApp() {
-//        return mSharedPreferences.getBoolean(IS_FIRST_APP,true);
-//    }
 //
 //    @Override
 //    public void setMainVolume(int progress) {

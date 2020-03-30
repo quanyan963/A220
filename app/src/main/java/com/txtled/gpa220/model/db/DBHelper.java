@@ -2,6 +2,8 @@ package com.txtled.gpa220.model.db;
 
 
 
+import com.txtled.gpa220.bean.UserData;
+
 import java.util.List;
 
 /**
@@ -9,5 +11,12 @@ import java.util.List;
  */
 
 public interface DBHelper {
+    void setUserData(UserData data);
+
+    List<UserData> getUserData();
+
+    void deleteUserData(UserData data);
+
+    void updateUserData(UserData data);
 
 }

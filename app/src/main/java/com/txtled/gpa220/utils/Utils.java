@@ -2,6 +2,10 @@ package com.txtled.gpa220.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -46,33 +50,19 @@ public class Utils {
         return data < 16 ? "0" + s : s + "";
     }
 
-    public static String getWifiSSID(Activity activity) {
-        String ssid="unknown id";
-
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O||Build.VERSION.SDK_INT==Build.VERSION_CODES.P) {
-
-            WifiManager mWifiManager = (WifiManager) activity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-
-            assert mWifiManager != null;
-            WifiInfo info = mWifiManager.getConnectionInfo();
-
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-                return info.getSSID();
-            } else {
-                return info.getSSID().replace("\"", "");
-            }
-        } else if (Build.VERSION.SDK_INT==Build.VERSION_CODES.O_MR1){
-
-            ConnectivityManager connManager = (ConnectivityManager) activity.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            assert connManager != null;
-            NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
-            if (networkInfo.isConnected()) {
-                if (networkInfo.getExtraInfo()!=null){
-                    return networkInfo.getExtraInfo().replace("\"","");
-                }
-            }
-        }
-        return ssid;
+    /**
+     * Drawable转换成一个Bitmap
+     *
+     * @param drawable drawable对象
+     * @return
+     */
+    public static final Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap = Bitmap.createBitmap( drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(),
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     public static String getWifiIp(int i){

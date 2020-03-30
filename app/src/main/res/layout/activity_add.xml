@@ -15,20 +15,152 @@
         android:id="@+id/img_man"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/bind_boyxhdpi"
-        android:layout_marginTop="@dimen/dp_16_x"
+        android:src="@mipmap/info_boyxhdpi"
+        android:layout_marginTop="@dimen/dp_32_x"
         app:layout_constraintTop_toBottomOf="@+id/i_add_tool"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/img_woman"
-        android:foreground="@drawable/img_forground"/>
+        android:foreground="@drawable/img_forground" />
 
     <ImageView
         android:id="@+id/img_woman"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_16_x"
-        android:src="@mipmap/bind_girlxhdpi"
+        android:layout_marginTop="@dimen/dp_32_x"
+        android:src="@mipmap/info_girlxhdpi"
         app:layout_constraintTop_toBottomOf="@+id/i_add_tool"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/img_man"/>
+        app:layout_constraintLeft_toRightOf="@+id/img_man"
+        android:foreground="@drawable/img_forground" />
+
+    <RelativeLayout
+        android:id="@+id/rl_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/img_man"
+        android:layout_marginLeft="@dimen/dp_16_x"
+        android:layout_marginRight="@dimen/dp_16_x"
+        android:layout_marginTop="@dimen/dp_16_x">
+        <com.txtled.gpa220.widget.CustomTextView
+            android:id="@+id/ctv_add_name"
+            style="@style/main_tv"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/text_black"
+            android:text="@string/must"
+            android:textSize="14sp"/>
+        <com.txtled.gpa220.widget.CustomEditText
+            android:id="@+id/cet_add_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_bg"
+            android:layout_below="@+id/ctv_add_name"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/dp_6_x"
+            android:layout_marginTop="@dimen/dp_6_x"
+            android:layout_marginBottom="@dimen/dp_10_x"
+            android:textSize="16sp"
+            android:inputType="text" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/rl_name"
+        android:layout_marginLeft="@dimen/dp_16_x"
+        android:layout_marginRight="@dimen/dp_16_x">
+        <com.txtled.gpa220.widget.CustomTextView
+            android:id="@+id/ctv_add_post"
+            style="@style/main_tv"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/text_black"
+            android:text="@string/post_code"
+            android:textSize="14sp"/>
+        <com.txtled.gpa220.widget.CustomEditText
+            android:id="@+id/cet_add_post"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_bg"
+            android:layout_below="@+id/ctv_add_post"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/dp_6_x"
+            android:layout_marginTop="@dimen/dp_6_x"
+            android:layout_marginBottom="@dimen/dp_10_x"
+            android:textSize="16sp"
+            android:inputType="text" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/rl_post"
+        android:layout_marginLeft="@dimen/dp_16_x"
+        android:layout_marginRight="@dimen/dp_16_x">
+        <com.txtled.gpa220.widget.CustomTextView
+            android:id="@+id/ctv_add_code"
+            style="@style/main_tv"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/text_black"
+            android:text="@string/post_number"
+            android:textSize="14sp"/>
+        <com.txtled.gpa220.widget.CustomEditText
+            android:id="@+id/cet_add_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_bg"
+            android:layout_below="@+id/ctv_add_code"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/dp_6_x"
+            android:layout_marginTop="@dimen/dp_6_x"
+            android:layout_marginBottom="@dimen/dp_10_x"
+            android:textSize="16sp"
+            android:inputType="text"
+            android:maxLength="18" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_birth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/rl_code"
+        android:layout_marginLeft="@dimen/dp_16_x"
+        android:layout_marginRight="@dimen/dp_16_x">
+        <com.txtled.gpa220.widget.CustomTextView
+            android:id="@+id/ctv_add_birth"
+            style="@style/main_tv"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/text_black"
+            android:text="@string/birth"
+            android:textSize="14sp"/>
+        <com.txtled.gpa220.widget.CustomEditText
+            android:id="@+id/cet_add_birth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_bg"
+            android:layout_below="@+id/ctv_add_birth"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/dp_6_x"
+            android:layout_marginTop="@dimen/dp_6_x"
+            android:layout_marginBottom="@dimen/dp_10_x"
+            android:textSize="16sp"
+            android:inputType="text" />
+    </RelativeLayout>
+    <com.txtled.gpa220.widget.CustomButton
+        android:id="@+id/cbt_add_commit"
+        style="@style/main_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl_birth"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cornerRadius="@dimen/dp_20_x"
+        app:backgroundTint="@color/colorPrimaryDark"
+        android:layout_marginLeft="@dimen/dp_32_x"
+        android:layout_marginRight="@dimen/dp_32_x"
+        android:textAppearance="?android:attr/textAppearance"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:padding="@dimen/dp_8_x"
+        android:text="@string/commit"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

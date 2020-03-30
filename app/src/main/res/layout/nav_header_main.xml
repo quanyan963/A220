@@ -17,9 +17,7 @@
         android:id="@+id/v_menu_line_one"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_1_x"
-        android:background="@color/color_line"
-        android:layout_below="@+id/img_menu_close"
-        android:layout_marginTop="@dimen/dp_180_x"/>
+        android:background="@color/color_line"/>
     <LinearLayout
         android:id="@+id/ll_ble_conn"
         android:layout_width="match_parent"

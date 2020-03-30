@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.txtled.gpa220.base.CommonSubscriber;
 import com.txtled.gpa220.base.RxPresenter;
+import com.txtled.gpa220.bean.UserData;
 import com.txtled.gpa220.model.DataManagerModel;
 import com.txtled.gpa220.utils.BleUtils;
 import com.txtled.gpa220.utils.RxUtil;
@@ -16,6 +17,8 @@ import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 import io.reactivex.internal.operators.flowable.FlowableElementAt;
+
+import static com.txtled.gpa220.utils.Constants.UNKNOWN;
 
 /**
  * Created by Mr.Quan on 2020/3/25.
@@ -30,6 +33,11 @@ public class StartPresenter extends RxPresenter<StartContract.View> implements S
 
     @Override
     public void checkBle() {
+        if (dataManagerModel.isFirstIn()){
+            UserData data = new UserData(UNKNOWN,"","","",2);
+            dataManagerModel.setUserData(data);
+            dataManagerModel.setFirstIn(false);
+        }
         BluetoothAdapter blueAdapter = BluetoothAdapter.getDefaultAdapter();
         addSubscribe(Flowable.timer(3, TimeUnit.SECONDS)
                 .compose(RxUtil.rxSchedulerHelper())

@@ -1,17 +1,16 @@
-package com.txtled.gpa220.add.mvp;
-
-import android.view.View;
+package com.txtled.gpa220.user.mvp;
 
 import com.txtled.gpa220.base.BasePresenter;
 import com.txtled.gpa220.base.BaseView;
-import com.txtled.gpa220.bean.UserData;
 
-public interface AddConteact {
+/**
+ * Created by Mr.Quan on 2020/3/30.
+ */
+public interface UserContract {
     interface View extends BaseView{
 
     }
     interface Presenter extends BasePresenter<View>{
 
-        void insertData(UserData data);
     }
 }

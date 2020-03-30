@@ -2,8 +2,8 @@ package com.txtled.gpa220.application;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Environment;
-
 
 import com.txtled.gpa220.di.component.AppComponent;
 import com.txtled.gpa220.di.component.DaggerAppComponent;
@@ -30,6 +30,19 @@ public class MyApplication extends Application {
         }
         mActivityList = new ArrayList<>();
     }
+
+//    public static ImageLoader getImageLoader(Context context) {
+//        if (mImageLoader == null) {
+//            synchronized (ImageLoader.class) {
+//                if (mImageLoader == null) {
+//                    mImageLoader = ImageLoader.getInstance();
+//                    mImageLoader.init(ImageLoaderConfiguration.createDefault(context.
+//                            getApplicationContext()));
+//                }
+//            }
+//        }
+//        return mImageLoader;
+//    }
 
     public static MyApplication getInstance() {
         if (sInstance == null) {

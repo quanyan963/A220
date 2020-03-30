@@ -8,6 +8,7 @@ import com.txtled.gpa220.di.module.ActivityModule;
 import com.txtled.gpa220.di.scope.ActivityScope;
 import com.txtled.gpa220.main.MainActivity;
 import com.txtled.gpa220.start.StartActivity;
+import com.txtled.gpa220.user.UserInfoActivity;
 
 import dagger.Component;
 
@@ -27,5 +28,7 @@ public interface ActivityComponent {
 
     void inject(BleActivity bleActivity);
 
-    void inject(AddMenberActivity addMenberActivity);
+    void inject(AddMenberActivity addMemberActivity);
+
+    void inject(UserInfoActivity userInfoActivity);
 }

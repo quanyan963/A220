@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.snackbar.Snackbar;
 import com.txtled.gpa220.R;
 import com.txtled.gpa220.application.MyApplication;
+import com.txtled.gpa220.bean.UserData;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -181,7 +182,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onEventMainThread(String str) {
+    public void onEventMainThread(UserData str) {
 
     }
 }
