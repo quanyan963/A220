@@ -4,12 +4,12 @@
     <color name="colorPrimaryDark">#0E888F</color>
     <color name="colorAccent">#4d4d4d</color>
 
-    <color name="gray">#e4e4e4</color>
+    <color name="gray">#808080</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-    <color name="color_line">#666666</color>
+    <color name="color_line">#cacaca</color>
     <color name="alert_bg">#333333</color>
-    <color name="blue">#4085de</color>
+    <color name="blue">#30a0d2</color>
 
     <color name="black_bg">#131313</color>
     <color name="text_black">#4d4d4d</color>

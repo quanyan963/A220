@@ -2,11 +2,175 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_line">
 
     <include android:id="@+id/i_user_tool"
         layout="@layout/toolbar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
+    <RelativeLayout
+        android:id="@+id/rl_user_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toRightOf="@+id/rl_img"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/i_user_tool">
+        <LinearLayout
+            android:id="@+id/rl_measure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_16_x"
+            android:paddingRight="@dimen/dp_16_x"
+            android:gravity="center_vertical"
+            android:background="@color/white"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:foreground="?android:attr/selectableItemBackground">
+            <ImageView
+                android:id="@+id/img_measure"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:src="@mipmap/person_infotempxhdpi" />
+            <com.txtled.gpa220.widget.CustomTextView
+                android:id="@+id/ctv_measure"
+                style="@style/main_tv"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:paddingTop="@dimen/dp_8_x"
+                android:paddingBottom="@dimen/dp_8_x"
+                android:text="@string/measure"
+                android:textColor="@color/blue"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/rl_change"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_measure"
+            android:layout_marginTop="@dimen/dp_1_x"
+            android:paddingLeft="@dimen/dp_16_x"
+            android:paddingRight="@dimen/dp_16_x"
+            android:gravity="center_vertical"
+            android:background="@color/white"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:foreground="?android:attr/selectableItemBackground">
+        <ImageView
+            android:id="@+id/img_change"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:src="@mipmap/person_infoeditxhdpi" />
+        <com.txtled.gpa220.widget.CustomTextView
+            android:id="@+id/ctv_change"
+            style="@style/main_tv"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:paddingTop="@dimen/dp_8_x"
+            android:paddingBottom="@dimen/dp_8_x"
+            android:text="@string/change"
+            android:textColor="@color/gray"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/rl_export"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_change"
+            android:layout_marginTop="@dimen/dp_1_x"
+            android:paddingLeft="@dimen/dp_16_x"
+            android:paddingRight="@dimen/dp_16_x"
+            android:gravity="center"
+            android:background="@color/white"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:foreground="?android:attr/selectableItemBackground">
+            <ImageView
+                android:id="@+id/img_export"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:src="@mipmap/person_infoexportxhdpi" />
+            <com.txtled.gpa220.widget.CustomTextView
+                android:id="@+id/ctv_export"
+                style="@style/main_tv"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:paddingTop="@dimen/dp_8_x"
+                android:paddingBottom="@dimen/dp_8_x"
+                android:text="@string/export"
+                android:textColor="@color/gray"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/rl_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_export"
+            android:layout_marginTop="@dimen/dp_1_x"
+            android:paddingLeft="@dimen/dp_16_x"
+            android:paddingRight="@dimen/dp_16_x"
+            android:gravity="center"
+            android:background="@color/white"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:foreground="?android:attr/selectableItemBackground">
+            <ImageView
+                android:id="@+id/img_delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:tint="@color/gray"
+                android:src="@mipmap/person_infodeletexhdpi" />
+            <com.txtled.gpa220.widget.CustomTextView
+                android:id="@+id/ctv_delete"
+                style="@style/main_tv"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:paddingTop="@dimen/dp_8_x"
+                android:paddingBottom="@dimen/dp_8_x"
+                android:text="@string/delete_user"
+                android:textColor="@color/gray"/>
+        </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_img"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:layout_marginRight="@dimen/dp_1_x"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/i_user_tool"
+        app:layout_constraintRight_toLeftOf="@+id/rl_user_list"
+        app:layout_constraintBottom_toBottomOf="@+id/rl_user_list">
+        <ImageView
+            android:id="@+id/img_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/info_boyxhdpi"/>
+        <com.txtled.gpa220.widget.CustomTextView
+            android:id="@+id/ctv_user_name"
+            style="@style/main_tv"
+            android:layout_below="@+id/img_user"
+            android:layout_centerInParent="true"
+            android:textColor="@color/gray" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/rl_img"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/dp_8_x">
+
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

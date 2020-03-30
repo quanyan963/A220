@@ -31,6 +31,9 @@
     <string name="new_manber">新用户</string>
     <string name="edit">修改用户</string>
     <string name="user_info">人员信息</string>
+    <string name="measure">测量体温</string>
+    <string name="change">修改信息</string>
+    <string name="delete_user">删除人员</string>
 
 
 </resources>
