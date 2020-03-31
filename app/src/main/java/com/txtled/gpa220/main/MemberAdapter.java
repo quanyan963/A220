@@ -115,7 +115,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
                         listener.onOnceClick(data.size() - position - 1);
                         exitTime = System.currentTimeMillis();
                     }else {
-                        listener.onTwiceClick(data.size() - position - 1);
+                        listener.onTwiceClick(data.size() - position - 1,
+                                data.get(data.size() - position - 1).getSex());
                     }
                 }
                 return false;
@@ -151,6 +152,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
 
     public interface OnItemClick{
         void onOnceClick(int position);
-        void onTwiceClick(int position);
+        void onTwiceClick(int position,int userType);
     }
 }

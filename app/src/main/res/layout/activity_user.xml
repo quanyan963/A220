@@ -19,7 +19,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/i_user_tool">
         <LinearLayout
-            android:id="@+id/rl_measure"
+            android:id="@+id/ll_measure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/dp_16_x"
@@ -27,7 +27,6 @@
             android:gravity="center_vertical"
             android:background="@color/white"
             android:clickable="true"
-            android:focusableInTouchMode="true"
             android:foreground="?android:attr/selectableItemBackground">
             <ImageView
                 android:id="@+id/img_measure"
@@ -47,17 +46,16 @@
                 android:textColor="@color/blue"/>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/rl_change"
+            android:id="@+id/ll_change"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_measure"
+            android:layout_below="@+id/ll_measure"
             android:layout_marginTop="@dimen/dp_1_x"
             android:paddingLeft="@dimen/dp_16_x"
             android:paddingRight="@dimen/dp_16_x"
             android:gravity="center_vertical"
             android:background="@color/white"
             android:clickable="true"
-            android:focusableInTouchMode="true"
             android:foreground="?android:attr/selectableItemBackground">
         <ImageView
             android:id="@+id/img_change"
@@ -77,17 +75,16 @@
             android:textColor="@color/gray"/>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/rl_export"
+            android:id="@+id/ll_export"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_change"
+            android:layout_below="@+id/ll_change"
             android:layout_marginTop="@dimen/dp_1_x"
             android:paddingLeft="@dimen/dp_16_x"
             android:paddingRight="@dimen/dp_16_x"
             android:gravity="center"
             android:background="@color/white"
             android:clickable="true"
-            android:focusableInTouchMode="true"
             android:foreground="?android:attr/selectableItemBackground">
             <ImageView
                 android:id="@+id/img_export"
@@ -107,17 +104,16 @@
                 android:textColor="@color/gray"/>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/rl_delete"
+            android:id="@+id/ll_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_export"
+            android:layout_below="@+id/ll_export"
             android:layout_marginTop="@dimen/dp_1_x"
             android:paddingLeft="@dimen/dp_16_x"
             android:paddingRight="@dimen/dp_16_x"
             android:gravity="center"
             android:background="@color/white"
             android:clickable="true"
-            android:focusableInTouchMode="true"
             android:foreground="?android:attr/selectableItemBackground">
             <ImageView
                 android:id="@+id/img_delete"
@@ -154,7 +150,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@mipmap/info_boyxhdpi"/>
+            android:src="@mipmap/info_boyxhdpi"
+            android:padding="@dimen/dp_3_x"/>
         <com.txtled.gpa220.widget.CustomTextView
             android:id="@+id/ctv_user_name"
             style="@style/main_tv"
@@ -180,7 +177,8 @@
             android:background="@color/line_bg"
             app:circle_color="@color/colorPrimaryDark"
             app:canvas_color="@color/white"
-            app:text_size="12sp" />
+            app:text_size="12sp"
+            android:overScrollMode="never"/>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

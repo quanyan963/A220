@@ -27,7 +27,7 @@ import java.util.List;
 public class LineChartView extends View {
     private float mViewHeight, mViewWidth, needDrawHeight, needDrawWidth;
     private float mBrokenLineLeft, mBrokenLineRight, mBrokenLineTop, mBrokenLineBottom;
-    private Paint mTextPaint, mBorderLinePaint, mBrokenLinePaint, mCirclePaint;
+    private Paint mTextPaint, mBorderLinePaint, mBrokenLinePaint, mCirclePaint, mFloatPaint;
     private Context mContext;
     private int textColor, lineColor, canvasColor, circleColor;
     private float textWidth, textHeight, circleWidth, circleHeight;
@@ -38,6 +38,7 @@ public class LineChartView extends View {
     private GestureDetector gestureDetector;
     private float scrollX;
     private float fullWidth, canScrollWidth;
+    private int position;
 
     public LineChartView(Context context) {
         this(context, null, 0);
@@ -73,7 +74,6 @@ public class LineChartView extends View {
             }
         }
         typedArray.recycle();
-
     }
 
     @Override
@@ -94,12 +94,16 @@ public class LineChartView extends View {
         mBrokenLineTop = getPaddingTop();
         drawXYAndText(canvas);
         drawLineCircle(canvas);
-        canScrollWidth = fullWidth - mViewWidth + mBrokenLineLeft;
+        if (data.size() != 0) {
+            fullWidth = points[points.length - 1].x + (xWidth / 2 * 3) - scrollX;
+            canScrollWidth = fullWidth - mViewWidth;
+        }
+        showText(position, canvas);
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        if (changed){
+        if (changed) {
             mViewWidth = getWidth();
             mViewHeight = getHeight();
         }
@@ -119,22 +123,32 @@ public class LineChartView extends View {
         // 按下停留时间超过瞬时，并且按下时没有松开或拖动，就会执行此方法
         @Override
         public void onShowPress(MotionEvent motionEvent) {
+
         }
 
         @Override
         public boolean onSingleTapUp(MotionEvent motionEvent) { // 单击抬起
+            float findX = motionEvent.getX() + scrollX;
+            float findY = motionEvent.getY();
+            for (int i = 0; i < points.length; i++) {
+                if (Math.abs(points[i].x - findX) < xWidth && Math.abs(points[i].y - findY) < xWidth) {
+                    position = i;
+                    invalidate();
+                    break;
+                }
+            }
             return false;
         }
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             if (e1.getX() > mBrokenLineLeft && e1.getX() < mViewWidth &&
-                    e1.getY() < mViewHeight - averageHeight) {
+                    e1.getY() < mViewHeight) {
                 //注意：这里的distanceX是e1.getX()-e2.getX()
                 scrollX += -distanceX;
-                if (scrollX > 0){
+                if (scrollX > 0) {
                     scrollX = 0;
-                }else if (scrollX < -canScrollWidth){
+                } else if (scrollX < -canScrollWidth) {
                     scrollX = -canScrollWidth;
                 }
                 invalidate();
@@ -152,6 +166,16 @@ public class LineChartView extends View {
         }
     }
 
+    private void showText(int position, Canvas canvas) {
+        mFloatPaint.setColor(circleColor);
+        mFloatPaint.setTextAlign(Paint.Align.LEFT);
+        mFloatPaint.setTextSize(textSize);
+        if (data.size() != 0) {
+            canvas.drawText(data.get(position) + "℃", points[position].x - (textWidth / 2),
+                    points[position].y - xWidth, mFloatPaint);
+        }
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (data.size() < 7) {
@@ -163,77 +187,80 @@ public class LineChartView extends View {
 
 
     private void drawLineCircle(Canvas canvas) {
-        if (data.size() != 0){
-            Point[] points= getPoint(data);
+        if (data.size() != 0) {
+            Point[] points = getPoint(data);
 
-            if (points.length >= 2){
+            if (points.length >= 2) {
                 mTextPaint.setStrokeWidth(4);
                 for (int i = 0; i < points.length - 1; i++) {
-                    canvas.drawLine(points[i].x,points[i].y,points[i+1].x,points[i+1].y,mTextPaint);
+                    canvas.drawLine(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, mTextPaint);
                 }
             }
-            fullWidth = mBrokenLineLeft + (circleWidth * 3) + (circleWidth + textWidth) * (points.length - 1) + scrollX;
-            for (int i = 0; i <points.length ; i++) {
-                Point point=points[i];
+
+            for (int i = 0; i < points.length; i++) {
+                Point point = points[i];
                 mCirclePaint.setColor(circleColor);
                 mCirclePaint.setStyle(Paint.Style.FILL);
 
-                if (i < 10){
-                    canvas.drawText(String.format("%02d",(i + 1)),mBrokenLineLeft + circleWidth +
-                            (circleWidth + textWidth) * i + scrollX,mViewHeight - (circleHeight / 2),mTextPaint);
-                }else {
-                    canvas.drawText(String.valueOf(i),mBrokenLineLeft + circleWidth +
-                            (circleWidth + textWidth) * i + scrollX,mViewHeight - (circleHeight / 2),mTextPaint);
+                if (i < 10) {
+                    canvas.drawText(String.format("%02d", (i + 1)), mBrokenLineLeft + circleWidth +
+                            (circleWidth + textWidth) * i + scrollX, mViewHeight - (circleHeight / 2), mTextPaint);
+                } else {
+                    canvas.drawText(String.valueOf(i), mBrokenLineLeft + circleWidth +
+                            (circleWidth + textWidth) * i + scrollX, mViewHeight - (circleHeight / 2), mTextPaint);
                 }
 
-                canvas.drawCircle(point.x,point.y,circleWidth / 2,mCirclePaint);
+                canvas.drawCircle(point.x, point.y, circleWidth / 2, mCirclePaint);
 
             }
             invalidate();
         }
 
-        canvas.drawRect(new RectF(0,0,mBrokenLineLeft,mViewHeight),mBorderLinePaint);
+        canvas.drawRect(new RectF(0, 0, mBrokenLineLeft, mViewHeight), mBorderLinePaint);
         mBrokenLineLeft = getPaddingLeft();
         //绘制文字
-        canvas.drawText(valueText[0]+"℃", mBrokenLineLeft, firstLineHeight, mTextPaint);
+        canvas.drawText(valueText[0] + "℃", mBrokenLineLeft, firstLineHeight, mTextPaint);
         for (int i = 1; i < valueText.length; i++) {
             float nowadayHeight = averageHeight * (i) + firstLineHeight;
-            canvas.drawText(valueText[i]+"℃", mBrokenLineLeft,
+            canvas.drawText(valueText[i] + "℃", mBrokenLineLeft,
                     nowadayHeight + mBrokenLineTop, mTextPaint);
         }
         mBrokenLineLeft += mBrokenLineLeft / 2;
         mBrokenLineLeft += textWidth;
     }
 
-    public void setData(List<Float> data){
-        this.data = data;
-        invalidate();
+    public void setData(List<Float> data) {
+        if (data != null) {
+            this.data = data;
+            position = data.size() - 1;
+            invalidate();
+        }
     }
 
     public Point[] getPoint(List<Float> values) {
         points = new Point[values.size()];
         for (int i = 0; i < values.size(); i++) {
-            if (values.size() < 10){
+            if (values.size() < 10) {
                 //圆的直径取两个文字长度
                 Rect numberRect = new Rect();
-                mTextPaint.getTextBounds("08", 0, "08".length(), numberRect);
+                mTextPaint.getTextBounds("00", 0, "00".length(), numberRect);
                 circleWidth = numberRect.width();
                 xWidth = circleWidth;
                 circleHeight = numberRect.height();
-            }else if (values.size() >= 1000){
+            } else if (values.size() >= 1000) {
                 Rect numberRect = new Rect();
-                mTextPaint.getTextBounds(i + "", 0, i+"".length(), numberRect);
+                mTextPaint.getTextBounds(i + "", 0, i + "".length(), numberRect);
                 circleWidth = numberRect.width();
             }
             float temp = 43f - values.get(i);
             float y = temp * 10 * (averageHeight / 10);
             float x;
-            if (i == 0){
+            if (i == 0) {
                 x = mBrokenLineLeft + circleWidth + (xWidth / 2) + scrollX;
-            }else {
+            } else {
                 x = mBrokenLineLeft + circleWidth + ((xWidth + textWidth) * i) + (xWidth / 2) + scrollX;
             }
-            points[i] = new Point((int)x,(int)y);
+            points[i] = new Point((int) x, (int) y);
         }
         return points;
     }
@@ -249,7 +276,7 @@ public class LineChartView extends View {
 
         //绘制边框分段横线与分段文本
         Rect textRect = new Rect();
-        mTextPaint.getTextBounds(valueText[0]+"℃", 0, (valueText[0]+"℃").length(), textRect);
+        mTextPaint.getTextBounds(valueText[0] + "℃", 0, (valueText[0] + "℃").length(), textRect);
         textWidth = textRect.width();
         textHeight = textRect.height();
         averageHeight = needDrawHeight / (valueText.length + 1);
@@ -305,10 +332,16 @@ public class LineChartView extends View {
         }
         initPaint(mBrokenLinePaint);
 
+        //画圆的笔
         if (mCirclePaint == null) {
             mCirclePaint = new Paint();
         }
         initPaint(mCirclePaint);
+
+        if (mFloatPaint == null) {
+            mFloatPaint = new Paint();
+        }
+        initPaint(mFloatPaint);
     }
 
     /**

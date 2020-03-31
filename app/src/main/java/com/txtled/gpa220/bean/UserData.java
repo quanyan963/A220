@@ -96,14 +96,6 @@ public class UserData implements Serializable {
         this.id = id;
     }
 
-    public int getMan() {
-        return sex;
-    }
-
-    public void setMan(int sex) {
-        this.sex = sex;
-    }
-
     public int getSex() {
         return this.sex;
     }

@@ -164,10 +164,15 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
     }
 
     @Override
-    public void onTwiceClick(int position) {
+    public void onTwiceClick(int position,int userType) {
         type = 1;
         mPosition = position;
-        startActivityForResult(new Intent(this, UserInfoActivity.class)
-                .putExtra(POSITION,position),USER);
+        if (userType == 2){
+            startActivityForResult(new Intent(this, UserInfoActivity.class)
+                    .putExtra(POSITION,position),USER);
+        }else {
+            startActivityForResult(new Intent(this, UserInfoActivity.class)
+                    .putExtra(POSITION,position),USER);
+        }
     }
 }
