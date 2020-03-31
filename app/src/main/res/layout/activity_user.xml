@@ -169,8 +169,18 @@
         app:layout_constraintTop_toBottomOf="@+id/rl_img"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/white"
-        android:layout_marginTop="@dimen/dp_8_x">
-
+        android:layout_marginTop="@dimen/dp_6_x">
+        <com.txtled.gpa220.widget.LineChartView
+            android:id="@+id/lv_user_chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_16_x"
+            app:text_color="@color/gray"
+            app:line_color="@color/line_bg"
+            android:background="@color/line_bg"
+            app:circle_color="@color/colorPrimaryDark"
+            app:canvas_color="@color/white"
+            app:text_size="12sp" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

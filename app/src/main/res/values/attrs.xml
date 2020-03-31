@@ -7,4 +7,11 @@
             <enum name="three" value="2"/>
         </attr>
     </declare-styleable>
+    <declare-styleable name="LineChart">
+        <attr name="text_color" format="color|reference"/>
+        <attr name="line_color" format="color|reference"/>
+        <attr name="circle_color" format="color|reference"/>
+        <attr name="canvas_color" format="color|reference"/>
+        <attr name="text_size" format="dimension|reference"/>
+    </declare-styleable>
 </resources>
