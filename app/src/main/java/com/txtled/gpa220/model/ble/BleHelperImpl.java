@@ -90,22 +90,8 @@ public class BleHelperImpl implements BleHelper {
                     //打开权限
                     method.setAccessible(true);
                     int state = (int) method.invoke(adapter, (Object[]) null);
-                    if (state == BluetoothAdapter.STATE_CONNECTED) {
-                        Set<BluetoothDevice> devices = adapter.getBondedDevices();
-                        for (BluetoothDevice device : devices) {
-                            if (device.getName().contains(BleUtils.BLE_NAME)) {
-                                @SuppressLint("PrivateApi")
-                                Method isConnectedMethod = BluetoothDevice.class.getDeclaredMethod(
-                                        "isConnected", (Class[]) null);
-                                method.setAccessible(true);
-                                boolean isConnected = (boolean) isConnectedMethod.invoke(device, (
-                                        Object[]) null);
-                                if (isConnected) {
-                                    Log.d(TAG, "phone connected ble mac:" + device.getAddress());
-                                    searchBleByAddress(device.getAddress(), onScanBleListener);
-                                }
-                            }
-                        }
+                    if (mAddress != null){
+                        searchBleByAddress(mAddress, onScanBleListener);
                     } else {
                         //是否需要连接到指定的设备
                         if (isSpecified) {
@@ -114,6 +100,23 @@ public class BleHelperImpl implements BleHelper {
                             searchBleByAddress("", onScanBleListener);
                         }
                     }
+//                    if (state == BluetoothAdapter.STATE_CONNECTED) {
+//                        Set<BluetoothDevice> devices = adapter.getBondedDevices();
+//                        for (BluetoothDevice device : devices) {
+//                            if (device.getName().contains(BleUtils.BLE_NAME)) {
+//                                @SuppressLint("PrivateApi")
+//                                Method isConnectedMethod = BluetoothDevice.class.getDeclaredMethod(
+//                                        "isConnected", (Class[]) null);
+//                                method.setAccessible(true);
+//                                boolean isConnected = (boolean) isConnectedMethod.invoke(device, (
+//                                        Object[]) null);
+//                                if (isConnected) {
+//                                    Log.d(TAG, "phone connected ble mac:" + device.getAddress());
+//                                    searchBleByAddress(device.getAddress(), onScanBleListener);
+//                                }
+//                            }
+//                        }
+//                    }
                 } catch (NoSuchMethodException | IllegalAccessException |
                         InvocationTargetException e) {
                     e.printStackTrace();
@@ -263,21 +266,21 @@ public class BleHelperImpl implements BleHelper {
         }
     }
 
-//    @Override
-//    public void isBleConnected(final BleConnListener bleListener) {
-//        listener = new BleConnectStatusListener(){
-//
-//            @Override
-//            public void onConnectStatusChanged(String mac, int status) {
-//                if (status == STATUS_CONNECTED){
-//                    bleListener.onConn();
-//                }else if (status == STATUS_DISCONNECTED){
-//                    bleListener.onDisConn();
-//                }
-//            }
-//        };
-//        mBleClient.registerConnectStatusListener(mAddress,listener);
-//    }
+    @Override
+    public void isBleConnected(final BleConnListener bleListener) {
+        listener = new BleConnectStatusListener(){
+
+            @Override
+            public void onConnectStatusChanged(String mac, int status) {
+                if (status == STATUS_CONNECTED){
+                    bleListener.onConn();
+                }else if (status == STATUS_DISCONNECTED){
+                    bleListener.onDisConn();
+                }
+            }
+        };
+        mBleClient.registerConnectStatusListener(mAddress,listener);
+    }
 
     @Override
     public void readCommand(final OnReadListener readListener) {

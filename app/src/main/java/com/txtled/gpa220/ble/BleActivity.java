@@ -35,13 +35,15 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.txtled.gpa220.utils.Constants.CONN;
 import static com.txtled.gpa220.utils.Constants.FINISH_SEARCH;
 
 /**
  * Created by Mr.Quan on 2020/3/26.
  */
 public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleContract.View,
-        BlueToothStateReceiver.OnBlueToothStateListener, BleAdapter.OnBleItemClickListener {
+        BlueToothStateReceiver.OnBlueToothStateListener, BleAdapter.OnBleItemClickListener,
+        SwipeRefreshLayout.OnRefreshListener {
     //    @BindView(R.id.sh_ble)
 //    SwitchCompat shBle;
 //    @BindView(R.id.rl_ble_switch)
@@ -55,9 +57,11 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
 
     private BleAdapter bleAdapter;
     private List<SearchResult> data;
+    private SearchResult deviceData;
     private Intent service;
     private BleBindInterface bindInterface;
     private BindService bindService;
+    private boolean isClose;
 
     @Override
     public void setInject() {
@@ -70,6 +74,8 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
         tvTitle.setText(R.string.ble);
         BleUtils.getInstance().registerBlueToothStateReceiver(this, this);
         setNavigationIcon(true);
+        setRightText(R.string.close_ble);
+        changeRightTextColor(R.color.line_bg);
 
         presenter.checkBle(this);
         rlvBleList.setHasFixedSize(true);
@@ -78,6 +84,8 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
         rlvBleList.setAdapter(bleAdapter);
 
         bleAdapter.setData(data);
+
+        srlBleRefresh.setOnRefreshListener(this);
 
 //        ctvSearchName.setText(String.format(getResources().getString(R.string.find_by),
 //                BluetoothAdapter.getDefaultAdapter().getName()));
@@ -140,7 +148,8 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
      */
     @Override
     public void onBleClick(SearchResult info) {
-
+        deviceData = info;
+        bindInterface.connBle(info);
     }
 
     @Override
@@ -155,6 +164,11 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
         service = new Intent(this, BleService.class);
         startService(service);
         bindService(service,bindService,BIND_AUTO_CREATE);
+    }
+
+    @Override
+    public void onRefresh() {
+        presenter.reScan();
     }
 
     private class BindService implements ServiceConnection{
@@ -176,7 +190,9 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
             Set<SearchResult> before = new LinkedHashSet<>(event.getData());
             data = new ArrayList<>(before);
             runOnUiThread(() -> bleAdapter.setData(data));
+        }else if (event.getBleConnType() == CONN){
+            isClose = true;
+            bleAdapter.changeItem(deviceData,CONN);
         }
-        super.onEventServiceThread(event);
     }
 }

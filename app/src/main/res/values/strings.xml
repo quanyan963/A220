@@ -17,6 +17,7 @@
     <string name="my_device">我的装置</string>
     <string name="dis_conn">未连接</string>
     <string name="connected">已连接</string>
+    <string name="reconn">重连中</string>
     <string name="member">人员列表</string>
     <string name="conn_device">连接设备</string>
     <string name="sync_data">同步数据</string>
@@ -40,6 +41,7 @@
     <string name="permissions_hint">\"GP-A220\"需要地理位置信息权限，才能正常连接设备，请允许请求的权限。</string>
     <string name="permission_fail">由于您取消授予权限，BLE连接功能将无法使用。</string>
     <string name="find_device">搜索设备</string>
+    <string name="close_ble">断开</string>
 
 
 </resources>

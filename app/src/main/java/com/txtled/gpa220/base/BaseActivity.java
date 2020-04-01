@@ -28,7 +28,8 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
     public static final String TAG = BaseActivity.class.getSimpleName();
-    public CustomTextView tvTitle,tvRight;
+    public CustomTextView tvTitle;
+    private CustomTextView tvRight;
     public boolean isBack = true;
     public boolean changeColor = true;
     private long mExitTime;
@@ -64,6 +65,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
+    public void setRightText(int str){
+        tvRight.setVisibility(View.VISIBLE);
+        tvRight.setText(str);
+    }
+
+    public void changeRightTextColor(int color){
+        tvRight.setTextColor(getResources().getColor(color));
+    }
 
     public void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -19,7 +19,7 @@ public interface BleHelper {
 
     void notifyBle(OnReadListener readListener);
 
-    //void isBleConnected(BleConnListener bleListener);
+    void isBleConnected(BleConnListener bleListener);
 
     void readCommand(OnReadListener readListener);
 
@@ -51,5 +51,10 @@ public interface BleHelper {
 
     interface OnReadListener{
         void onRead(byte[] data);
+    }
+
+    interface BleConnListener{
+        void onConn();
+        void onDisConn();
     }
 }

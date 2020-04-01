@@ -21,5 +21,7 @@ public interface BleContract {
         boolean turnOnBluetooth();
 
         void checkBle(Activity activity);
+
+        void reScan();
     }
 }

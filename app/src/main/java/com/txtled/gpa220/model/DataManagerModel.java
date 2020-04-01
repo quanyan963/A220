@@ -92,6 +92,11 @@ public class DataManagerModel implements DBHelper, PreferencesHelper, NetHelper,
     }
 
     @Override
+    public void isBleConnected(BleConnListener bleListener) {
+        mBleHelper.isBleConnected(bleListener);
+    }
+
+    @Override
     public void readCommand(OnReadListener readListener) {
         mBleHelper.readCommand(readListener);
     }

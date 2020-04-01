@@ -11,4 +11,8 @@ public interface BleBindInterface {
     void searchResult(List<SearchResult> data);
 
     void connBle(SearchResult bleData);
+
+    void doRefresh();
+
+    void doReConn();
 }

@@ -74,4 +74,9 @@ public class BlePresenter extends RxPresenter<BleContract.View> implements BleCo
                             }
                         });
     }
+
+    @Override
+    public void reScan() {
+
+    }
 }
