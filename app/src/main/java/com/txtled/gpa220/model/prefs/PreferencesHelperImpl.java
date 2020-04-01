@@ -16,6 +16,7 @@ public class PreferencesHelperImpl implements PreferencesHelper {
     private SharedPreferences mSharedPreferences;
     public static final String PLAY_POSITION = "play_position";
     public static final String IS_FIRST_APP = "is_first_app";
+    public static final String BLE_ADDRESS = "ble_address";
 
     @Inject
     public PreferencesHelperImpl() {
@@ -41,6 +42,16 @@ public class PreferencesHelperImpl implements PreferencesHelper {
     @Override
     public void setFirstIn(boolean first) {
         mSharedPreferences.edit().putBoolean(IS_FIRST_APP,first).apply();
+    }
+
+    @Override
+    public String getBleAddress() {
+        return mSharedPreferences.getString(BLE_ADDRESS,"");
+    }
+
+    @Override
+    public void setBleAddress(String address) {
+        mSharedPreferences.edit().putString(BLE_ADDRESS,address).apply();
     }
 //
 //    @Override

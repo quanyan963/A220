@@ -13,5 +13,9 @@ public interface AddConteact {
     interface Presenter extends BasePresenter<View>{
 
         void insertData(UserData data);
+
+        UserData getUserData(int position);
+
+        void update(UserData data);
     }
 }

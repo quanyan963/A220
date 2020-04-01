@@ -5,15 +5,19 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.txtled.gpa220.R;
 import com.txtled.gpa220.widget.CustomButton;
+
+import java.lang.reflect.Field;
 
 
 public class AlertUtils {
@@ -257,7 +261,7 @@ public class AlertUtils {
         if (!((Activity) context).isFinishing()) {
             AlertDialog dialog = new AlertDialog.Builder(context)
                     .setMessage(messageRes)
-                    .setPositiveButton(R.string.ok, listener)
+                    .setPositiveButton(R.string.conform, listener)
                     .create();
             dialog.setCancelable(false);
             dialog.show();
@@ -265,6 +269,24 @@ public class AlertUtils {
             window.setWindowAnimations(R.style.dialogWindowAnimInToOut);
             window.setBackgroundDrawable(context.getResources()
                     .getDrawable(R.drawable.background_gray));
+
+            try {
+                //获取mAlert对象
+                Field mAlert = AlertDialog.class.getDeclaredField("mAlert");
+                mAlert.setAccessible(true);
+                Object mAlertController = mAlert.get(dialog);
+
+                Field mMessage = mAlertController.getClass().getDeclaredField("mMessageView");
+                mMessage.setAccessible(true);
+                TextView mMessageView = (TextView) mMessage.get(mAlertController);
+                mMessageView.setTextColor(context.getResources().getColor(R.color.white));
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+
         }
     }
 

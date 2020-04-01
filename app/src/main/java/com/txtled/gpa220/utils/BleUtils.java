@@ -8,8 +8,10 @@ import com.txtled.gpa220.broadcast.BlueToothStateReceiver;
 
 public class BleUtils {
     private static BleUtils INSTANCE;
-    public static final String BLE_NAME = "AR";
+    public static final String BLE_NAME = "GP-A220";
     public static final String BLE_NAME_MAC = "mi";
+    public static final String SEND_CHARACTERS = "1161";
+    public static final String NOTIFY_CHARACTERS = "1162";
     public static final String SERVICE = "ffe0";
     public static final String SEMICOLON = ";";
     public static final String HEAD = "A005+";//AT

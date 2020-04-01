@@ -34,6 +34,8 @@
         <activity android:name=".user.UserInfoActivity"
             android:configChanges="layoutDirection|locale"
             android:screenOrientation="portrait"/>
+
+        <service android:name=".ble.service.BleService"/>
     </application>
 
 </manifest>

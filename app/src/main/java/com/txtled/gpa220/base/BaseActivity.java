@@ -16,7 +16,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.snackbar.Snackbar;
 import com.txtled.gpa220.R;
 import com.txtled.gpa220.application.MyApplication;
+import com.txtled.gpa220.bean.BleControlEvent;
 import com.txtled.gpa220.bean.UserData;
+import com.txtled.gpa220.widget.CustomTextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -26,7 +28,7 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
     public static final String TAG = BaseActivity.class.getSimpleName();
-    public TextView tvTitle;
+    public CustomTextView tvTitle,tvRight;
     public boolean isBack = true;
     public boolean changeColor = true;
     private long mExitTime;
@@ -66,8 +68,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            tvTitle = (TextView) findViewById(R.id.tv_title);
+            tvTitle = (CustomTextView) findViewById(R.id.tv_title);
             ivRight = (ImageView) findViewById(R.id.iv_right);
+            tvRight = (CustomTextView) findViewById(R.id.tv_right);
             setSupportActionBar(toolbar);
             setTitle("");
 
@@ -80,7 +83,12 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
 
             });
+            tvRight.setOnClickListener(v -> onTvRightClick());
         }
+    }
+
+    public void onTvRightClick(){
+
     }
 
     public void onLeftClick() {
@@ -183,6 +191,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Subscribe
     public void onEventMainThread(UserData str) {
+
+    }
+
+    @Subscribe
+    public void onEventServiceThread(BleControlEvent event) {
 
     }
 }

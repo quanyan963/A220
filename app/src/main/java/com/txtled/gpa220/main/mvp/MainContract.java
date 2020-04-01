@@ -19,6 +19,8 @@ public interface MainContract {
         void showLeftView();
 
         void closeLeftView();
+
+        void toBleView();
     }
 
     interface Presenter extends BasePresenter<View> {

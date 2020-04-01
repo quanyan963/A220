@@ -1,20 +1,22 @@
 package com.txtled.gpa220.user;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
-import android.view.View;
+import android.graphics.drawable.Drawable;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import com.txtled.gpa220.R;
+import com.txtled.gpa220.add.AddMenberActivity;
 import com.txtled.gpa220.base.MvpBaseActivity;
 import com.txtled.gpa220.bean.UserData;
 import com.txtled.gpa220.user.mvp.UserContract;
@@ -23,8 +25,12 @@ import com.txtled.gpa220.utils.Utils;
 import com.txtled.gpa220.widget.CustomTextView;
 import com.txtled.gpa220.widget.LineChartView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 
+import static com.txtled.gpa220.utils.Constants.ADD;
+import static com.txtled.gpa220.utils.Constants.OK;
 import static com.txtled.gpa220.utils.Constants.POSITION;
 
 /**
@@ -65,6 +71,7 @@ public class UserInfoActivity extends MvpBaseActivity<UserPresenter> implements 
     LineChartView lvUserChart;
     private int position;
     private UserData data;
+    private int layoutId = R.id.ll_measure;
 
     @Override
     public void setInject() {
@@ -85,6 +92,38 @@ public class UserInfoActivity extends MvpBaseActivity<UserPresenter> implements 
         params.height = point.y / 3;
         lvUserChart.setLayoutParams(params);
         lvUserChart.setData(data.getData());
+        initUser();
+
+        llMeasure.setOnClickListener(v -> changeColor(v.getId()));
+        llChange.setOnClickListener(v -> changeColor(v.getId()));
+        llExport.setOnClickListener(v -> changeColor(v.getId()));
+        llDelete.setOnClickListener(v -> changeColor(v.getId()));
+
+        Drawable drawable;
+        Drawable wrap;
+        drawable = imgMeasure.getDrawable();
+        wrap = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(wrap, ContextCompat.getColor(this,R.color.blue));
+        imgMeasure.setImageDrawable(wrap);
+
+        drawable = imgChange.getDrawable();
+        wrap = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(wrap, ContextCompat.getColor(this,R.color.gray));
+        imgChange.setImageDrawable(wrap);
+
+        drawable = imgExport.getDrawable();
+        wrap = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(wrap, ContextCompat.getColor(this,R.color.gray));
+        imgExport.setImageDrawable(wrap);
+
+        drawable = imgDelete.getDrawable();
+        wrap = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(wrap, ContextCompat.getColor(this,R.color.gray));
+        imgDelete.setImageDrawable(wrap);
+    }
+
+    private void initUser() {
+        //显示圆形图片
         Bitmap bitmap = Utils.drawableToBitmap(getResources()
                 .getDrawable(data.getSex() == 0 ? R.mipmap.home_boyxhdpi : R.mipmap.home_girlxhdpi));
         RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory
@@ -94,16 +133,95 @@ public class UserInfoActivity extends MvpBaseActivity<UserPresenter> implements 
         imgUser.setBackground(getResources()
                 .getDrawable(R.drawable.img_forground));
         ctvUserName.setText(data.getUserName());
+    }
 
-        llChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imgChange.setImageTintMode(PorterDuff.Mode.SRC);
-                imgChange.setColorFilter(R.color.blue);
+    private void changeColor(int id) {
+        Drawable drawable;
+        Drawable wrap;
+        switch (id){
+            case R.id.ll_measure:
+                drawable = imgMeasure.getDrawable();
+                wrap = DrawableCompat.wrap(drawable);
+                DrawableCompat.setTint(wrap, ContextCompat.getColor(this,R.color.blue));
+                imgMeasure.setImageDrawable(wrap);
+                ctvMeasure.setTextColor(getResources().getColor(R.color.blue));
+                break;
+            case R.id.ll_change:
+                drawable = imgChange.getDrawable();
+                wrap = DrawableCompat.wrap(drawable);
+                DrawableCompat.setTint(wrap, ContextCompat.getColor(this,R.color.blue));
+                imgChange.setImageDrawable(wrap);
                 ctvChange.setTextColor(getResources().getColor(R.color.blue));
-            }
-        });
+                startActivityForResult(new Intent(UserInfoActivity.this,
+                        AddMenberActivity.class).putExtra(POSITION,position),ADD);
+                break;
+            case R.id.ll_export:
+                drawable = imgExport.getDrawable();
+                wrap = DrawableCompat.wrap(drawable);
+                DrawableCompat.setTint(wrap, ContextCompat.getColor(this,R.color.blue));
+                imgExport.setImageDrawable(wrap);
+                ctvExport.setTextColor(getResources().getColor(R.color.blue));
+                break;
+            default:
+                drawable = imgDelete.getDrawable();
+                wrap = DrawableCompat.wrap(drawable);
+                DrawableCompat.setTint(wrap, ContextCompat.getColor(this,R.color.blue));
+                imgDelete.setImageDrawable(wrap);
+                ctvDelete.setTextColor(getResources().getColor(R.color.blue));
+                break;
+        }
+        switch (layoutId){
+            case R.id.ll_measure:
+                if (layoutId != id){
+                    drawable = imgMeasure.getDrawable();
+                    wrap = DrawableCompat.wrap(drawable);
+                    DrawableCompat.setTint(wrap, ContextCompat.getColor(this,R.color.gray));
+                    imgMeasure.setImageDrawable(wrap);
+                    ctvMeasure.setTextColor(getResources().getColor(R.color.gray));
+                }
+                break;
+            case R.id.ll_change:
+                if (layoutId != id){
+                    drawable = imgChange.getDrawable();
+                    wrap = DrawableCompat.wrap(drawable);
+                    DrawableCompat.setTint(wrap, ContextCompat.getColor(this,R.color.gray));
+                    imgChange.setImageDrawable(wrap);
+                    ctvChange.setTextColor(getResources().getColor(R.color.gray));
+                }
+                break;
+            case R.id.ll_export:
+                if (layoutId != id){
+                    drawable = imgExport.getDrawable();
+                    wrap = DrawableCompat.wrap(drawable);
+                    DrawableCompat.setTint(wrap, ContextCompat.getColor(this,R.color.gray));
+                    imgExport.setImageDrawable(wrap);
+                    ctvExport.setTextColor(getResources().getColor(R.color.gray));
+                }
+                break;
+            default:
+                if (layoutId != id){
+                    drawable = imgDelete.getDrawable();
+                    wrap = DrawableCompat.wrap(drawable);
+                    DrawableCompat.setTint(wrap, ContextCompat.getColor(this,R.color.gray));
+                    imgDelete.setImageDrawable(wrap);
+                    ctvDelete.setTextColor(getResources().getColor(R.color.gray));
+                }
+                break;
+        }
+        layoutId = id;
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == ADD){
+            if (resultCode == OK){
+                this.data = presenter.getData(position);
+                initUser();
+                this.setResult(OK);
+                EventBus.getDefault().post(this.data);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

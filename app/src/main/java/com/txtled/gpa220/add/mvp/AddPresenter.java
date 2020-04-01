@@ -1,7 +1,5 @@
 package com.txtled.gpa220.add.mvp;
 
-import android.view.View;
-
 import com.txtled.gpa220.base.RxPresenter;
 import com.txtled.gpa220.bean.UserData;
 import com.txtled.gpa220.model.DataManagerModel;
@@ -19,5 +17,15 @@ public class AddPresenter extends RxPresenter<AddConteact.View> implements AddCo
     @Override
     public void insertData(UserData data) {
         dataManagerModel.setUserData(data);
+    }
+
+    @Override
+    public UserData getUserData(int position) {
+        return dataManagerModel.getUserData().get(position);
+    }
+
+    @Override
+    public void update(UserData data) {
+        dataManagerModel.updateUserData(data);
     }
 }

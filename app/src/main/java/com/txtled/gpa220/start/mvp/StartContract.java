@@ -1,5 +1,7 @@
 package com.txtled.gpa220.start.mvp;
 
+import android.app.Activity;
+
 import com.txtled.gpa220.base.BasePresenter;
 import com.txtled.gpa220.base.BaseView;
 
@@ -13,12 +15,14 @@ public interface StartContract {
 
         void notHaveBle();
 
-        void showAlert();
+        //void showAlert();
+
+        void showPermissionHint();
     }
 
     interface Presenter extends BasePresenter<View>{
 
-        void checkBle();
+        void checkBle(Activity activity);
 
         boolean turnOnBluetooth();
     }

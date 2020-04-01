@@ -12,4 +12,8 @@ public interface PreferencesHelper {
     boolean isFirstIn();
 
     void setFirstIn(boolean first);
+
+    String getBleAddress();
+
+    void setBleAddress(String address);
 }

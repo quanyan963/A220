@@ -19,11 +19,16 @@ import com.google.android.material.navigation.NavigationView;
 import com.txtled.gpa220.R;
 import com.txtled.gpa220.add.AddMenberActivity;
 import com.txtled.gpa220.base.MvpBaseActivity;
+import com.txtled.gpa220.bean.BleControlEvent;
 import com.txtled.gpa220.bean.UserData;
+import com.txtled.gpa220.ble.BleActivity;
+import com.txtled.gpa220.ble.service.BleService;
 import com.txtled.gpa220.main.mvp.MainContract;
 import com.txtled.gpa220.main.mvp.MainPresenter;
 import com.txtled.gpa220.user.UserInfoActivity;
 import com.txtled.gpa220.widget.DividerItemDecoration;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -108,7 +113,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
                 adapter.setData(presenter.getUserData());
             }
         }else if (requestCode == USER){
-            if (requestCode == OK){
+            if (resultCode == OK){
                 adapter.notifyTrueItem(mPosition);
             }
         }
@@ -138,14 +143,20 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
     @Override
     public void onEventMainThread(UserData str) {
         if (type == 0){
-            adapter.insertData(str);
             presenter.insertData(str);
+            adapter.notifyItemChanged(0);
         }else if (type == 1){
-            adapter.update(mPosition,str);
             presenter.update(mPosition,str);
         }
 
         super.onEventMainThread(str);
+    }
+
+
+    @Override
+    public void onEventServiceThread(BleControlEvent event) {
+
+        super.onEventServiceThread(event);
     }
 
     @Override
@@ -159,20 +170,35 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
     }
 
     @Override
+    public void toBleView() {
+        startActivity(new Intent(this, BleActivity.class));
+    }
+
+    @Override
     public void onOnceClick(int position) {
+        mPosition = position;
         presenter.setUserPosition(position);
     }
 
     @Override
     public void onTwiceClick(int position,int userType) {
         type = 1;
-        mPosition = position;
-        if (userType == 2){
-            startActivityForResult(new Intent(this, UserInfoActivity.class)
-                    .putExtra(POSITION,position),USER);
-        }else {
-            startActivityForResult(new Intent(this, UserInfoActivity.class)
-                    .putExtra(POSITION,position),USER);
+        if (mPosition == position){
+            if (userType == 2){
+                startActivityForResult(new Intent(this, UserInfoActivity.class)
+                        .putExtra(POSITION,position),USER);
+            }else {
+                startActivityForResult(new Intent(this, UserInfoActivity.class)
+                        .putExtra(POSITION,position),USER);
+            }
         }
+        mPosition = position;
+
+    }
+
+    @Override
+    public void onDestroy() {
+        stopService(new Intent(this, BleService.class));
+        super.onDestroy();
     }
 }

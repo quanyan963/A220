@@ -39,8 +39,8 @@
             android:id="@+id/ctv_ble_conn"
             style="@style/main_tv"
             android:text="@string/conn_device"
-            android:paddingTop="@dimen/dp_12_x"
-            android:paddingBottom="@dimen/dp_12_x"
+            android:paddingTop="@dimen/dp_10_x"
+            android:paddingBottom="@dimen/dp_10_x"
             android:layout_weight="1"/>
     </LinearLayout>
     <View
@@ -70,8 +70,8 @@
             android:id="@+id/ctv_data_sync"
             style="@style/main_tv"
             android:text="@string/sync_data"
-            android:paddingTop="@dimen/dp_12_x"
-            android:paddingBottom="@dimen/dp_12_x"
+            android:paddingTop="@dimen/dp_10_x"
+            android:paddingBottom="@dimen/dp_10_x"
             android:layout_weight="1"/>
     </LinearLayout>
     <View
@@ -102,8 +102,8 @@
             style="@style/main_tv"
             android:layout_weight="1"
             android:text="@string/export"
-            android:paddingTop="@dimen/dp_12_x"
-            android:paddingBottom="@dimen/dp_12_x"/>
+            android:paddingTop="@dimen/dp_10_x"
+            android:paddingBottom="@dimen/dp_10_x"/>
     </LinearLayout>
     <View
         android:id="@+id/v_menu_line_four"
@@ -132,8 +132,8 @@
             android:id="@+id/ctv_inst"
             style="@style/main_tv"
             android:layout_weight="1"
-            android:paddingTop="@dimen/dp_12_x"
-            android:paddingBottom="@dimen/dp_12_x"
+            android:paddingTop="@dimen/dp_10_x"
+            android:paddingBottom="@dimen/dp_10_x"
             android:text="@string/instruction"/>
     </LinearLayout>
     <View
@@ -163,8 +163,8 @@
             android:id="@+id/ctv_setting"
             style="@style/main_tv"
             android:layout_weight="1"
-            android:paddingTop="@dimen/dp_12_x"
-            android:paddingBottom="@dimen/dp_12_x"
+            android:paddingTop="@dimen/dp_10_x"
+            android:paddingBottom="@dimen/dp_10_x"
             android:text="@string/setting"/>
     </LinearLayout>
     <View

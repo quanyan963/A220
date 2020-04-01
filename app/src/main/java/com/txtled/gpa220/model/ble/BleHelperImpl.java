@@ -10,6 +10,8 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.inuker.bluetooth.library.BluetoothClient;
 import com.inuker.bluetooth.library.connect.listener.BleConnectStatusListener;
@@ -48,7 +50,7 @@ import static com.inuker.bluetooth.library.Constants.STATUS_DISCONNECTED;
 public class BleHelperImpl implements BleHelper {
     public static final String TAG = BleHelperImpl.class.getSimpleName();
     public static final int DURATION = 10000;
-    public static final int TIMES = 3;
+    public static final int TIMES = 100;
     private BluetoothClient mBleClient;
     private SearchRequest mRequest;
     private BleConnectOptions mOptions;
@@ -75,72 +77,58 @@ public class BleHelperImpl implements BleHelper {
     }
 
     @Override
-    public void scanBle(Activity activity, boolean isSpecified, OnScanBleListener onScanBleListener, final OnConnBleListener onConnBleListener) {
+    public void scanBle(boolean isSpecified, OnScanBleListener onScanBleListener) {
+        if (mBleClient.isBleSupported()) {
+            if (mBleClient.isBluetoothOpened()) {
+                try {
+                    BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+                    //得到BluetoothAdapter的Class对象
+                    Class<BluetoothAdapter> bluetoothAdapterClass = BluetoothAdapter.class;
+                    Method method = null;
+                    method = bluetoothAdapterClass.getDeclaredMethod("getConnectionState",
+                            (Class[]) null);
+                    //打开权限
+                    method.setAccessible(true);
+                    int state = (int) method.invoke(adapter, (Object[]) null);
+                    if (state == BluetoothAdapter.STATE_CONNECTED) {
+                        Set<BluetoothDevice> devices = adapter.getBondedDevices();
+                        for (BluetoothDevice device : devices) {
+                            if (device.getName().contains(BleUtils.BLE_NAME)) {
+                                @SuppressLint("PrivateApi")
+                                Method isConnectedMethod = BluetoothDevice.class.getDeclaredMethod(
+                                        "isConnected", (Class[]) null);
+                                method.setAccessible(true);
+                                boolean isConnected = (boolean) isConnectedMethod.invoke(device, (
+                                        Object[]) null);
+                                if (isConnected) {
+                                    Log.d(TAG, "phone connected ble mac:" + device.getAddress());
+                                    searchBleByAddress(device.getAddress(), onScanBleListener);
+                                }
+                            }
+                        }
+                    } else {
+                        //是否需要连接到指定的设备
+                        if (isSpecified) {
+                            onScanBleListener.onDisOpenDevice();
+                        } else {
+                            searchBleByAddress("", onScanBleListener);
+                        }
+                    }
+                } catch (NoSuchMethodException | IllegalAccessException |
+                        InvocationTargetException e) {
+                    e.printStackTrace();
+                }
 
-    }
-
-    private void connectA2DP(BluetoothAdapter adapter, Activity activity, BluetoothDevice device) {
-        if(adapter.getProfileConnectionState(BluetoothProfile.A2DP)!= BluetoothProfile.STATE_CONNECTED){
-            //在listener中完成A2DP服务的调用
-            adapter.getProfileProxy(activity, new connServListener(device), BluetoothProfile.A2DP);
-        }
-    }
-
-    public class connServListener implements BluetoothProfile.ServiceListener {
-        private BluetoothDevice device;
-
-        public connServListener(BluetoothDevice device) {
-            this.device = device;
-        }
-
-        @Override
-        public void onServiceConnected(int profile, BluetoothProfile proxy) {
-            //use reflect method to get the Hide method "connect" in BluetoothA2DP
-            BluetoothA2dp a2dp = (BluetoothA2dp) proxy;
-            //a2dp.isA2dpPlaying(mBTDevInThread);
-            Class<? extends BluetoothA2dp> clazz = a2dp.getClass();
-            Method method_Connect;
-            //通过BluetoothA2DP隐藏的connect(BluetoothDevice btDev)函数，打开btDev的A2DP服务
-            try {
-
-                          /*
-                           * 1.Reflect this method
-                             public boolean connect(BluetoothDevice device);
-                           *
-                           * 2.function definition
-                             getMethod(String methodName, Class <?>... paramType)
-                           */
-                //1.这步相当于定义函数
-                method_Connect = clazz.getMethod("connect",BluetoothDevice.class);
-                //invoke(object receiver,object... args)
-                //2.这步相当于调用函数,invoke需要传入args：BluetoothDevice的实例
-                method_Connect.invoke(a2dp, device);
-            } catch (NoSuchMethodException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IllegalArgumentException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            } else {
+                onScanBleListener.onDisOpenBle();
             }
-
+        } else {
+            onScanBleListener.onDisSupported();
         }
-
-        @Override
-        public void onServiceDisconnected(int profile) {
-            // TODO Auto-generated method stub
-
-        }
-
     }
 
-    private void searchBleByAddress(final String address, final OnScanBleListener onScanBleListener, final OnConnBleListener onConnBleListener) {
-        if (!conn){
+    private void searchBleByAddress(final String address, final OnScanBleListener onScanBleListener) {
+        if (!conn) {
             mBleClient.search(mRequest, new SearchResponse() {
                 @Override
                 public void onSearchStarted() {
@@ -149,41 +137,18 @@ public class BleHelperImpl implements BleHelper {
 
                 @Override
                 public void onDeviceFounded(final SearchResult device) {
-                    Utils.Logger(TAG,"scan ble name",device.getName());
-                    Utils.Logger(TAG,"scan ble mac",device.getAddress());
-                    String broadcastPack =Utils.bytesToHex(device.scanRecord);
-                    String[] values = broadcastPack.split("FF");
-                    if (values.length == 2){
-                        broadcastPack = values[1].toString().substring(0,12);
-                        //broadcastPack = values[1].toString().substring(0,4);
-                        if (address.replace(":","").equals(broadcastPack)){//device.getAddress().substring(8))
+                    if (!TextUtils.isEmpty(address)) {
+                        if (device.getAddress().equalsIgnoreCase(getMacAddress(address))) {
                             mBleClient.stopSearch();
+                            mAddress = device.getAddress();
 
-                            //broadcastPack = Utils.asciiToString(broadcastPack.substring(0,62));
-                            if (!conn){
-                                mAddress = device.getAddress();
-                                onScanBleListener.onSuccess();
-                                //connBle(onConnBleListener);
-                                Utils.Logger("find:---","",device.getAddress().toString());
-                                conn = true;
-                            }
+                            onScanBleListener.onSuccess(device);
                         }
+                    } else if (device.getName().contains(BleUtils.BLE_NAME)) {
+                        //mBleClient.stopSearch();
+                        mAddress = device.getAddress();
+                        onScanBleListener.onSuccess(device);
                     }
-//                    if (device.getName().contains("mi")){
-//
-//                    }
-
-//                if (!TextUtils.isEmpty(address)) {
-//                    if (device.getAddress().equalsIgnoreCase(getMacAddress(address))) {
-//                        mBleClient.stopSearch();
-//                        mAddress = device.getAddress();
-//                        onScanBleListener.onSuccess();
-//                    }
-//                } else if (device.getName().contains(BleUtils.BLE_NAME)) {
-//                    mBleClient.stopSearch();
-//                    mAddress = device.getAddress();
-//                    onScanBleListener.onSuccess();
-//                }
                 }
 
                 @Override
@@ -196,7 +161,7 @@ public class BleHelperImpl implements BleHelper {
 
                 }
             });
-        }else {
+        } else {
             mBleClient.stopSearch();
         }
     }
@@ -204,19 +169,20 @@ public class BleHelperImpl implements BleHelper {
     private String getMacAddress(String macAddress) {
         String oldChar = macAddress.substring(macAddress.length() - 5, macAddress.length() - 3);
         String newChar = Integer.toHexString(Integer.parseInt(oldChar, 16) + 1);
-        Utils.Logger(TAG,"newMac",macAddress.replace(oldChar, newChar));
+        Utils.Logger(TAG, "newMac", macAddress.replace(oldChar, newChar));
         return macAddress.replace(oldChar, newChar);
     }
 
     @Override
-    public void connBle(final OnConnBleListener onConnBleListener) {
+    public void connBle(SearchResult result, final OnConnBleListener onConnBleListener) {
+        mAddress = result.getAddress();
         mBleClient.connect(mAddress, mOptions, new BleConnectResponse() {
             @Override
             public void onResponse(int code, BleGattProfile profile) {
                 if (code == REQUEST_SUCCESS) {
                     List<BleGattService> serviceList = profile.getServices();
                     for (BleGattService service : serviceList) {
-                        Utils.Logger("service","UUID",service.getUUID().toString());
+                        Utils.Logger("service", "UUID", service.getUUID().toString());
                         if (service.getUUID().toString().contains(BleUtils.SERVICE)) {
                             List<BleGattCharacter> characters = service.getCharacters();
                             for (BleGattCharacter character : characters) {
@@ -246,7 +212,7 @@ public class BleHelperImpl implements BleHelper {
     //分包
 
     private void divideFrameBleSendData(byte[] data) {
-        Utils.Logger(TAG,"BLE Write Command",new String(data));
+        Utils.Logger(TAG, "BLE Write Command", new String(data));
         int tmpLen = data.length;
         int start = 0;
         int end = 0;
@@ -285,13 +251,13 @@ public class BleHelperImpl implements BleHelper {
             mBleClient.notify(mAddress, mServiceUUID, mNotifyCharacterUUID, new BleNotifyResponse() {
                 @Override
                 public void onNotify(UUID service, UUID character, byte[] value) {
-                    Utils.Logger(TAG,"BLE Notify",new String(value));
+                    Utils.Logger(TAG, "BLE Notify", new String(value));
                     readListener.onRead(value);
                 }
 
                 @Override
                 public void onResponse(int code) {
-                    Utils.Logger(TAG,"BLE Notify code",code+"");
+                    Utils.Logger(TAG, "BLE Notify code", code + "");
                 }
             });
         }
@@ -318,7 +284,7 @@ public class BleHelperImpl implements BleHelper {
         mBleClient.read(mAddress, mServiceUUID, mSendCharacterUUID, new BleReadResponse() {
             @Override
             public void onResponse(int code, byte[] data) {
-                if (code == REQUEST_SUCCESS){
+                if (code == REQUEST_SUCCESS) {
                     readListener.onRead(data);
                 }
             }
@@ -329,8 +295,13 @@ public class BleHelperImpl implements BleHelper {
     @Override
     public void unRegisterConn() {
         mBleClient.disconnect(mAddress);
-        mBleClient.unregisterConnectStatusListener(mAddress,listener);
+        mBleClient.unregisterConnectStatusListener(mAddress, listener);
         listener = null;
         conn = false;
+    }
+
+    @Override
+    public void stopSearch() {
+        mBleClient.stopSearch();
     }
 }

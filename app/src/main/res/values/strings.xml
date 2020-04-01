@@ -12,7 +12,7 @@
     <string name="exit_program_hint">再按一次退出程序</string>
 
     //ble
-    <string name="ble">蓝牙</string>
+    <string name="ble">连接设备</string>
     <string name="find_by">现时可被侦测为「%s」</string>
     <string name="my_device">我的装置</string>
     <string name="dis_conn">未连接</string>
@@ -34,6 +34,12 @@
     <string name="measure">测量体温</string>
     <string name="change">修改信息</string>
     <string name="delete_user">删除人员</string>
+    <string name="ble_open_failed">蓝牙开启失败，请至蓝牙界面手动打开蓝牙。</string>
+    <string name="go">前往</string>
+    <string name="conform">确认</string>
+    <string name="permissions_hint">\"GP-A220\"需要地理位置信息权限，才能正常连接设备，请允许请求的权限。</string>
+    <string name="permission_fail">由于您取消授予权限，BLE连接功能将无法使用。</string>
+    <string name="find_device">搜索设备</string>
 
 
 </resources>

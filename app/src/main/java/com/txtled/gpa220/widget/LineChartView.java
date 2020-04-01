@@ -128,7 +128,7 @@ public class LineChartView extends View {
 
         @Override
         public boolean onSingleTapUp(MotionEvent motionEvent) { // 单击抬起
-            float findX = motionEvent.getX() + scrollX;
+            float findX = motionEvent.getX();
             float findY = motionEvent.getY();
             for (int i = 0; i < points.length; i++) {
                 if (Math.abs(points[i].x - findX) < xWidth && Math.abs(points[i].y - findY) < xWidth) {

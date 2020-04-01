@@ -34,6 +34,9 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
             case R.id.img_menu_close:
                 view.closeLeftView();
                 break;
+            case R.id.ll_ble_conn:
+                view.toBleView();
+                break;
         }
     }
 
@@ -55,6 +58,6 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
 
     @Override
     public void update(int position, UserData str) {
-        mData.add(position,str);
+        mData.set(position,str);
     }
 }

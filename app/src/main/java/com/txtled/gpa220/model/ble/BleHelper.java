@@ -3,15 +3,17 @@ package com.txtled.gpa220.model.ble;
 import android.app.Activity;
 import android.content.Context;
 
+import com.inuker.bluetooth.library.search.SearchResult;
+
 
 /**
  * Created by Mr.Quan on 2018/4/17.
  */
 
 public interface BleHelper {
-    void scanBle(Activity activity, boolean isSpecified, OnScanBleListener onScanBleListener, OnConnBleListener onConnBleListener);
+    void scanBle(boolean isSpecified, OnScanBleListener onScanBleListener);
 
-    void connBle(OnConnBleListener onConnBleListener);
+    void connBle(SearchResult result, OnConnBleListener onConnBleListener);
 
     void writeCommand(String command);
 
@@ -23,10 +25,12 @@ public interface BleHelper {
 
     void unRegisterConn();
 
+    void stopSearch();
+
     interface OnScanBleListener {
         void onStart();
 
-        void onSuccess();
+        void onSuccess(SearchResult device);
 
         void onScanFailure();
 

@@ -33,7 +33,7 @@ public class StartActivity extends MvpBaseActivity<StartPresenter> implements St
     public void init() {
         BleUtils bleUtils = BleUtils.getInstance();
         bleUtils.registerBlueToothStateReceiver(this,this);
-        presenter.checkBle();
+        presenter.checkBle(this);
     }
 
     @Override
@@ -75,10 +75,15 @@ public class StartActivity extends MvpBaseActivity<StartPresenter> implements St
                 StartActivity.this.finish());
     }
 
+//    @Override
+//    public void showAlert() {
+//        AlertUtils.setListener(this);
+//        AlertUtils.showHintDialog(this, R.layout.alert_ble);
+//    }
+
     @Override
-    public void showAlert() {
-        AlertUtils.setListener(this);
-        AlertUtils.showHintDialog(this, R.layout.alert_ble);
+    public void showPermissionHint() {
+        onCancel();
     }
 
     @Override

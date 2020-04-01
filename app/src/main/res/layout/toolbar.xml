@@ -30,18 +30,25 @@
             android:layout_gravity="right"
             android:layout_marginRight="@dimen/dp_12_x"
             android:paddingRight="@dimen/dp_4_x"
-            android:paddingTop="@dimen/dp_4_x"
-            android:paddingBottom="@dimen/dp_4_x"
+            android:paddingTop="@dimen/dp_8_x"
+            android:paddingBottom="@dimen/dp_8_x"
             android:paddingLeft="@dimen/dp_4_x"
             android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
         <com.txtled.gpa220.widget.CustomTextView
             android:visibility="gone"
-            android:id="@+id/tv_save"
+            android:id="@+id/tv_right"
             style="@style/main_tv"
             android:layout_gravity="right"
-            android:layout_marginRight="@dimen/dp_16_x"
-            android:text=""/>
+            android:paddingLeft="@dimen/dp_16_x"
+            android:paddingRight="@dimen/dp_16_x"
+            android:paddingBottom="@dimen/dp_6_x"
+            android:paddingTop="@dimen/dp_6_x"
+            android:textSize="18sp"
+            android:textColor="@color/line_bg"
+            app:text_type="one"
+            android:clickable="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
         <CheckBox
             android:id="@+id/_check"
             android:layout_width="wrap_content"

@@ -4,6 +4,7 @@ package com.txtled.gpa220.model;
 import android.app.Activity;
 import android.content.Context;
 
+import com.inuker.bluetooth.library.search.SearchResult;
 import com.txtled.gpa220.bean.UserData;
 import com.txtled.gpa220.model.ble.BleHelper;
 import com.txtled.gpa220.model.db.DBHelper;
@@ -56,18 +57,28 @@ public class DataManagerModel implements DBHelper, PreferencesHelper, NetHelper,
     }
 
     @Override
+    public String getBleAddress() {
+        return mPreferencesHelper.getBleAddress();
+    }
+
+    @Override
+    public void setBleAddress(String address) {
+        mPreferencesHelper.setBleAddress(address);
+    }
+
+    @Override
     public void requestPermissions(Activity activity, String[] permissions, OnPermissionsListener permissionsListener) {
         mOperateHelper.requestPermissions(activity, permissions, permissionsListener);
     }
 
     @Override
-    public void scanBle(Activity activity, boolean isSpecified, OnScanBleListener onScanBleListener, OnConnBleListener onConnBleListener) {
-        mBleHelper.scanBle(activity, isSpecified, onScanBleListener, onConnBleListener);
+    public void scanBle(boolean isSpecified, OnScanBleListener onScanBleListener) {
+        mBleHelper.scanBle(isSpecified, onScanBleListener);
     }
 
     @Override
-    public void connBle(OnConnBleListener onConnBleListener) {
-        mBleHelper.connBle(onConnBleListener);
+    public void connBle(SearchResult result, OnConnBleListener onConnBleListener) {
+        mBleHelper.connBle(result,onConnBleListener);
     }
 
     @Override
@@ -88,6 +99,11 @@ public class DataManagerModel implements DBHelper, PreferencesHelper, NetHelper,
     @Override
     public void unRegisterConn() {
         mBleHelper.unRegisterConn();
+    }
+
+    @Override
+    public void stopSearch() {
+        mBleHelper.stopSearch();
     }
 
     @Override
