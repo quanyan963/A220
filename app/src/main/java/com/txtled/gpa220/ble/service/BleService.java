@@ -67,7 +67,6 @@ public class BleService extends Service {
         Flowable.just(0).observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .subscribe(aLong -> scanBle());
-
     }
 
     private void scanBle() {
