@@ -12,8 +12,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.txtled.gpa220.utils.BleUtils.ALL;
 import static com.txtled.gpa220.utils.BleUtils.ALL_RESPONSE;
 import static com.txtled.gpa220.utils.BleUtils.END;
+import static com.txtled.gpa220.utils.BleUtils.SINGLE;
 import static com.txtled.gpa220.utils.BleUtils.SINGLE_RESPONSE;
 import static com.txtled.gpa220.utils.BleUtils.SYNC;
 
@@ -45,9 +47,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
                 break;
             case R.id.ll_data_sync:
                 view.showLoadingView();
-                //byte[] bytes = new byte[]{0x5,0x5,0x5,0x5,0x5,0x5,0x5,0x5};
-                byte[] c = new byte[]{55,55,55,55,55,55,55,55};
-                mDataManagerModel.writeCommand(c);
+                mDataManagerModel.writeCommand(SYNC);
                 break;
         }
     }
@@ -84,7 +84,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
         }
         mData.get(mPosition).setData(tempData);
         mDataManagerModel.updateUserData(mData.get(mPosition));
-        mDataManagerModel.writeCommand(SINGLE_RESPONSE);
+        mDataManagerModel.writeCommand(SINGLE);
         view.refreshView();
     }
 
@@ -99,7 +99,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
         }
         mData.get(mPosition).setData(tempData);
         mDataManagerModel.updateUserData(mData.get(mPosition));
-        mDataManagerModel.writeCommand(ALL_RESPONSE);
+        mDataManagerModel.writeCommand(ALL);
         view.refreshView();
     }
 }

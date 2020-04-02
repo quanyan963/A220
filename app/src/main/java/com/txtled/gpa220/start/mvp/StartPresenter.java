@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.text.format.Time;
-import android.widget.Toast;
 
 import com.txtled.gpa220.R;
 import com.txtled.gpa220.base.CommonSubscriber;
@@ -14,7 +12,6 @@ import com.txtled.gpa220.bean.UserData;
 import com.txtled.gpa220.model.DataManagerModel;
 import com.txtled.gpa220.model.operate.OperateHelper;
 import com.txtled.gpa220.utils.AlertUtils;
-import com.txtled.gpa220.utils.BleUtils;
 import com.txtled.gpa220.utils.Constants;
 import com.txtled.gpa220.utils.RxUtil;
 
@@ -23,9 +20,8 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
-import io.reactivex.internal.operators.flowable.FlowableElementAt;
 
-import static com.txtled.gpa220.utils.Constants.UNKNOWN;
+import static com.txtled.gpa220.utils.Constants.UNKNOWN_NAME;
 
 /**
  * Created by Mr.Quan on 2020/3/25.
@@ -41,7 +37,7 @@ public class StartPresenter extends RxPresenter<StartContract.View> implements S
     @Override
     public void checkBle(Activity activity) {
         if (dataManagerModel.isFirstIn()){
-            UserData data = new UserData(UNKNOWN,"","","",2);
+            UserData data = new UserData(UNKNOWN_NAME,"","","",2);
             dataManagerModel.setUserData(data);
             dataManagerModel.setFirstIn(false);
         }

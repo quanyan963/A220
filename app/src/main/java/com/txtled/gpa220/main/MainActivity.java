@@ -25,6 +25,7 @@ import com.txtled.gpa220.ble.BleActivity;
 import com.txtled.gpa220.ble.service.BleService;
 import com.txtled.gpa220.main.mvp.MainContract;
 import com.txtled.gpa220.main.mvp.MainPresenter;
+import com.txtled.gpa220.unknown.UnknownActivity;
 import com.txtled.gpa220.user.UserInfoActivity;
 import com.txtled.gpa220.utils.AlertUtils;
 import com.txtled.gpa220.widget.DividerItemDecoration;
@@ -38,6 +39,7 @@ import static com.txtled.gpa220.utils.Constants.OK;
 import static com.txtled.gpa220.utils.Constants.POSITION;
 import static com.txtled.gpa220.utils.Constants.RECONN;
 import static com.txtled.gpa220.utils.Constants.SINGLE_DATA;
+import static com.txtled.gpa220.utils.Constants.UNKNOWN;
 import static com.txtled.gpa220.utils.Constants.USER;
 
 
@@ -118,6 +120,10 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
         }else if (requestCode == USER){
             if (resultCode == OK){
                 adapter.notifyTrueItem(mPosition);
+            }
+        }else if (requestCode == UNKNOWN){
+            if (resultCode == OK){
+                adapter.notifyTrueItem(0);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -216,8 +222,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
         type = 1;
         if (mPosition == position){
             if (userType == 2){
-                startActivityForResult(new Intent(this, UserInfoActivity.class)
-                        .putExtra(POSITION,position),USER);
+                startActivityForResult(new Intent(this, UnknownActivity.class),UNKNOWN);
             }else {
                 startActivityForResult(new Intent(this, UserInfoActivity.class)
                         .putExtra(POSITION,position),USER);

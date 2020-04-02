@@ -45,6 +45,11 @@
     <string name="close_ble">断开</string>
     <string name="no_device">没有搜索到设备。请打开设备的蓝牙后再次下拉刷新列表搜索设备。</string>
     <string name="conform_delete">删除后数据不能恢复，确定删除？</string>
+    <string name="bind_user">绑定数据</string>
+    <string name="bind">绑定</string>
+    <string name="unbind_data">未绑定数据</string>
+    <string name="select_member">选择绑定人员</string>
+    <string name="bind_success">数据绑定成功。</string>
 
 
 </resources>

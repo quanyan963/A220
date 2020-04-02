@@ -67,7 +67,10 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
             holder.ctvMemberName.setText(data.get(data.size() - position - 1).getUserName());
             if (data.get(data.size() - position - 1).getData() != null){
                 List<Float> temp = data.get(data.size() - position - 1).getData();
-                holder.ctvMemberTemp.setText(temp.get(temp.size() - 1).toString() + "℃");
+                holder.ctvMemberTemp.setText(temp.get(temp.size() - 1) + "℃");
+                holder.ctvMemberTemp.setTextColor(temp.get(temp.size() - 1) > 37.2f ?
+                        context.getResources().getColor(R.color.red) :
+                        context.getResources().getColor(R.color.text_black));
             }else {
                 holder.ctvMemberTemp.setText("");
             }
@@ -107,7 +110,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
             }
 
             holder.imgMember.setOnTouchListener((v, event) -> {
-                if (event.getAction() == MotionEvent.ACTION_DOWN){
+                if (event.getAction() == MotionEvent.ACTION_UP){
                     if (System.currentTimeMillis() - exitTime > 600){
                         listener.onOnceClick(data.size() - position - 1);
                         exitTime = System.currentTimeMillis();

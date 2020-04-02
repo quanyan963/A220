@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:background="?android:attr/selectableItemBackground"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <CheckBox
+        android:id="@+id/ck_unbind_check"
+        android:layout_width="@dimen/dp_14_x"
+        android:layout_height="@dimen/dp_14_x"
+        android:button="@null"
+        android:background="@drawable/circle_unselected"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="@dimen/dp_16_x"/>
+    <com.txtled.gpa220.widget.CustomTextView
+        android:id="@+id/ctv_unbind_data"
+        style="@style/main_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/v_bind_line"
+        android:textColor="@color/black_bg"
+        android:layout_marginRight="@dimen/dp_16_x"
+        android:layout_marginTop="@dimen/dp_10_x"
+        android:layout_marginBottom="@dimen/dp_10_x" />
+    <View
+        android:id="@+id/v_bind_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1_x"
+        android:background="@color/color_line"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

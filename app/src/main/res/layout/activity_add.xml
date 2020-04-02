@@ -158,9 +158,6 @@
         app:backgroundTint="@color/colorPrimaryDark"
         android:layout_marginLeft="@dimen/dp_32_x"
         android:layout_marginRight="@dimen/dp_32_x"
-        android:textAppearance="?android:attr/textAppearance"
         android:textColor="@color/white"
-        android:gravity="center"
-        android:padding="@dimen/dp_8_x"
         android:text="@string/commit"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

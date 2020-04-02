@@ -39,7 +39,7 @@ public class LineChartView extends View {
     private float scrollX;
     private float fullWidth, canScrollWidth;
     private int position;
-    private boolean initData;
+    private boolean initData;//控制是否滚动到最末端
 
     public LineChartView(Context context) {
         this(context, null, 0);
@@ -100,10 +100,12 @@ public class LineChartView extends View {
             fullWidth = points[points.length - 1].x + (xWidth / 2 * 3) - scrollX;
             canScrollWidth = fullWidth - mViewWidth;
             if (initData){
-                scrollX = -canScrollWidth;
-                fullWidth = points[points.length - 1].x + (xWidth / 2 * 3) - scrollX;
-                canScrollWidth = fullWidth - mViewWidth;
-                initData = false;
+                if (data.size() > 7){
+                    scrollX = -canScrollWidth;
+                    fullWidth = points[points.length - 1].x + (xWidth / 2 * 3) - scrollX;
+                    canScrollWidth = fullWidth - mViewWidth;
+                    initData = false;
+                }
             }
         }
         drawLineCircle(canvas);
@@ -179,12 +181,19 @@ public class LineChartView extends View {
     }
 
     private void showText(int position, Canvas canvas) {
-        mFloatPaint.setColor(circleColor);
-        mFloatPaint.setTextAlign(Paint.Align.LEFT);
-        mFloatPaint.setTextSize(textSize);
-        if (data.size() != 0) {
-            canvas.drawText(data.get(position) + "℃", points[position].x - (textWidth / 2),
-                    points[position].y - xWidth, mFloatPaint);
+        if (data.size() != 0){
+            if (data.get(position) > 37.2f){
+                mFloatPaint.setColor(mContext.getResources().getColor(R.color.red));
+            }else {
+                mFloatPaint.setColor(circleColor);
+            }
+
+            mFloatPaint.setTextAlign(Paint.Align.LEFT);
+            mFloatPaint.setTextSize(textSize);
+            if (data.size() != 0) {
+                canvas.drawText(data.get(position) + "℃", points[position].x - (textWidth / 2),
+                        points[position].y - xWidth, mFloatPaint);
+            }
         }
     }
 
