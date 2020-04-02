@@ -13,9 +13,11 @@ import com.inuker.bluetooth.library.search.SearchResult;
 public interface BleHelper {
     void scanBle(boolean isSpecified, OnScanBleListener onScanBleListener);
 
-    void connBle(SearchResult result, OnConnBleListener onConnBleListener);
+    void connBle(String result, OnConnBleListener onConnBleListener);
 
     void writeCommand(String command);
+
+    void writeCommand(byte[] command);
 
     void notifyBle(OnReadListener readListener);
 

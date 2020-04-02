@@ -19,6 +19,7 @@ import com.inuker.bluetooth.library.connect.options.BleConnectOptions;
 import com.inuker.bluetooth.library.connect.response.BleConnectResponse;
 import com.inuker.bluetooth.library.connect.response.BleNotifyResponse;
 import com.inuker.bluetooth.library.connect.response.BleReadResponse;
+import com.inuker.bluetooth.library.connect.response.BleUnnotifyResponse;
 import com.inuker.bluetooth.library.connect.response.BleWriteResponse;
 import com.inuker.bluetooth.library.model.BleGattCharacter;
 import com.inuker.bluetooth.library.model.BleGattProfile;
@@ -42,6 +43,9 @@ import javax.inject.Inject;
 import static com.inuker.bluetooth.library.Constants.REQUEST_SUCCESS;
 import static com.inuker.bluetooth.library.Constants.STATUS_CONNECTED;
 import static com.inuker.bluetooth.library.Constants.STATUS_DISCONNECTED;
+import static com.txtled.gpa220.utils.BleUtils.Notify;
+import static com.txtled.gpa220.utils.BleUtils.Read;
+import static com.txtled.gpa220.utils.BleUtils.Write;
 
 /**
  * Created by Mr.Quan on 2018/4/17.
@@ -49,8 +53,8 @@ import static com.inuker.bluetooth.library.Constants.STATUS_DISCONNECTED;
 
 public class BleHelperImpl implements BleHelper {
     public static final String TAG = BleHelperImpl.class.getSimpleName();
-    public static final int DURATION = 10000;
-    public static final int TIMES = 100;
+    public static final int DURATION = 1000;
+    public static final int TIMES = 1000;
     private BluetoothClient mBleClient;
     private SearchRequest mRequest;
     private BleConnectOptions mOptions;
@@ -90,16 +94,19 @@ public class BleHelperImpl implements BleHelper {
                     //打开权限
                     method.setAccessible(true);
                     int state = (int) method.invoke(adapter, (Object[]) null);
-                    if (mAddress != null){
-                        searchBleByAddress(mAddress, onScanBleListener);
-                    } else {
-                        //是否需要连接到指定的设备
-                        if (isSpecified) {
-                            onScanBleListener.onDisOpenDevice();
-                        } else {
-                            searchBleByAddress("", onScanBleListener);
-                        }
-                    }
+
+                    searchBleByAddress("", onScanBleListener);
+//                    if (mAddress != null){
+//                        conn = false;
+//                        searchBleByAddress(mAddress, onScanBleListener);
+//                    } else {
+//                        //是否需要连接到指定的设备
+//                        if (isSpecified) {
+//                            onScanBleListener.onDisOpenDevice();
+//                        } else {
+//                            searchBleByAddress("", onScanBleListener);
+//                        }
+//                    }
 //                    if (state == BluetoothAdapter.STATE_CONNECTED) {
 //                        Set<BluetoothDevice> devices = adapter.getBondedDevices();
 //                        for (BluetoothDevice device : devices) {
@@ -121,7 +128,6 @@ public class BleHelperImpl implements BleHelper {
                         InvocationTargetException e) {
                     e.printStackTrace();
                 }
-
             } else {
                 onScanBleListener.onDisOpenBle();
             }
@@ -141,7 +147,7 @@ public class BleHelperImpl implements BleHelper {
                 @Override
                 public void onDeviceFounded(final SearchResult device) {
                     if (!TextUtils.isEmpty(address)) {
-                        if (device.getAddress().equalsIgnoreCase(getMacAddress(address))) {
+                        if (device.getAddress().equalsIgnoreCase(address)) {
                             mBleClient.stopSearch();
                             mAddress = device.getAddress();
 
@@ -177,8 +183,10 @@ public class BleHelperImpl implements BleHelper {
     }
 
     @Override
-    public void connBle(SearchResult result, final OnConnBleListener onConnBleListener) {
-        mAddress = result.getAddress();
+    public void connBle(String result, final OnConnBleListener onConnBleListener) {
+        if (result != null){
+            mAddress = result;
+        }
         mBleClient.connect(mAddress, mOptions, new BleConnectResponse() {
             @Override
             public void onResponse(int code, BleGattProfile profile) {
@@ -186,16 +194,20 @@ public class BleHelperImpl implements BleHelper {
                     List<BleGattService> serviceList = profile.getServices();
                     for (BleGattService service : serviceList) {
                         Utils.Logger("service", "UUID", service.getUUID().toString());
-                        if (service.getUUID().toString().contains(BleUtils.SERVICE)) {
-                            List<BleGattCharacter> characters = service.getCharacters();
-                            for (BleGattCharacter character : characters) {
-                                //save uuid
+                        List<BleGattCharacter> characters = service.getCharacters();
+                        for (BleGattCharacter character : characters) {
+                            //save uuid                       判断ble端口权限
+                            if (character.getProperty() == (Read + Write + Notify)){
                                 mServiceUUID = service.getUUID();
                                 mSendCharacterUUID = character.getUuid();
                                 mNotifyCharacterUUID = character.getUuid();
                                 onConnBleListener.onSuccess();
+                                break;
                             }
                         }
+//                        if (service.getUUID().toString().contains(BleUtils.SERVICE)) {
+//
+//                        }
                     }
                 } else {
                     onConnBleListener.onFailure();
@@ -210,6 +222,11 @@ public class BleHelperImpl implements BleHelper {
 //            divideFrameBleSendData(command.getBytes(),context);
 //        }
         divideFrameBleSendData(command.getBytes());
+    }
+
+    @Override
+    public void writeCommand(byte[] command) {
+        divideFrameBleSendData(command);
     }
 
     //分包
@@ -284,12 +301,9 @@ public class BleHelperImpl implements BleHelper {
 
     @Override
     public void readCommand(final OnReadListener readListener) {
-        mBleClient.read(mAddress, mServiceUUID, mSendCharacterUUID, new BleReadResponse() {
-            @Override
-            public void onResponse(int code, byte[] data) {
-                if (code == REQUEST_SUCCESS) {
-                    readListener.onRead(data);
-                }
+        mBleClient.read(mAddress, mServiceUUID, mSendCharacterUUID, (code, data) -> {
+            if (code == REQUEST_SUCCESS) {
+                readListener.onRead(data);
             }
         });
 
@@ -297,10 +311,15 @@ public class BleHelperImpl implements BleHelper {
 
     @Override
     public void unRegisterConn() {
-        mBleClient.disconnect(mAddress);
-        mBleClient.unregisterConnectStatusListener(mAddress, listener);
-        listener = null;
-        conn = false;
+        if (mAddress != null){
+            mBleClient.unregisterConnectStatusListener(mAddress, listener);
+            mBleClient.unnotify(mAddress, mServiceUUID, mSendCharacterUUID, code -> {
+
+            });
+            mBleClient.disconnect(mAddress);
+            listener = null;
+            conn = false;
+        }
     }
 
     @Override

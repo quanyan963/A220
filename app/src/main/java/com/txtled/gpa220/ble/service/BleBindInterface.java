@@ -15,4 +15,6 @@ public interface BleBindInterface {
     void doRefresh();
 
     void doReConn();
+
+    void setClosed();
 }

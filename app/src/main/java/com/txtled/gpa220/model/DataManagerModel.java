@@ -37,13 +37,13 @@ public class DataManagerModel implements DBHelper, PreferencesHelper, NetHelper,
     }
 
     @Override
-    public int getPlayPosition() {
-        return 0;
+    public int getBlePosition() {
+        return mPreferencesHelper.getBlePosition();
     }
 
     @Override
-    public void setPlayPosition(int position) {
-
+    public void setBlePosition(int position) {
+        mPreferencesHelper.setBlePosition(position);
     }
 
     @Override
@@ -77,12 +77,17 @@ public class DataManagerModel implements DBHelper, PreferencesHelper, NetHelper,
     }
 
     @Override
-    public void connBle(SearchResult result, OnConnBleListener onConnBleListener) {
+    public void connBle(String result, OnConnBleListener onConnBleListener) {
         mBleHelper.connBle(result,onConnBleListener);
     }
 
     @Override
     public void writeCommand(String command) {
+        mBleHelper.writeCommand(command);
+    }
+
+    @Override
+    public void writeCommand(byte[] command) {
         mBleHelper.writeCommand(command);
     }
 

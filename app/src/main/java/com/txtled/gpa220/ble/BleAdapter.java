@@ -94,7 +94,7 @@ public class BleAdapter extends RecyclerView.Adapter {
             }
             //((BleViewHolder)holder).ctvConnect.setText(data.get(position - 1). ? R.string.connected : R.string.dis_conn);
             ((BleViewHolder)holder).itemView.setOnClickListener(v -> {
-                listener.onBleClick(data.get(position - 1));
+                listener.onBleClick(data.get(position - 1),position - 1);
             });
         }
     }
@@ -133,6 +133,6 @@ public class BleAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnBleItemClickListener {
-        void onBleClick(SearchResult info);
+        void onBleClick(SearchResult info, int position);
     }
 }

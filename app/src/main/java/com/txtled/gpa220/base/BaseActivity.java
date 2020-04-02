@@ -1,5 +1,6 @@
 package com.txtled.gpa220.base;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -57,6 +58,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         addActivity();
         onCreateView();
         init();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
     }
 
     protected abstract void beforeContentView();

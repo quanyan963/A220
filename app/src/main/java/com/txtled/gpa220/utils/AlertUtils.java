@@ -253,6 +253,22 @@ public class AlertUtils {
                 window.setBackgroundDrawable(context.getResources()
                         .getDrawable(R.drawable.background_gray));
             }
+
+            try {
+                //获取mAlert对象
+                Field mAlert = AlertDialog.class.getDeclaredField("mAlert");
+                mAlert.setAccessible(true);
+                Object mAlertController = mAlert.get(dialog);
+
+                Field mMessage = mAlertController.getClass().getDeclaredField("mMessageView");
+                mMessage.setAccessible(true);
+                TextView mMessageView = (TextView) mMessage.get(mAlertController);
+                mMessageView.setTextColor(context.getResources().getColor(R.color.white));
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -262,6 +278,42 @@ public class AlertUtils {
             AlertDialog dialog = new AlertDialog.Builder(context)
                     .setMessage(messageRes)
                     .setPositiveButton(R.string.conform, listener)
+                    .create();
+            dialog.setCancelable(false);
+            dialog.show();
+            Window window = dialog.getWindow();
+            window.setWindowAnimations(R.style.dialogWindowAnimInToOut);
+            window.setBackgroundDrawable(context.getResources()
+                    .getDrawable(R.drawable.background_gray));
+
+            try {
+                //获取mAlert对象
+                Field mAlert = AlertDialog.class.getDeclaredField("mAlert");
+                mAlert.setAccessible(true);
+                Object mAlertController = mAlert.get(dialog);
+
+                Field mMessage = mAlertController.getClass().getDeclaredField("mMessageView");
+                mMessage.setAccessible(true);
+                TextView mMessageView = (TextView) mMessage.get(mAlertController);
+                mMessageView.setTextColor(context.getResources().getColor(R.color.white));
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+
+    public static void showAlertDialog(Context context, int messageRes,
+                                       DialogInterface.OnClickListener listener1,
+                                       DialogInterface.OnClickListener listener2) {
+        if (!((Activity) context).isFinishing()) {
+            AlertDialog dialog = new AlertDialog.Builder(context)
+                    .setMessage(messageRes)
+                    .setPositiveButton(R.string.conform, listener1)
+                    .setNegativeButton(R.string.no, (dialog1, which) -> dialog1.dismiss())
                     .create();
             dialog.setCancelable(false);
             dialog.show();

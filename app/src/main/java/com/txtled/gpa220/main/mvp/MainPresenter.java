@@ -7,9 +7,15 @@ import com.txtled.gpa220.base.RxPresenter;
 import com.txtled.gpa220.bean.UserData;
 import com.txtled.gpa220.model.DataManagerModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import static com.txtled.gpa220.utils.BleUtils.ALL_RESPONSE;
+import static com.txtled.gpa220.utils.BleUtils.END;
+import static com.txtled.gpa220.utils.BleUtils.SINGLE_RESPONSE;
+import static com.txtled.gpa220.utils.BleUtils.SYNC;
 
 /**
  * Created by Mr.Quan on 2019/12/9.
@@ -37,6 +43,12 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
             case R.id.ll_ble_conn:
                 view.toBleView();
                 break;
+            case R.id.ll_data_sync:
+                view.showLoadingView();
+                //byte[] bytes = new byte[]{0x5,0x5,0x5,0x5,0x5,0x5,0x5,0x5};
+                byte[] c = new byte[]{55,55,55,55,55,55,55,55};
+                mDataManagerModel.writeCommand(c);
+                break;
         }
     }
 
@@ -59,5 +71,35 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
     @Override
     public void update(int position, UserData str) {
         mData.set(position,str);
+    }
+
+    @Override
+    public void setTempData(int mPosition, float temp) {
+        List<Float> tempData = mData.get(mPosition).getData();
+        if (tempData != null){
+            tempData.add(temp);
+        }else {
+            tempData = new ArrayList<>();
+            tempData.add(temp);
+        }
+        mData.get(mPosition).setData(tempData);
+        mDataManagerModel.updateUserData(mData.get(mPosition));
+        mDataManagerModel.writeCommand(SINGLE_RESPONSE);
+        view.refreshView();
+    }
+
+    @Override
+    public void setAllTempData(int mPosition, List<Float> allTemp) {
+        List<Float> tempData = mData.get(mPosition).getData();
+        if (tempData != null){
+            tempData.addAll(allTemp);
+        }else {
+            tempData = new ArrayList<>();
+            tempData.addAll(allTemp);
+        }
+        mData.get(mPosition).setData(tempData);
+        mDataManagerModel.updateUserData(mData.get(mPosition));
+        mDataManagerModel.writeCommand(ALL_RESPONSE);
+        view.refreshView();
     }
 }

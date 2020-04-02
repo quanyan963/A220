@@ -3,21 +3,21 @@ package com.txtled.gpa220.main;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.txtled.gpa220.R;
-import com.txtled.gpa220.add.AddMenberActivity;
+import com.txtled.gpa220.add.AddMemberActivity;
 import com.txtled.gpa220.base.MvpBaseActivity;
 import com.txtled.gpa220.bean.BleControlEvent;
 import com.txtled.gpa220.bean.UserData;
@@ -26,16 +26,18 @@ import com.txtled.gpa220.ble.service.BleService;
 import com.txtled.gpa220.main.mvp.MainContract;
 import com.txtled.gpa220.main.mvp.MainPresenter;
 import com.txtled.gpa220.user.UserInfoActivity;
+import com.txtled.gpa220.utils.AlertUtils;
 import com.txtled.gpa220.widget.DividerItemDecoration;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.txtled.gpa220.utils.Constants.ADD;
+import static com.txtled.gpa220.utils.Constants.ALL_DATA;
+import static com.txtled.gpa220.utils.Constants.CONN;
 import static com.txtled.gpa220.utils.Constants.OK;
 import static com.txtled.gpa220.utils.Constants.POSITION;
+import static com.txtled.gpa220.utils.Constants.RECONN;
+import static com.txtled.gpa220.utils.Constants.SINGLE_DATA;
 import static com.txtled.gpa220.utils.Constants.USER;
 
 
@@ -51,7 +53,8 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
     private ImageView close;
     private LinearLayout llBle, llSync, llExport, llInst, llSetting;
     private MemberAdapter adapter;
-    private int type, mPosition;
+    private int type, mPosition,bleType;
+    private AlertDialog dialog;
 
     @Override
     public void init() {
@@ -103,7 +106,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
     @Override
     public void onLeftClick() {
         type = 0;
-        startActivityForResult(new Intent(this, AddMenberActivity.class), ADD);
+        startActivityForResult(new Intent(this, AddMemberActivity.class), ADD);
     }
 
     @Override
@@ -155,8 +158,25 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
 
     @Override
     public void onEventServiceThread(BleControlEvent event) {
+        bleType = event.getBleConnType();
+        runOnUiThread(() -> {
+            if (event.getBleConnType() == RECONN){
+                if (dialog != null){
+                    if (dialog.isShowing())
+                        dialog.dismiss();
+                }
+            }else if (event.getBleConnType() == SINGLE_DATA){
+                presenter.setTempData(mPosition,event.getTemp());
+            }else if (event.getBleConnType() == ALL_DATA){
+                presenter.setAllTempData(mPosition,event.getAllTemp());
+                if (dialog != null){
+                    if (dialog.isShowing())
+                        dialog.dismiss();
+                }
+            }else if (event.getBleConnType() == CONN){
 
-        super.onEventServiceThread(event);
+            }
+        });
     }
 
     @Override
@@ -172,6 +192,17 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
     @Override
     public void toBleView() {
         startActivity(new Intent(this, BleActivity.class));
+    }
+
+    @Override
+    public void refreshView() {
+        adapter.notifyTrueItem(mPosition);
+    }
+
+    @Override
+    public void showLoadingView() {
+        dialog = AlertUtils.showLoadingDialog(this);
+        dialog.show();
     }
 
     @Override
@@ -194,6 +225,11 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
         }
         mPosition = position;
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return onExitActivity(keyCode, event);
     }
 
     @Override

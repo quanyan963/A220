@@ -19,7 +19,9 @@ public class Constants {
     public static final int FINISH_SEARCH = 1;
     public static final int CONN = 2;
     public static final int RECONN = 3;
-    public static final int ERROR = 4;
+    public static final int SINGLE_DATA = 4;
+    public static final int ALL_DATA = 5;
+    public static final int ERROR = 6;
 
     //跳转界面
     public static final int ADD = 2000;

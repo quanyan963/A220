@@ -22,7 +22,7 @@ import butterknife.BindView;
 import static com.txtled.gpa220.utils.Constants.OK;
 import static com.txtled.gpa220.utils.Constants.POSITION;
 
-public class AddMenberActivity extends MvpBaseActivity<AddPresenter> implements AddConteact.View {
+public class AddMemberActivity extends MvpBaseActivity<AddPresenter> implements AddConteact.View {
     @BindView(R.id.img_man)
     ImageView imgMan;
     @BindView(R.id.img_woman)

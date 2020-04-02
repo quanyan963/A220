@@ -5,9 +5,9 @@ package com.txtled.gpa220.model.prefs;
  */
 
 public interface PreferencesHelper {
-    int getPlayPosition();
+    int getBlePosition();
 
-    void setPlayPosition(int position);
+    void setBlePosition(int position);
 
     boolean isFirstIn();
 

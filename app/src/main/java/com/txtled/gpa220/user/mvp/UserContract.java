@@ -14,5 +14,7 @@ public interface UserContract {
     interface Presenter extends BasePresenter<View>{
 
         UserData getData(int position);
+
+        void deleteUser(int position);
     }
 }

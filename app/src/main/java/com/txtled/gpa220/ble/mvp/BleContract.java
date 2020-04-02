@@ -14,6 +14,10 @@ public interface BleContract {
         void showPermissionHint();
 
         void startBleService();
+
+        void showNoData();
+
+        void hidSnack();
     }
 
     interface Presenter extends BasePresenter<View>{
@@ -22,6 +26,12 @@ public interface BleContract {
 
         void checkBle(Activity activity);
 
-        void reScan();
+        void showNoData();
+
+        void closeDevice();
+
+        int getBlePosition();
+
+        void savePosition(int position);
     }
 }

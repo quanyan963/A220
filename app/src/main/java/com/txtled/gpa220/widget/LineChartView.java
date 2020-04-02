@@ -39,6 +39,7 @@ public class LineChartView extends View {
     private float scrollX;
     private float fullWidth, canScrollWidth;
     private int position;
+    private boolean initData;
 
     public LineChartView(Context context) {
         this(context, null, 0);
@@ -93,11 +94,19 @@ public class LineChartView extends View {
         mBrokenLineBottom = getPaddingBottom();
         mBrokenLineTop = getPaddingTop();
         drawXYAndText(canvas);
-        drawLineCircle(canvas);
+
         if (data.size() != 0) {
+            getPoint(data);
             fullWidth = points[points.length - 1].x + (xWidth / 2 * 3) - scrollX;
             canScrollWidth = fullWidth - mViewWidth;
+            if (initData){
+                scrollX = -canScrollWidth;
+                fullWidth = points[points.length - 1].x + (xWidth / 2 * 3) - scrollX;
+                canScrollWidth = fullWidth - mViewWidth;
+                initData = false;
+            }
         }
+        drawLineCircle(canvas);
         showText(position, canvas);
     }
 
@@ -142,6 +151,9 @@ public class LineChartView extends View {
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            if (data.size() < 7) {
+                return false;
+            }
             if (e1.getX() > mBrokenLineLeft && e1.getX() < mViewWidth &&
                     e1.getY() < mViewHeight) {
                 //注意：这里的distanceX是e1.getX()-e2.getX()
@@ -178,9 +190,6 @@ public class LineChartView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (data.size() < 7) {
-            return false;
-        }
         gestureDetector.onTouchEvent(event);
         return true;
     }
@@ -213,7 +222,6 @@ public class LineChartView extends View {
                 canvas.drawCircle(point.x, point.y, circleWidth / 2, mCirclePaint);
 
             }
-            invalidate();
         }
 
         canvas.drawRect(new RectF(0, 0, mBrokenLineLeft, mViewHeight), mBorderLinePaint);
@@ -229,30 +237,43 @@ public class LineChartView extends View {
         mBrokenLineLeft += textWidth;
     }
 
-    public void setData(List<Float> data) {
+    public void setAllData(List<Float> data) {
         if (data != null) {
+            initData = true;
             this.data = data;
             position = data.size() - 1;
             invalidate();
         }
     }
 
+    public void setSingleData(float singleData){
+        initData = true;
+        data.add(singleData);
+        position = data.size() - 1;
+        invalidate();
+    }
+
     public Point[] getPoint(List<Float> values) {
         points = new Point[values.size()];
         for (int i = 0; i < values.size(); i++) {
-            if (values.size() < 10) {
+            if (values.size() < 100) {
                 //圆的直径取两个文字长度
                 Rect numberRect = new Rect();
                 mTextPaint.getTextBounds("00", 0, "00".length(), numberRect);
                 circleWidth = numberRect.width();
                 xWidth = circleWidth;
                 circleHeight = numberRect.height();
-            } else if (values.size() >= 1000) {
+            } else if (values.size() >= 100) {
                 Rect numberRect = new Rect();
                 mTextPaint.getTextBounds(i + "", 0, i + "".length(), numberRect);
                 circleWidth = numberRect.width();
             }
             float temp = 43f - values.get(i);
+            if (temp > 9f){
+                temp = 9f;
+            }else if (temp < 0.4f){
+                temp = 0.2f;
+            }
             float y = temp * 10 * (averageHeight / 10);
             float x;
             if (i == 0) {

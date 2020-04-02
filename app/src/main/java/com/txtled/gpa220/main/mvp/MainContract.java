@@ -21,6 +21,10 @@ public interface MainContract {
         void closeLeftView();
 
         void toBleView();
+
+        void refreshView();
+
+        void showLoadingView();
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -34,5 +38,9 @@ public interface MainContract {
         void insertData(UserData str);
 
         void update(int mPosition, UserData str);
+
+        void setTempData(int mPosition, float temp);
+
+        void setAllTempData(int mPosition, List<Float> allTemp);
     }
 }

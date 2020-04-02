@@ -24,11 +24,13 @@
         </activity>
         <activity android:name=".main.MainActivity"
             android:configChanges="layoutDirection|locale"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
         <activity android:name=".ble.BleActivity"
             android:configChanges="layoutDirection|locale"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".add.AddMenberActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleInstance"/>
+        <activity android:name=".add.AddMemberActivity"
             android:configChanges="layoutDirection|locale"
             android:screenOrientation="portrait"/>
         <activity android:name=".user.UserInfoActivity"

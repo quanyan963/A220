@@ -24,6 +24,7 @@ import com.txtled.gpa220.ble.mvp.BlePresenter;
 import com.txtled.gpa220.ble.service.BleBindInterface;
 import com.txtled.gpa220.ble.service.BleService;
 import com.txtled.gpa220.broadcast.BlueToothStateReceiver;
+import com.txtled.gpa220.main.MainActivity;
 import com.txtled.gpa220.utils.AlertUtils;
 import com.txtled.gpa220.utils.BleUtils;
 
@@ -37,6 +38,7 @@ import butterknife.ButterKnife;
 
 import static com.txtled.gpa220.utils.Constants.CONN;
 import static com.txtled.gpa220.utils.Constants.FINISH_SEARCH;
+import static com.txtled.gpa220.utils.Constants.RECONN;
 
 /**
  * Created by Mr.Quan on 2020/3/26.
@@ -62,6 +64,8 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
     private BleBindInterface bindInterface;
     private BindService bindService;
     private boolean isClose;
+    private int bleType = -1;
+    //private int blePosition;
 
     @Override
     public void setInject() {
@@ -75,8 +79,9 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
         BleUtils.getInstance().registerBlueToothStateReceiver(this, this);
         setNavigationIcon(true);
         setRightText(R.string.close_ble);
-        changeRightTextColor(R.color.line_bg);
 
+        changeRightTextColor(R.color.line_bg);
+        //blePosition = presenter.getBlePosition();
         presenter.checkBle(this);
         rlvBleList.setHasFixedSize(true);
         rlvBleList.setLayoutManager(new LinearLayoutManager(this));
@@ -86,7 +91,6 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
         bleAdapter.setData(data);
 
         srlBleRefresh.setOnRefreshListener(this);
-
 //        ctvSearchName.setText(String.format(getResources().getString(R.string.find_by),
 //                BluetoothAdapter.getDefaultAdapter().getName()));
 //        shBle.setChecked(blueAdapter.enable());
@@ -116,21 +120,27 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
     public void onStateOff() {
         if (presenter.turnOnBluetooth()) {
             hideSnackBar();
+            if (bleType == RECONN){
+                bindInterface.doReConn();
+            }
         } else {
             showSnackBar(srlBleRefresh, R.string.ble_open_failed, R.string.go,
                     v -> startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS)));
         }
-        //shBle.setChecked(false);
     }
 
     @Override
     public void onStateOn() {
         hideSnackBar();
-        //shBle.setChecked(true);
     }
 
     @Override
     public void onTvRightClick() {
+        if (isClose){
+            isClose = false;
+            bindInterface.setClosed();
+            changeRightTextColor(R.color.line_bg);
+        }
 
     }
 
@@ -141,14 +151,31 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
         super.onDestroy();
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            startActivity(new Intent(this, MainActivity.class));
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
     /**
      * 列表点击事件
      *
      * @param info
      */
     @Override
-    public void onBleClick(SearchResult info) {
+    public void onBleClick(SearchResult info,int blePosition) {
         deviceData = info;
+        //this.blePosition = blePosition;
+        presenter.savePosition(blePosition);
+        presenter.closeDevice();
         bindInterface.connBle(info);
     }
 
@@ -164,11 +191,24 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
         service = new Intent(this, BleService.class);
         startService(service);
         bindService(service,bindService,BIND_AUTO_CREATE);
+        srlBleRefresh.setRefreshing(true);
+    }
+
+    @Override
+    public void showNoData() {
+        hideSnackBar();
+        showSnackBar(rlvBleList,R.string.no_device);
+    }
+
+    @Override
+    public void hidSnack() {
+        hideSnackBar();
     }
 
     @Override
     public void onRefresh() {
-        presenter.reScan();
+        srlBleRefresh.setRefreshing(true);
+        bindInterface.doRefresh();
     }
 
     private class BindService implements ServiceConnection{
@@ -186,13 +226,30 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
 
     @Override
     public void onEventServiceThread(BleControlEvent event) {
-        if (event.getBleConnType() == FINISH_SEARCH){
-            Set<SearchResult> before = new LinkedHashSet<>(event.getData());
-            data = new ArrayList<>(before);
-            runOnUiThread(() -> bleAdapter.setData(data));
-        }else if (event.getBleConnType() == CONN){
-            isClose = true;
-            bleAdapter.changeItem(deviceData,CONN);
-        }
+        bleType = event.getBleConnType();
+        runOnUiThread(() -> {
+            if (bleType == FINISH_SEARCH){
+                //搜索完毕
+                srlBleRefresh.setRefreshing(false);
+                if (!event.getData().isEmpty()){
+                    //显示ble数据
+                    Set<SearchResult> before = new LinkedHashSet<>(event.getData());
+                    data = new ArrayList<>(before);
+                    bleAdapter.setData(data);
+                }else {
+                    //没数据
+                    presenter.showNoData();
+                }
+            }else if (bleType == CONN){
+                //连接成功
+                isClose = true;
+                changeRightTextColor(R.color.blue);
+                bleAdapter.changeItem(deviceData,bleType);
+            }else if (bleType == RECONN){
+                //断开连接，重连
+                bleAdapter.changeItem(deviceData,bleType);
+            }
+        });
+
     }
 }

@@ -2,7 +2,7 @@ package com.txtled.gpa220.di.component;
 
 import android.app.Activity;
 
-import com.txtled.gpa220.add.AddMenberActivity;
+import com.txtled.gpa220.add.AddMemberActivity;
 import com.txtled.gpa220.ble.BleActivity;
 import com.txtled.gpa220.di.module.ActivityModule;
 import com.txtled.gpa220.di.scope.ActivityScope;
@@ -28,7 +28,7 @@ public interface ActivityComponent {
 
     void inject(BleActivity bleActivity);
 
-    void inject(AddMenberActivity addMemberActivity);
+    void inject(AddMemberActivity addMemberActivity);
 
     void inject(UserInfoActivity userInfoActivity);
 }

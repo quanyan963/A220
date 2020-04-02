@@ -15,11 +15,16 @@ import com.txtled.gpa220.utils.AlertUtils;
 import com.txtled.gpa220.utils.Constants;
 import com.txtled.gpa220.utils.RxUtil;
 
+import org.reactivestreams.Subscription;
+
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Mr.Quan on 2020/3/26.
@@ -76,7 +81,35 @@ public class BlePresenter extends RxPresenter<BleContract.View> implements BleCo
     }
 
     @Override
-    public void reScan() {
+    public void showNoData() {
 
+        addSubscribe(Flowable.timer(3,TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe(new Consumer<Subscription>() {
+                    @Override
+                    public void accept(Subscription subscription) throws Exception {
+                        view.showNoData();
+                    }
+                }).subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        view.hidSnack();
+                    }
+                }));
+    }
+
+    @Override
+    public void closeDevice() {
+        dataManagerModel.unRegisterConn();
+    }
+
+    @Override
+    public int getBlePosition() {
+        return dataManagerModel.getBlePosition();
+    }
+
+    @Override
+    public void savePosition(int position) {
+        dataManagerModel.setBlePosition(position);
     }
 }

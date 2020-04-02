@@ -21,4 +21,9 @@ public class UserPresenter extends RxPresenter<UserContract.View> implements Use
     public UserData getData(int position) {
         return dataManagerModel.getUserData().get(position);
     }
+
+    @Override
+    public void deleteUser(int position) {
+        dataManagerModel.deleteUserData(getData(position));
+    }
 }

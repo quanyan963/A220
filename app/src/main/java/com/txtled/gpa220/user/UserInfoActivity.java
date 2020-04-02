@@ -1,5 +1,6 @@
 package com.txtled.gpa220.user;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -16,11 +17,13 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import com.txtled.gpa220.R;
-import com.txtled.gpa220.add.AddMenberActivity;
+import com.txtled.gpa220.add.AddMemberActivity;
 import com.txtled.gpa220.base.MvpBaseActivity;
+import com.txtled.gpa220.bean.BleControlEvent;
 import com.txtled.gpa220.bean.UserData;
 import com.txtled.gpa220.user.mvp.UserContract;
 import com.txtled.gpa220.user.mvp.UserPresenter;
+import com.txtled.gpa220.utils.AlertUtils;
 import com.txtled.gpa220.utils.Utils;
 import com.txtled.gpa220.widget.CustomTextView;
 import com.txtled.gpa220.widget.LineChartView;
@@ -30,8 +33,12 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.BindView;
 
 import static com.txtled.gpa220.utils.Constants.ADD;
+import static com.txtled.gpa220.utils.Constants.ALL_DATA;
+import static com.txtled.gpa220.utils.Constants.CONN;
 import static com.txtled.gpa220.utils.Constants.OK;
 import static com.txtled.gpa220.utils.Constants.POSITION;
+import static com.txtled.gpa220.utils.Constants.RECONN;
+import static com.txtled.gpa220.utils.Constants.SINGLE_DATA;
 
 /**
  * Created by Mr.Quan on 2020/3/30.
@@ -91,7 +98,7 @@ public class UserInfoActivity extends MvpBaseActivity<UserPresenter> implements 
         getWindowManager().getDefaultDisplay().getSize(point);
         params.height = point.y / 3;
         lvUserChart.setLayoutParams(params);
-        lvUserChart.setData(data.getData());
+        lvUserChart.setAllData(data.getData());
         initUser();
 
         llMeasure.setOnClickListener(v -> changeColor(v.getId()));
@@ -153,7 +160,7 @@ public class UserInfoActivity extends MvpBaseActivity<UserPresenter> implements 
                 imgChange.setImageDrawable(wrap);
                 ctvChange.setTextColor(getResources().getColor(R.color.blue));
                 startActivityForResult(new Intent(UserInfoActivity.this,
-                        AddMenberActivity.class).putExtra(POSITION,position),ADD);
+                        AddMemberActivity.class).putExtra(POSITION,position),ADD);
                 break;
             case R.id.ll_export:
                 drawable = imgExport.getDrawable();
@@ -168,6 +175,11 @@ public class UserInfoActivity extends MvpBaseActivity<UserPresenter> implements 
                 DrawableCompat.setTint(wrap, ContextCompat.getColor(this,R.color.blue));
                 imgDelete.setImageDrawable(wrap);
                 ctvDelete.setTextColor(getResources().getColor(R.color.blue));
+                AlertUtils.showAlertDialog(this, R.string.conform_delete,
+                        (dialog, which) -> {
+                            presenter.deleteUser(position);
+                            UserInfoActivity.this.finish();
+                        });
                 break;
         }
         switch (layoutId){
@@ -232,5 +244,20 @@ public class UserInfoActivity extends MvpBaseActivity<UserPresenter> implements 
     @Override
     protected void beforeContentView() {
 
+    }
+
+    @Override
+    public void onEventServiceThread(BleControlEvent event) {
+        if (event.getBleConnType() == RECONN){
+
+        }else if (event.getBleConnType() == SINGLE_DATA){
+            //presenter.setTempData(mPosition,event.getTemp());
+            lvUserChart.setSingleData(event.getTemp());
+        }else if (event.getBleConnType() == ALL_DATA){
+
+        }else if (event.getBleConnType() == CONN){
+
+        }
+        super.onEventServiceThread(event);
     }
 }

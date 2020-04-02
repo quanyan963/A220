@@ -25,12 +25,12 @@ public class PreferencesHelperImpl implements PreferencesHelper {
     }
 
     @Override
-    public int getPlayPosition() {
-        return mSharedPreferences.getInt(PLAY_POSITION, 0);
+    public int getBlePosition() {
+        return mSharedPreferences.getInt(PLAY_POSITION, -1);
     }
 
     @Override
-    public void setPlayPosition(int position) {
+    public void setBlePosition(int position) {
         mSharedPreferences.edit().putInt(PLAY_POSITION, position).apply();
     }
 
