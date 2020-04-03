@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
@@ -17,6 +17,22 @@
         android:clickable="true"
         android:background="?android:attr/selectableItemBackground"
         app:layout_constraintTop_toBottomOf="@+id/i_setting_tool">
-
+        <CheckedTextView
+            style="@style/main_tv"
+            android:layout_marginLeft="@dimen/dp_16_x"
+            android:layout_marginTop="@dimen/dp_8_x"
+            android:layout_marginBottom="@dimen/dp_8_x"
+            android:layout_centerVertical="true"
+            android:text="@string/app_version"/>
+        <com.txtled.gpa220.widget.CustomTextView
+            android:id="@+id/ctv_setting_version"
+            style="@style/main_tv"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1_x"
+            android:layout_marginLeft="@dimen/dp_16_x"
+            android:layout_below="@+id/ctv_setting_version"/>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

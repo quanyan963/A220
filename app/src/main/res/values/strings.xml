@@ -53,6 +53,8 @@
     <string name="instructions">操作说明</string>
     <string name="log_out">退出登录</string>
     <string name="sync_success">数据已同步。</string>
+    <string name="app_version">APP版本</string>
+    <string name="setting">设定</string>
 
 
 </resources>
