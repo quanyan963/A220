@@ -8,11 +8,21 @@ import javax.inject.Inject;
 /**
  * Created by Mr.Quan on 2020/4/3.
  */
-public class SetPresenter extends RxPresenter<SetContract.View> implements SetContract.View {
+public class SetPresenter extends RxPresenter<SetContract.View> implements SetContract.Presenter {
     private DataManagerModel dataManagerModel;
 
     @Inject
     public SetPresenter(DataManagerModel dataManagerModel) {
         this.dataManagerModel = dataManagerModel;
+    }
+
+    @Override
+    public boolean isClosed() {
+        return dataManagerModel.isClosed();
+    }
+
+    @Override
+    public void setClosed(boolean b) {
+        dataManagerModel.setClosed(b);
     }
 }

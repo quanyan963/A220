@@ -26,6 +26,7 @@ import com.txtled.gpa220.ble.service.BleService;
 import com.txtled.gpa220.main.mvp.MainContract;
 import com.txtled.gpa220.main.mvp.MainPresenter;
 import com.txtled.gpa220.pdf.PdfActivity;
+import com.txtled.gpa220.setting.SettingActivity;
 import com.txtled.gpa220.unknown.UnknownActivity;
 import com.txtled.gpa220.user.UserInfoActivity;
 import com.txtled.gpa220.utils.AlertUtils;
@@ -236,6 +237,11 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
     @Override
     public void hidSnack() {
         hideSnackBar();
+    }
+
+    @Override
+    public void toSettingView() {
+        startActivity(new Intent(this, SettingActivity.class));
     }
 
     @Override

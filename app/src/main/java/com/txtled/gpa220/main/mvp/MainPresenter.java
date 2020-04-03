@@ -60,6 +60,9 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
             case R.id.ll_inst:
                 view.toPdfView();
                 break;
+            case R.id.ll_setting:
+                view.toSettingView();
+                break;
         }
     }
 

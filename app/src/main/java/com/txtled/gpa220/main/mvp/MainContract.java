@@ -31,6 +31,8 @@ public interface MainContract {
         void showSyncSuccess();
 
         void hidSnack();
+
+        void toSettingView();
     }
 
     interface Presenter extends BasePresenter<View> {

@@ -9,8 +9,11 @@ import com.txtled.gpa220.base.BaseView;
 public interface SetContract {
     interface View extends BaseView{
 
+
     }
     interface Presenter extends BasePresenter<View>{
+        boolean isClosed();
 
+        void setClosed(boolean b);
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
@@ -20,19 +20,21 @@
         <CheckedTextView
             style="@style/main_tv"
             android:layout_marginLeft="@dimen/dp_16_x"
-            android:layout_marginTop="@dimen/dp_8_x"
-            android:layout_marginBottom="@dimen/dp_8_x"
             android:layout_centerVertical="true"
             android:text="@string/app_version"/>
         <com.txtled.gpa220.widget.CustomTextView
             android:id="@+id/ctv_setting_version"
             style="@style/main_tv"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/dp_8_x"
+            android:layout_marginBottom="@dimen/dp_8_x"
+            android:layout_marginRight="@dimen/dp_16_x"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_1_x"
             android:layout_marginLeft="@dimen/dp_16_x"
-            android:layout_below="@+id/ctv_setting_version"/>
+            android:layout_below="@+id/ctv_setting_version"
+            android:background="@color/color_line"/>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
