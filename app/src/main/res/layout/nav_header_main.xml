@@ -39,8 +39,8 @@
             android:id="@+id/ctv_ble_conn"
             style="@style/main_tv"
             android:text="@string/conn_device"
-            android:paddingTop="@dimen/dp_10_x"
-            android:paddingBottom="@dimen/dp_10_x"
+            android:paddingTop="@dimen/dp_8_x"
+            android:paddingBottom="@dimen/dp_8_x"
             android:layout_weight="1"/>
     </LinearLayout>
     <View
@@ -70,8 +70,8 @@
             android:id="@+id/ctv_data_sync"
             style="@style/main_tv"
             android:text="@string/sync_data"
-            android:paddingTop="@dimen/dp_10_x"
-            android:paddingBottom="@dimen/dp_10_x"
+            android:paddingTop="@dimen/dp_8_x"
+            android:paddingBottom="@dimen/dp_8_x"
             android:layout_weight="1"/>
     </LinearLayout>
     <View
@@ -102,8 +102,8 @@
             style="@style/main_tv"
             android:layout_weight="1"
             android:text="@string/export"
-            android:paddingTop="@dimen/dp_10_x"
-            android:paddingBottom="@dimen/dp_10_x"/>
+            android:paddingTop="@dimen/dp_8_x"
+            android:paddingBottom="@dimen/dp_8_x"/>
     </LinearLayout>
     <View
         android:id="@+id/v_menu_line_four"
@@ -132,8 +132,8 @@
             android:id="@+id/ctv_inst"
             style="@style/main_tv"
             android:layout_weight="1"
-            android:paddingTop="@dimen/dp_10_x"
-            android:paddingBottom="@dimen/dp_10_x"
+            android:paddingTop="@dimen/dp_8_x"
+            android:paddingBottom="@dimen/dp_8_x"
             android:text="@string/instruction"/>
     </LinearLayout>
     <View
@@ -158,13 +158,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@mipmap/home_menusetxhdpi"
-            android:layout_weight="0.2"/>
+            android:layout_weight="0.18"/>
         <com.txtled.gpa220.widget.CustomTextView
             android:id="@+id/ctv_setting"
             style="@style/main_tv"
             android:layout_weight="1"
-            android:paddingTop="@dimen/dp_10_x"
-            android:paddingBottom="@dimen/dp_10_x"
+            android:paddingTop="@dimen/dp_8_x"
+            android:paddingBottom="@dimen/dp_8_x"
             android:text="@string/setting"/>
     </LinearLayout>
     <View
@@ -173,4 +173,35 @@
         android:layout_height="@dimen/dp_1_x"
         android:background="@color/color_line"
         android:layout_below="@+id/ll_setting"/>
+    <LinearLayout
+        android:id="@+id/ll_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_16_x"
+        android:paddingRight="@dimen/dp_16_x"
+        android:layout_below="@+id/v_menu_line_six"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:background="@color/white"
+        android:foreground="?android:attr/selectableItemBackground">
+<!--        <ImageView-->
+<!--            android:id="@+id/img_logout"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@mipmap/home_menusetxhdpi"-->
+<!--            android:layout_weight="0.2"/>-->
+        <com.txtled.gpa220.widget.CustomTextView
+            android:id="@+id/ctv_logout"
+            style="@style/main_tv"
+            android:layout_weight="1"
+            android:paddingTop="@dimen/dp_8_x"
+            android:paddingBottom="@dimen/dp_8_x"
+            android:text="@string/log_out"/>
+    </LinearLayout>
+    <View
+        android:id="@+id/v_menu_line_seven"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1_x"
+        android:background="@color/color_line"
+        android:layout_below="@+id/ll_logout"/>
 </RelativeLayout>

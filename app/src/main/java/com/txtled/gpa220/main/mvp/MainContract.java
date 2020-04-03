@@ -25,6 +25,12 @@ public interface MainContract {
         void refreshView();
 
         void showLoadingView();
+
+        void toPdfView();
+
+        void showSyncSuccess();
+
+        void hidSnack();
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -42,5 +48,11 @@ public interface MainContract {
         void setTempData(int mPosition, float temp);
 
         void setAllTempData(int mPosition, List<Float> allTemp);
+
+        void setClosed(boolean closed);
+
+        boolean isClosed();
+
+        void showSyncSuccess();
     }
 }

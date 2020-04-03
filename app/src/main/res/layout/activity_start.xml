@@ -3,7 +3,7 @@
     android:id="@+id/cl_start"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/welcomexhdpi">
+    android:background="@mipmap/welconxhdpi">
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

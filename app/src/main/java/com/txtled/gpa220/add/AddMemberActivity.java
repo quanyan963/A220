@@ -11,6 +11,7 @@ import com.txtled.gpa220.R;
 import com.txtled.gpa220.add.mvp.AddConteact;
 import com.txtled.gpa220.add.mvp.AddPresenter;
 import com.txtled.gpa220.base.MvpBaseActivity;
+import com.txtled.gpa220.bean.BleControlEvent;
 import com.txtled.gpa220.bean.UserData;
 import com.txtled.gpa220.widget.CustomButton;
 import com.txtled.gpa220.widget.CustomEditText;
@@ -19,8 +20,12 @@ import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 
+import static com.txtled.gpa220.utils.Constants.CONN;
+import static com.txtled.gpa220.utils.Constants.DISCONN;
 import static com.txtled.gpa220.utils.Constants.OK;
 import static com.txtled.gpa220.utils.Constants.POSITION;
+import static com.txtled.gpa220.utils.Constants.RECONN;
+import static com.txtled.gpa220.utils.Constants.SINGLE_DATA;
 
 public class AddMemberActivity extends MvpBaseActivity<AddPresenter> implements AddConteact.View {
     @BindView(R.id.img_man)
@@ -52,6 +57,7 @@ public class AddMemberActivity extends MvpBaseActivity<AddPresenter> implements 
         initToolbar();
         setNavigationIcon(true);
         Intent intent = getIntent();
+        setSecondImage(presenter.isClosed());
         AlphaAnimation hid = new AlphaAnimation(1f, 0.3f);
         hid.setDuration(200);
         hid.setFillAfter(true);
@@ -152,5 +158,19 @@ public class AddMemberActivity extends MvpBaseActivity<AddPresenter> implements 
     @Override
     protected void beforeContentView() {
 
+    }
+
+    @Override
+    public void onEventServiceThread(BleControlEvent event) {
+        if (event.getBleConnType() == CONN){
+            setSecondImage(true);
+            presenter.setClosed(true);
+        }else if (event.getBleConnType() == DISCONN){
+            setSecondImage(false);
+            presenter.setClosed(false);
+        }else if (event.getBleConnType() == RECONN){
+            setSecondImage(false);
+            presenter.setClosed(false);
+        }
     }
 }

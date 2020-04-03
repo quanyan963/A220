@@ -1,21 +1,16 @@
-package com.txtled.gpa220.user.mvp;
+package com.txtled.gpa220.pdf.mvp;
 
 import com.txtled.gpa220.base.BasePresenter;
 import com.txtled.gpa220.base.BaseView;
-import com.txtled.gpa220.bean.UserData;
 
 /**
- * Created by Mr.Quan on 2020/3/30.
+ * Created by Mr.Quan on 2020/4/3.
  */
-public interface UserContract {
+public interface PdfContract {
     interface View extends BaseView{
 
     }
     interface Presenter extends BasePresenter<View>{
-
-        UserData getData(int position);
-
-        void deleteUser(int position);
 
         boolean isClosed();
 

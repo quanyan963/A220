@@ -21,6 +21,9 @@ import com.txtled.gpa220.widget.DividerItemDecoration;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.txtled.gpa220.utils.Constants.CONN;
+import static com.txtled.gpa220.utils.Constants.DISCONN;
+import static com.txtled.gpa220.utils.Constants.RECONN;
 import static com.txtled.gpa220.utils.Constants.SINGLE_DATA;
 
 public class UnknownActivity extends MvpBaseActivity<UnknownPresenter> implements UnknownContract.View,
@@ -45,6 +48,7 @@ public class UnknownActivity extends MvpBaseActivity<UnknownPresenter> implement
     public void init() {
         initToolbar();
         setNavigationIcon(true);
+        setSecondImage(presenter.isClosed());
         cbtBind.setEnabled(false);
         rlvUnknownUser.setHasFixedSize(true);
         rlvUnknownUser.setLayoutManager(new GridLayoutManager(this,3));
@@ -169,7 +173,15 @@ public class UnknownActivity extends MvpBaseActivity<UnknownPresenter> implement
     public void onEventServiceThread(BleControlEvent event) {
         if (event.getBleConnType() == SINGLE_DATA){
             dataAdapter.insertData(event.getTemp());
+        }else if (event.getBleConnType() == CONN){
+            setSecondImage(true);
+            presenter.setClosed(true);
+        }else if (event.getBleConnType() == DISCONN){
+            setSecondImage(false);
+            presenter.setClosed(false);
+        }else if (event.getBleConnType() == RECONN){
+            setSecondImage(false);
+            presenter.setClosed(false);
         }
-        super.onEventServiceThread(event);
     }
 }

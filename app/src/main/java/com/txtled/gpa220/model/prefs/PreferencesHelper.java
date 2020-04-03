@@ -16,4 +16,8 @@ public interface PreferencesHelper {
     String getBleAddress();
 
     void setBleAddress(String address);
+
+    boolean isClosed();
+
+    void setClosed(boolean closed);
 }

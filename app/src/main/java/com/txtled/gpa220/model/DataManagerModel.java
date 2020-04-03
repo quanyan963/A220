@@ -67,6 +67,16 @@ public class DataManagerModel implements DBHelper, PreferencesHelper, NetHelper,
     }
 
     @Override
+    public boolean isClosed() {
+        return mPreferencesHelper.isClosed();
+    }
+
+    @Override
+    public void setClosed(boolean closed) {
+        mPreferencesHelper.setClosed(closed);
+    }
+
+    @Override
     public void requestPermissions(Activity activity, String[] permissions, OnPermissionsListener permissionsListener) {
         mOperateHelper.requestPermissions(activity, permissions, permissionsListener);
     }

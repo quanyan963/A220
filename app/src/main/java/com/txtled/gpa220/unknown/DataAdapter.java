@@ -72,9 +72,13 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataViewHolder
 
         if (data != null) {
             holder.ctvUnbindData.setText(data.get(position) + "℃");
-            holder.ctvUnbindData.setTextColor(data.get(position) > 37.2f ?
-                    context.getResources().getColor(R.color.red) :
-                    context.getResources().getColor(R.color.text_black));
+            if (data.get(position) > 37.2f && data.get(position) < 38.0f){
+                holder.ctvUnbindData.setTextColor(context.getResources().getColor(R.color.orange));
+            }else if (data.get(position) >= 38.0f){
+                holder.ctvUnbindData.setTextColor(context.getResources().getColor(R.color.red));
+            }else {
+                holder.ctvUnbindData.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            }
             holder.ckUnbindCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

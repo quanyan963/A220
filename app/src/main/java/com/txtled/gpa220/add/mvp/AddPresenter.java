@@ -28,4 +28,14 @@ public class AddPresenter extends RxPresenter<AddConteact.View> implements AddCo
     public void update(UserData data) {
         dataManagerModel.updateUserData(data);
     }
+
+    @Override
+    public boolean isClosed() {
+        return dataManagerModel.isClosed();
+    }
+
+    @Override
+    public void setClosed(boolean b) {
+        dataManagerModel.setClosed(b);
+    }
 }

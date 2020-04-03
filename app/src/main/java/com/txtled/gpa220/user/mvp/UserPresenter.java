@@ -26,4 +26,14 @@ public class UserPresenter extends RxPresenter<UserContract.View> implements Use
     public void deleteUser(int position) {
         dataManagerModel.deleteUserData(getData(position));
     }
+
+    @Override
+    public boolean isClosed() {
+        return dataManagerModel.isClosed();
+    }
+
+    @Override
+    public void setClosed(boolean b) {
+        dataManagerModel.setClosed(b);
+    }
 }

@@ -199,9 +199,15 @@ public class BleService extends Service {
                 EventBus.getDefault().post(new BleControlEvent(SINGLE_DATA,temp));
             }else {
                 syncData.add(temp);
-                if (syncData.size() == 100){
+                if (syncData.size() == 99){
                     Set<Float> before = new LinkedHashSet<>(syncData);
                     syncData = new ArrayList<>(before);
+                    for (int i = 0; i < syncData.size(); i++) {
+                        if (syncData.get(i) == 0.0f){
+                            syncData.remove(i);
+                            continue;
+                        }
+                    }
                     EventBus.getDefault().post(new BleControlEvent(ALL_DATA,0,syncData));
                     syncData = new ArrayList<>();
                 }

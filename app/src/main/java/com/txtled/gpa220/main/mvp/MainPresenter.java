@@ -7,10 +7,18 @@ import com.txtled.gpa220.base.RxPresenter;
 import com.txtled.gpa220.bean.UserData;
 import com.txtled.gpa220.model.DataManagerModel;
 
+import org.reactivestreams.Subscription;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.txtled.gpa220.utils.BleUtils.ALL;
 import static com.txtled.gpa220.utils.BleUtils.ALL_RESPONSE;
@@ -35,7 +43,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
 
     @Override
     public void onViewClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_right:
                 view.showLeftView();
                 break;
@@ -48,6 +56,9 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
             case R.id.ll_data_sync:
                 view.showLoadingView();
                 mDataManagerModel.writeCommand(SYNC);
+                break;
+            case R.id.ll_inst:
+                view.toPdfView();
                 break;
         }
     }
@@ -70,15 +81,15 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
 
     @Override
     public void update(int position, UserData str) {
-        mData.set(position,str);
+        mData.set(position, str);
     }
 
     @Override
     public void setTempData(int mPosition, float temp) {
         List<Float> tempData = mData.get(mPosition).getData();
-        if (tempData != null){
+        if (tempData != null) {
             tempData.add(temp);
-        }else {
+        } else {
             tempData = new ArrayList<>();
             tempData.add(temp);
         }
@@ -91,9 +102,9 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
     @Override
     public void setAllTempData(int mPosition, List<Float> allTemp) {
         List<Float> tempData = mData.get(mPosition).getData();
-        if (tempData != null){
+        if (tempData != null) {
             tempData.addAll(allTemp);
-        }else {
+        } else {
             tempData = new ArrayList<>();
             tempData.addAll(allTemp);
         }
@@ -101,5 +112,24 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
         mDataManagerModel.updateUserData(mData.get(mPosition));
         mDataManagerModel.writeCommand(ALL);
         view.refreshView();
+    }
+
+    @Override
+    public void setClosed(boolean closed) {
+        mDataManagerModel.setClosed(closed);
+    }
+
+    @Override
+    public boolean isClosed() {
+        return mDataManagerModel.isClosed();
+    }
+
+    @Override
+    public void showSyncSuccess() {
+        addSubscribe(Flowable.timer(3, TimeUnit.SECONDS)
+                .observeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(subscription -> view.showSyncSuccess())
+                .subscribe(aLong -> view.hidSnack()));
     }
 }

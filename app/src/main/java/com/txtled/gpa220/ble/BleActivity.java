@@ -37,6 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.txtled.gpa220.utils.Constants.CONN;
+import static com.txtled.gpa220.utils.Constants.DISCONN;
 import static com.txtled.gpa220.utils.Constants.FINISH_SEARCH;
 import static com.txtled.gpa220.utils.Constants.RECONN;
 
@@ -247,6 +248,11 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
                 bleAdapter.changeItem(deviceData,bleType);
             }else if (bleType == RECONN){
                 //断开连接，重连
+                if(isClose){
+                    bleType = RECONN;
+                }else {
+                    bleType = DISCONN;
+                }
                 bleAdapter.changeItem(deviceData,bleType);
             }
         });

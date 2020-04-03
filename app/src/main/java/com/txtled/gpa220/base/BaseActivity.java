@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.txtled.gpa220.R;
@@ -26,6 +28,10 @@ import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.ButterKnife;
 
+import static com.txtled.gpa220.utils.Constants.CONN;
+import static com.txtled.gpa220.utils.Constants.DISCONN;
+import static com.txtled.gpa220.utils.Constants.RECONN;
+
 
 public abstract class BaseActivity extends AppCompatActivity {
     public static final String TAG = BaseActivity.class.getSimpleName();
@@ -37,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private MyApplication mApplication;
     public Toolbar toolbar;
     public Snackbar snackbar;
-    private ImageView ivRight;
+    private ImageView ivRight,ivRightSecond;
 
     public abstract void init();
 
@@ -86,6 +92,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             tvTitle = (CustomTextView) findViewById(R.id.tv_title);
             ivRight = (ImageView) findViewById(R.id.iv_right);
             tvRight = (CustomTextView) findViewById(R.id.tv_right);
+            ivRightSecond = (ImageView) findViewById(R.id.iv_right_second);
             setSupportActionBar(toolbar);
             setTitle("");
 
@@ -107,6 +114,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void onLeftClick() {
+    }
+
+    public void setSecondImage(boolean isClosed){
+        ivRightSecond.setVisibility(View.VISIBLE);
+        Drawable drawable = ivRightSecond.getDrawable();
+        Drawable wrap = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(wrap, ContextCompat.getColor(this,isClosed ?
+                R.color.blue : R.color.gray));
+        ivRightSecond.setImageDrawable(drawable);
     }
 
     public void setNavigationIcon(boolean isBack) {

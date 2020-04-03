@@ -26,7 +26,7 @@ public class BleUtils {
     public static final String TO_MUSIC = "T";//发送命令返回状态
     public static final byte[] SYNC = new byte[]{0x55,0x55,0x55,0x55};//同步数据
     public static final byte[] SINGLE = new byte[]{(byte) 0xBB, (byte) 0xBB, (byte) 0xBB, (byte) 0xBB};//单个返回
-    public static final byte[] ALL = new byte[]{(byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA};//单个返回
+    public static final byte[] ALL = new byte[]{(byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA};//全部返回
 
     //判断ble端口权限
     public static final int Broadcast = 1;

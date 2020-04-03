@@ -17,30 +17,54 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UnknownPresenter extends RxPresenter<UnknownContract.View> implements UnknownContract.Presenter {
     private DataManagerModel dataManagerModel;
+    private List<UserData> data;
 
     @Inject
     public UnknownPresenter(DataManagerModel dataManagerModel) {
         this.dataManagerModel = dataManagerModel;
+        data = dataManagerModel.getUserData();
     }
 
     @Override
     public List<Float> getUnknownData() {
-        return dataManagerModel.getUserData().get(0).getData();
+        return data.get(0).getData();
     }
 
     @Override
     public List<UserData> getUserData() {
-        return dataManagerModel.getUserData();
+        return data;
     }
 
     @Override
     public void setData(int position, List<Float> checked) {
-        UserData data = dataManagerModel.getUserData().get(position);
-        data.getData().addAll(checked);
-        dataManagerModel.updateUserData(data);
+        UserData witch = data.get(position);
+        witch.getData().addAll(checked);
+        dataManagerModel.updateUserData(witch);
+        UserData unknown = data.get(0);
+        List<Float> unknownData = unknown.getData();
+        for (int i = 0; i < checked.size(); i++) {
+            for (int j = 0; j < unknownData.size(); j++) {
+                if (checked.get(i) == unknownData.get(j)){
+                    unknownData.remove(j);
+                    continue;
+                }
+            }
+        }
+        unknown.setData(unknownData);
+        dataManagerModel.updateUserData(unknown);
         addSubscribe(Flowable.timer(3, TimeUnit.SECONDS)
                 .observeOn(Schedulers.io()).subscribeOn(Schedulers.io())
                 .doOnSubscribe(subscription -> view.showFinish())
                 .subscribe(aLong -> view.hidSnack()));
+    }
+
+    @Override
+    public boolean isClosed() {
+        return dataManagerModel.isClosed();
+    }
+
+    @Override
+    public void setClosed(boolean b) {
+        dataManagerModel.setClosed(b);
     }
 }

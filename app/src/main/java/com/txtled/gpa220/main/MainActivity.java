@@ -25,6 +25,7 @@ import com.txtled.gpa220.ble.BleActivity;
 import com.txtled.gpa220.ble.service.BleService;
 import com.txtled.gpa220.main.mvp.MainContract;
 import com.txtled.gpa220.main.mvp.MainPresenter;
+import com.txtled.gpa220.pdf.PdfActivity;
 import com.txtled.gpa220.unknown.UnknownActivity;
 import com.txtled.gpa220.user.UserInfoActivity;
 import com.txtled.gpa220.utils.AlertUtils;
@@ -35,6 +36,7 @@ import butterknife.BindView;
 import static com.txtled.gpa220.utils.Constants.ADD;
 import static com.txtled.gpa220.utils.Constants.ALL_DATA;
 import static com.txtled.gpa220.utils.Constants.CONN;
+import static com.txtled.gpa220.utils.Constants.DISCONN;
 import static com.txtled.gpa220.utils.Constants.OK;
 import static com.txtled.gpa220.utils.Constants.POSITION;
 import static com.txtled.gpa220.utils.Constants.RECONN;
@@ -53,7 +55,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
     @BindView(R.id.dl_main)
     DrawerLayout dlMain;
     private ImageView close;
-    private LinearLayout llBle, llSync, llExport, llInst, llSetting;
+    private LinearLayout llBle, llSync, llExport, llInst, llSetting, llLogOut;
     private MemberAdapter adapter;
     private int type, mPosition,bleType;
     private AlertDialog dialog;
@@ -63,6 +65,8 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
         initToolbar();
         tvTitle.setText(R.string.member);
         setNavigationIcon(false);
+
+        setSecondImage(presenter.isClosed());
         setRightImg(true, getResources().getDrawable(R.mipmap.home_infoxhdpi), this);
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
@@ -73,6 +77,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
         llExport = view.findViewById(R.id.ll_data_export);
         llInst = view.findViewById(R.id.ll_inst);
         llSetting = view.findViewById(R.id.ll_setting);
+        llLogOut = view.findViewById(R.id.ll_logout);
         close = view.findViewById(R.id.img_menu_close);
         View line = view.findViewById(R.id.v_menu_line_one);
         ViewGroup.MarginLayoutParams lineParams = (ViewGroup.MarginLayoutParams) line.getLayoutParams();
@@ -92,6 +97,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
         llExport.setOnClickListener(this);
         llInst.setOnClickListener(this);
         llSetting.setOnClickListener(this);
+        llLogOut.setOnClickListener(this);
 
         rlvMember.setHasFixedSize(true);
         rlvMember.setLayoutManager(new GridLayoutManager(this, 3));
@@ -167,6 +173,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
         bleType = event.getBleConnType();
         runOnUiThread(() -> {
             if (event.getBleConnType() == RECONN){
+                setSecondImage(false);
                 if (dialog != null){
                     if (dialog.isShowing())
                         dialog.dismiss();
@@ -179,8 +186,12 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
                     if (dialog.isShowing())
                         dialog.dismiss();
                 }
+                presenter.showSyncSuccess();
             }else if (event.getBleConnType() == CONN){
-
+                setSecondImage(true);
+                presenter.setClosed(true);
+            }else if (event.getBleConnType() == DISCONN){
+                setSecondImage(false);
             }
         });
     }
@@ -212,6 +223,22 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
     }
 
     @Override
+    public void toPdfView() {
+        startActivity(new Intent(this, PdfActivity.class));
+    }
+
+    @Override
+    public void showSyncSuccess() {
+        hideSnackBar();
+        showSnackBar(rlvMember,R.string.sync_success);
+    }
+
+    @Override
+    public void hidSnack() {
+        hideSnackBar();
+    }
+
+    @Override
     public void onOnceClick(int position) {
         mPosition = position;
         presenter.setUserPosition(position);
@@ -239,6 +266,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
 
     @Override
     public void onDestroy() {
+        presenter.setClosed(false);
         stopService(new Intent(this, BleService.class));
         super.onDestroy();
     }

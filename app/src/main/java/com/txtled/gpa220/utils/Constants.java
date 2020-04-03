@@ -32,4 +32,5 @@ public class Constants {
     public static final String TYPE = "type";
     public static final String POSITION = "position";
     public static final String UNKNOWN_NAME = "未分组";
+    public static final String PDF_NAME = "gp220instructions.pdf";
 }

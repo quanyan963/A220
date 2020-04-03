@@ -35,6 +35,7 @@ import butterknife.BindView;
 import static com.txtled.gpa220.utils.Constants.ADD;
 import static com.txtled.gpa220.utils.Constants.ALL_DATA;
 import static com.txtled.gpa220.utils.Constants.CONN;
+import static com.txtled.gpa220.utils.Constants.DISCONN;
 import static com.txtled.gpa220.utils.Constants.OK;
 import static com.txtled.gpa220.utils.Constants.POSITION;
 import static com.txtled.gpa220.utils.Constants.RECONN;
@@ -93,6 +94,7 @@ public class UserInfoActivity extends MvpBaseActivity<UserPresenter> implements 
         initToolbar();
         setNavigationIcon(true);
         tvTitle.setText(R.string.user_info);
+        setSecondImage(presenter.isClosed());
         ViewGroup.LayoutParams params = lvUserChart.getLayoutParams();
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
@@ -249,15 +251,17 @@ public class UserInfoActivity extends MvpBaseActivity<UserPresenter> implements 
     @Override
     public void onEventServiceThread(BleControlEvent event) {
         if (event.getBleConnType() == RECONN){
-
+            setSecondImage(false);
+            presenter.setClosed(false);
         }else if (event.getBleConnType() == SINGLE_DATA){
             //presenter.setTempData(mPosition,event.getTemp());
             lvUserChart.setSingleData(event.getTemp());
-        }else if (event.getBleConnType() == ALL_DATA){
-
         }else if (event.getBleConnType() == CONN){
-
+            setSecondImage(true);
+            presenter.setClosed(true);
+        }else if (event.getBleConnType() == DISCONN){
+            setSecondImage(false);
+            presenter.setClosed(false);
         }
-        super.onEventServiceThread(event);
     }
 }

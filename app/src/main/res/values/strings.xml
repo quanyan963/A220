@@ -50,6 +50,9 @@
     <string name="unbind_data">未绑定数据</string>
     <string name="select_member">选择绑定人员</string>
     <string name="bind_success">数据绑定成功。</string>
+    <string name="instructions">操作说明</string>
+    <string name="log_out">退出登录</string>
+    <string name="sync_success">数据已同步。</string>
 
 
 </resources>

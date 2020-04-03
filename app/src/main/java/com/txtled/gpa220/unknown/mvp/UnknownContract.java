@@ -21,5 +21,9 @@ public interface UnknownContract {
         List<UserData> getUserData();
 
         void setData(int position, List<Float> checked);
+
+        boolean isClosed();
+
+        void setClosed(boolean b);
     }
 }

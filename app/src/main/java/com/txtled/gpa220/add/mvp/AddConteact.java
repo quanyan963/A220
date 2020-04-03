@@ -17,5 +17,9 @@ public interface AddConteact {
         UserData getUserData(int position);
 
         void update(UserData data);
+
+        boolean isClosed();
+
+        void setClosed(boolean b);
     }
 }

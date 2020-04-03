@@ -182,7 +182,9 @@ public class LineChartView extends View {
 
     private void showText(int position, Canvas canvas) {
         if (data.size() != 0){
-            if (data.get(position) > 37.2f){
+            if (data.get(position) > 37.2f && data.get(position) < 38.0f){
+                mFloatPaint.setColor(mContext.getResources().getColor(R.color.orange));
+            }else if (data.get(position) >= 38.0f){
                 mFloatPaint.setColor(mContext.getResources().getColor(R.color.red));
             }else {
                 mFloatPaint.setColor(circleColor);
