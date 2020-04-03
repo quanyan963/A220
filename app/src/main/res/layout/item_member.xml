@@ -22,7 +22,7 @@
         app:layout_constraintTop_toBottomOf="@+id/img_member"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:text=""/>
+        android:layout_marginTop="@dimen/dp_3_x"/>
     <com.txtled.gpa220.widget.CustomTextView
         android:id="@+id/ctv_member_temp"
         style="@style/main_tv"

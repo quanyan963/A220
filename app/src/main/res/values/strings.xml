@@ -3,7 +3,7 @@
 
     //start
     <string name="ok">允许</string>
-    <string name="cancel">不允许</string>
+    <string name="not_allow">不允许</string>
     <string name="allow_ble_title">允许此装置开启你的\n蓝牙吗？</string>
     <string name="alow_ble_msg">应用程序正在请求许可开启蓝牙，\n是否允许？</string>
     <string name="not_have_ble">您的手机不支持蓝牙或没有蓝牙模块，将无法使用本产品。</string>
@@ -54,6 +54,7 @@
     <string name="log_out">退出登录</string>
     <string name="sync_success">数据已同步。</string>
     <string name="app_version">APP版本</string>
+    <string name="cancel">取消</string>
 
 
 </resources>

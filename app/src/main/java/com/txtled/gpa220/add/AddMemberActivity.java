@@ -13,8 +13,10 @@ import com.txtled.gpa220.add.mvp.AddPresenter;
 import com.txtled.gpa220.base.MvpBaseActivity;
 import com.txtled.gpa220.bean.BleControlEvent;
 import com.txtled.gpa220.bean.UserData;
+import com.txtled.gpa220.utils.AlertUtils;
 import com.txtled.gpa220.widget.CustomButton;
 import com.txtled.gpa220.widget.CustomEditText;
+import com.txtled.gpa220.widget.CustomTextView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -39,7 +41,7 @@ public class AddMemberActivity extends MvpBaseActivity<AddPresenter> implements 
     @BindView(R.id.cet_add_code)
     CustomEditText cetAddCode;
     @BindView(R.id.cet_add_birth)
-    CustomEditText cetAddBirth;
+    CustomTextView cetAddBirth;
     @BindView(R.id.cbt_add_commit)
     CustomButton cbtAddCommit;
 
@@ -98,6 +100,10 @@ public class AddMemberActivity extends MvpBaseActivity<AddPresenter> implements 
                 woman = true;
             }
         });
+
+        cetAddBirth.setOnClickListener(v ->
+                AlertUtils.showSheetDialog(AddMemberActivity.this,
+                date -> cetAddBirth.setText(date)));
 
         cetAddName.addTextChangedListener(new TextWatcher() {
             @Override

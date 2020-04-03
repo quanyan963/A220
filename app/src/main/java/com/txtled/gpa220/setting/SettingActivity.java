@@ -36,7 +36,8 @@ public class SettingActivity extends MvpBaseActivity<SetPresenter> implements Se
         tvTitle.setText(R.string.setting);
         setSecondImage(presenter.isClosed());
         try {
-            ctvSettingVersion.setText(getPackageManager().getPackageInfo(getPackageName(),0).versionName);
+            ctvSettingVersion.setText(getPackageManager()
+                    .getPackageInfo(getPackageName(),0).versionName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

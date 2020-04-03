@@ -60,5 +60,5 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/v_alert_line_ver"
         app:backgroundTint="@color/alert_bg"
-        android:text="@string/cancel"/>
+        android:text="@string/not_allow"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

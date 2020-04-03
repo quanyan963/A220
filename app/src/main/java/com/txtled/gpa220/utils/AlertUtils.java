@@ -10,10 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.txtled.gpa220.R;
 import com.txtled.gpa220.widget.CustomButton;
 
@@ -24,6 +26,7 @@ public class AlertUtils {
     //private static OnCreateThingListener thingListener;
     private static boolean canClose = false;
     public static OnConfirmClickListener clickListener;
+    public static OnBottomSheetClickListener bottomSeetListener;
 
     public static void showErrorMessage(Context context, int titleRes,
                                         String errorCode, DialogInterface.OnClickListener listener) {
@@ -340,6 +343,27 @@ public class AlertUtils {
 
 
         }
+    }
+
+    public interface OnBottomSheetClickListener{
+        void onOkClick(String date);
+    }
+
+    public static void showSheetDialog(Context context,OnBottomSheetClickListener listener){
+        BottomSheetDialog dialog = new BottomSheetDialog(context);
+        View view = View.inflate(context,R.layout.bottom_dialog,null);
+        DatePicker datePicker = view.findViewById(R.id.dp_date);
+        CustomButton cbtOk = view.findViewById(R.id.cbt_dialog_ok);
+        CustomButton cbtcancel = view.findViewById(R.id.cbt_dialog_cancel);
+        cbtOk.setOnClickListener(v -> {
+            listener.onOkClick(datePicker.getYear() + "/" +
+                    String.format("%02d",datePicker.getMonth()+1) + "/" +
+                    String.format("%02d",datePicker.getDayOfMonth()));
+            dialog.dismiss();
+        });
+        cbtcancel.setOnClickListener(v -> dialog.dismiss());
+        dialog.setContentView(view);
+        dialog.show();
     }
 
     public static void showProgressDialog(Context context, int id) {
