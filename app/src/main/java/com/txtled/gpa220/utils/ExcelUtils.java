@@ -74,6 +74,7 @@ public class ExcelUtils {
      * @param colName excel中包含的列名（可以有多个）
      */
     public static void initExcel(String fileName, String[] colName) {
+
         format();
         WritableWorkbook workbook = null;
         try {
