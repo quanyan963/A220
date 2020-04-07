@@ -269,6 +269,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
         hidSnack();
         showSnackBar(rlvMember,R.string.no_export);
         presenter.hidDelay();
+
     }
 
     @Override
