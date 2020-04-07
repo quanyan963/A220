@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.view.View;
 
 import com.txtled.gpa220.R;
+import com.txtled.gpa220.base.CommonSubscriber;
 import com.txtled.gpa220.base.RxPresenter;
 import com.txtled.gpa220.bean.UserData;
 import com.txtled.gpa220.model.DataManagerModel;
@@ -12,6 +13,7 @@ import com.txtled.gpa220.model.operate.OperateHelper;
 import com.txtled.gpa220.utils.AlertUtils;
 import com.txtled.gpa220.utils.Constants;
 import com.txtled.gpa220.utils.ExcelUtils;
+import com.txtled.gpa220.utils.RxUtil;
 
 import org.reactivestreams.Subscription;
 
@@ -194,5 +196,17 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
     @Override
     public void init(Activity activity) {
         this.activity = activity;
+    }
+
+    @Override
+    public void hidDelay() {
+        addSubscribe(Flowable.timer(3, TimeUnit.SECONDS)
+                .compose(RxUtil.rxSchedulerHelper())
+                .subscribeWith(new CommonSubscriber<Long>(view) {
+                    @Override
+                    public void onNext(Long aLong) {
+                        view.hidSnack();
+                    }
+                }));
     }
 }

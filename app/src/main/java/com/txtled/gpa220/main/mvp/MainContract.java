@@ -66,5 +66,7 @@ public interface MainContract {
         void showSyncSuccess();
 
         void init(Activity activity);
+
+        void hidDelay();
     }
 }
