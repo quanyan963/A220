@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <include android:id="@+id/i_login_tool"
+        layout="@layout/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/ll_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_login_number"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/dp_32_x"
+            android:layout_marginRight="@dimen/dp_32_x"
+            android:paddingTop="@dimen/dp_6_x"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+            <com.txtled.gpa220.widget.CustomEditText
+                android:id="@+id/cet_login_number"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusableInTouchMode="true"
+                android:textSize="16sp"
+                android:inputType="phone"
+                android:maxLength="11"
+                android:hint="@string/enter_name"
+                android:gravity="center_vertical"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <View
+            android:background="@color/text_black"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1_x"
+            android:layout_marginLeft="@dimen/dp_32_x"
+            android:layout_marginRight="@dimen/dp_32_x"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_login_pass"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/dp_32_x"
+            android:layout_marginRight="@dimen/dp_32_x"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/colorPrimaryDark"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dp_6_x"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+            <com.txtled.gpa220.widget.CustomEditText
+                android:id="@+id/cet_login_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:inputType="textPassword"
+                android:textSize="16sp"
+                android:hint="@string/enter_pass"
+                android:gravity="center_vertical" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <View
+            android:background="@color/text_black"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1_x"
+            android:layout_marginLeft="@dimen/dp_32_x"
+            android:layout_marginRight="@dimen/dp_32_x"/>
+    </LinearLayout>
+
+
+    <com.txtled.gpa220.widget.CustomButton
+        android:id="@+id/cbt_login"
+        style="@style/main_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dp_32_x"
+        android:layout_marginRight="@dimen/dp_16_x"
+        app:layout_constraintTop_toBottomOf="@+id/ll_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/cbt_sign"
+        app:backgroundTint="@color/line_bg"
+        android:textAppearance="?android:attr/textAppearance"
+        android:textColor="@color/gray"
+        app:cornerRadius="@dimen/dp_20_x"
+        android:text="@string/login" />
+    <com.txtled.gpa220.widget.CustomButton
+        android:id="@+id/cbt_sign"
+        style="@style/main_btn"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="@dimen/dp_16_x"
+        android:layout_marginRight="@dimen/dp_32_x"
+        app:layout_constraintTop_toBottomOf="@+id/ll_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/cbt_login"
+        app:backgroundTint="@color/colorPrimaryDark"
+        android:textAppearance="?android:attr/textAppearance"
+        android:textColor="@color/white"
+        app:cornerRadius="@dimen/dp_20_x"
+        android:text="@string/sign_in" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -318,7 +318,7 @@ public class AlertUtils {
                     .setPositiveButton(R.string.conform, listener1)
                     .setNegativeButton(R.string.no, (dialog1, which) -> dialog1.dismiss())
                     .create();
-            dialog.setCancelable(false);
+            dialog.setCancelable(true);
             dialog.show();
             Window window = dialog.getWindow();
             window.setWindowAnimations(R.style.dialogWindowAnimInToOut);

@@ -181,7 +181,7 @@ public class UserInfoActivity extends MvpBaseActivity<UserPresenter> implements 
                         (dialog, which) -> {
                             presenter.deleteUser(position);
                             UserInfoActivity.this.finish();
-                        });
+                        },null);
                 break;
         }
         switch (layoutId){

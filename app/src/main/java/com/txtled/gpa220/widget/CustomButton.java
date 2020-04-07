@@ -19,13 +19,11 @@ import static com.txtled.gpa220.utils.Constants.TWO;
  */
 public class CustomButton extends MaterialButton {
     public CustomButton(@NonNull Context context) {
-        super(context);
-        init(context,null,0);
+        this(context,null,0);
     }
 
     public CustomButton(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init(context,attrs,0);
+        this(context, attrs,0);
     }
 
     public CustomButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {

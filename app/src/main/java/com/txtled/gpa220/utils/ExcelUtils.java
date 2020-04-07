@@ -84,14 +84,18 @@ public class ExcelUtils {
             }
             workbook = Workbook.createWorkbook(file);
             //设置表格的名字
-            WritableSheet sheet = workbook.createSheet("账单", 0);
+            WritableSheet sheet = workbook.createSheet("用户数据", 0);
+            WritableSheet temp = workbook.createSheet("体温数据", 1);
             //创建标题栏
             sheet.addCell((WritableCell) new Label(0, 0, fileName, arial14format));
-            for (int col = 0; col < colName.length; col  ) {
+            for (int col = 0; col < colName.length; col++) {
                 sheet.addCell(new Label(col, 0, colName[col], arial10format));
             }
             //设置行高
             sheet.setRowView(0, 340);
+            temp.addCell((WritableCell) new Label(0, 0, "体温", arial10format));
+            //设置行高
+            temp.setRowView(0, 340);
             workbook.write();
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,7 +111,7 @@ public class ExcelUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> void writeObjListToExcel(List<T> objList, String fileName, Context c) {
+    public static <T> void writeObjListToExcel(List<T> objList, String fileName, Context c, AlertUtils.OnConfirmClickListener listener) {
         if (objList != null && objList.size() > 0) {
             WritableWorkbook writebook = null;
             InputStream in = null;
@@ -118,33 +122,62 @@ public class ExcelUtils {
                 Workbook workbook = Workbook.getWorkbook(in);
                 writebook = Workbook.createWorkbook(new File(fileName), workbook);
                 WritableSheet sheet = writebook.getSheet(0);
+                WritableSheet temp = writebook.getSheet(1);
 
-                for (int j = 0; j < objList.size(); j  ) {
+                for (int j = 1; j < objList.size(); j++) {
                     UserData projectBean = (UserData) objList.get(j);
                     List<String> list = new ArrayList<>();
                     list.add(projectBean.getUserName());
-                    list.add(projectBean.getProject());
-                    list.add(projectBean.getMoney());
-                    list.add(projectBean.getYear()   " "   projectBean.getMonth() " " projectBean.getDay());
-                    list.add(projectBean.getBeizhu());
+                    list.add(projectBean.getBirth());
+                    list.add(projectBean.getPostCode());
 
-                    for (int i = 0; i < list.size(); i  ) {
-                        sheet.addCell(new Label(i, j   1, list.get(i), arial12format));
+                    for (int i = 0; i < list.size(); i++) {
+                        sheet.addCell(new Label(i, j, list.get(i), arial12format));
                         if (list.get(i).length() <= 4) {
                             //设置列宽
-                            sheet.setColumnView(i, list.get(i).length()   8);
+                            sheet.setColumnView(i, list.get(i).length() + 10);
                         } else {
                             //设置列宽
-                            sheet.setColumnView(i, list.get(i).length()   5);
+                            sheet.setColumnView(i, list.get(i).length() + 5);
                         }
                     }
                     //设置行高
-                    sheet.setRowView(j   1, 350);
+                    sheet.setRowView(j, 350);
+
+//                    WritableSheet temp = writebook.createSheet("体温数据",1);
+//                    temp.addCell((WritableCell) new Label(0, 0, "体温", arial10format));
+//                    if (projectBean.getData() != null){
+//                        for (int col = 0; col < projectBean.getData().size(); col++) {
+//                            sheet.addCell(new Label(col + 1, 0, String.format("%o2d",col), arial10format));
+//                        }
+//                    }
+//                    //设置行高
+//                    temp.setRowView(0, 340);
+
+                    if (projectBean.getData() != null){
+                        for (int i = 0; i < projectBean.getData().size(); i++) {
+
+                            temp.addCell(new Label(i, j, projectBean.getData().get(i)+"℃",
+                                    arial12format));
+                            if (list.get(i).length() <= 4) {
+                                //设置列宽
+                                temp.setColumnView(i, (projectBean.getData().get(i)+"℃")
+                                        .length() + 5);
+                            } else {
+                                //设置列宽
+                                temp.setColumnView(i, (projectBean.getData().get(i)+"℃")
+                                        .length() + 5);
+                            }
+                        }
+                    }
+                    temp.setRowView(j, 350);
                 }
 
                 writebook.write();
-                Toast.makeText(c, "导出Excel成功", Toast.LENGTH_SHORT).show();
+                listener.onOk();
+                //Toast.makeText(c, "导出Excel成功", Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
+                listener.onCancel();
                 e.printStackTrace();
             } finally {
                 if (writebook != null) {

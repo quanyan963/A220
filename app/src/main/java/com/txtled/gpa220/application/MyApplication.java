@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.regions.Regions;
 import com.txtled.gpa220.di.component.AppComponent;
 import com.txtled.gpa220.di.component.DaggerAppComponent;
 import com.txtled.gpa220.di.module.AppModule;
@@ -12,6 +14,8 @@ import com.txtled.gpa220.di.module.AppModule;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.txtled.gpa220.utils.Constants.IDENTITY_POOL_ID;
 
 /**
  * Created by Mr.Quan on 2019/12/9.
@@ -22,6 +26,8 @@ public class MyApplication extends Application {
     private static MyApplication sInstance;
     private List<Activity> mActivityList;
     private static AppComponent mAppComponent;
+    private static final Regions MY_REGION = Regions.US_EAST_1;
+    private static CognitoCachingCredentialsProvider credentialsProvider;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -29,8 +35,17 @@ public class MyApplication extends Application {
             sInstance = this;
         }
         mActivityList = new ArrayList<>();
+
+        credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplicationContext(),
+                IDENTITY_POOL_ID, // 身份池 ID
+                MY_REGION // 区域
+        );
     }
 
+    public static CognitoCachingCredentialsProvider getCredentialsProvider(){
+        return credentialsProvider;
+    }
 //    public static ImageLoader getImageLoader(Context context) {
 //        if (mImageLoader == null) {
 //            synchronized (ImageLoader.class) {

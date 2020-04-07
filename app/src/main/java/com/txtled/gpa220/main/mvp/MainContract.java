@@ -1,11 +1,13 @@
 package com.txtled.gpa220.main.mvp;
 
 
+import android.app.Activity;
 import android.view.View;
 
 import com.txtled.gpa220.base.BasePresenter;
 import com.txtled.gpa220.base.BaseView;
 import com.txtled.gpa220.bean.UserData;
+import com.txtled.gpa220.main.MainActivity;
 
 import java.util.List;
 
@@ -33,6 +35,12 @@ public interface MainContract {
         void hidSnack();
 
         void toSettingView();
+
+        void toLoginView();
+
+        void hidLoading();
+
+        void showPermissionHint();
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -56,5 +64,7 @@ public interface MainContract {
         boolean isClosed();
 
         void showSyncSuccess();
+
+        void init(Activity activity);
     }
 }

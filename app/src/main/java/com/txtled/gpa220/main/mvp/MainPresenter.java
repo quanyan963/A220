@@ -1,14 +1,21 @@
 package com.txtled.gpa220.main.mvp;
 
+import android.app.Activity;
+import android.os.Environment;
 import android.view.View;
 
 import com.txtled.gpa220.R;
 import com.txtled.gpa220.base.RxPresenter;
 import com.txtled.gpa220.bean.UserData;
 import com.txtled.gpa220.model.DataManagerModel;
+import com.txtled.gpa220.model.operate.OperateHelper;
+import com.txtled.gpa220.utils.AlertUtils;
+import com.txtled.gpa220.utils.Constants;
+import com.txtled.gpa220.utils.ExcelUtils;
 
 import org.reactivestreams.Subscription;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -35,6 +42,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
     private DataManagerModel mDataManagerModel;
     private List<UserData> mData;
     private int mPosition;
+    private Activity activity;
 
     @Inject
     public MainPresenter(DataManagerModel mDataManagerModel) {
@@ -62,6 +70,53 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
                 break;
             case R.id.ll_setting:
                 view.toSettingView();
+                break;
+            case R.id.ll_logout:
+                view.toLoginView();
+                break;
+            case R.id.ll_data_export:
+                String[] permissions = {Constants.permissions[2], Constants.permissions[3]};
+                mDataManagerModel.requestPermissions(activity, permissions,
+                        new OperateHelper.OnPermissionsListener() {
+                            @Override
+                            public void onSuccess(String name) {
+                                if (name.equals(Constants.permissions[3])) {
+                                    view.showLoadingView();
+                                    String filePath = Environment.getExternalStorageDirectory()  + "/GP-A220";
+                                    File file = new File(filePath);
+                                    if (!file.exists()) {
+                                        file.mkdirs();
+                                    }
+
+                                    String excelFileName = "/体温数据.xls";
+                                    ExcelUtils.initExcel(filePath + excelFileName,
+                                            new String[]{"姓名", "出生年月日", "身份证号"});
+                                    ExcelUtils.writeObjListToExcel(getUserData(), filePath + excelFileName, activity,
+                                            new AlertUtils.OnConfirmClickListener() {
+                                                @Override
+                                                public void onOk() {
+                                                    view.hidLoading();
+                                                }
+
+                                                @Override
+                                                public void onCancel() {
+                                                    view.hidLoading();
+                                                }
+                                            });
+                                }
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                view.showPermissionHint();
+                            }
+
+                            @Override
+                            public void onAskAgain() {
+
+                            }
+                        });
+
                 break;
         }
     }
@@ -134,5 +189,10 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(subscription -> view.showSyncSuccess())
                 .subscribe(aLong -> view.hidSnack()));
+    }
+
+    @Override
+    public void init(Activity activity) {
+        this.activity = activity;
     }
 }

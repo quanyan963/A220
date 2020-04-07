@@ -14,6 +14,7 @@ import com.txtled.gpa220.unknown.UnknownActivity;
 import com.txtled.gpa220.user.UserInfoActivity;
 
 import dagger.Component;
+import com.txtled.gpa220.login.LoginActivity;
 
 /**
  * Created by KomoriWu
@@ -40,4 +41,6 @@ public interface ActivityComponent {
     void inject(PdfActivity pdfActivity);
 
     void inject(SettingActivity settingActivity);
+
+    void inject(LoginActivity loginActivity);
 }

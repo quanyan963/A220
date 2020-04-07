@@ -1,5 +1,6 @@
 package com.txtled.gpa220.main;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -23,6 +24,7 @@ import com.txtled.gpa220.bean.BleControlEvent;
 import com.txtled.gpa220.bean.UserData;
 import com.txtled.gpa220.ble.BleActivity;
 import com.txtled.gpa220.ble.service.BleService;
+import com.txtled.gpa220.login.LoginActivity;
 import com.txtled.gpa220.main.mvp.MainContract;
 import com.txtled.gpa220.main.mvp.MainPresenter;
 import com.txtled.gpa220.pdf.PdfActivity;
@@ -67,6 +69,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
         tvTitle.setText(R.string.member);
         setNavigationIcon(false);
 
+        presenter.init(this);
         setSecondImage(presenter.isClosed());
         setRightImg(true, getResources().getDrawable(R.mipmap.home_infoxhdpi), this);
         Point point = new Point();
@@ -242,6 +245,28 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
     @Override
     public void toSettingView() {
         startActivity(new Intent(this, SettingActivity.class));
+    }
+
+    @Override
+    public void toLoginView() {
+        AlertUtils.showAlertDialog(this, R.string.sign_out_check,
+                (dialog, which) -> {
+                    dlMain.closeDrawer(nvMainLeft);
+                    startActivity(new Intent(MainActivity.this,
+                            LoginActivity.class));
+                },null);
+    }
+
+    @Override
+    public void hidLoading() {
+        if (dialog.isShowing()){
+            dialog.dismiss();
+        }
+    }
+
+    @Override
+    public void showPermissionHint() {
+
     }
 
     @Override

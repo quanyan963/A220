@@ -58,8 +58,17 @@ dependencies {
     implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'com.google.code.gson:gson:2.8.5'
     //pdf
-    compile 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
-
+    implementation 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
     //导出excel
     implementation group: 'net.sourceforge.jexcelapi', name: 'jxl', version: '2.6.12'
+    //cognito
+    implementation 'com.amazonaws:aws-android-sdk-cognito:2.16.6'
+    implementation 'com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.16.6'
+
+    //swiperefreshlayout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+
+    //ddb
+    implementation "com.amazonaws:aws-android-sdk-ddb:2.16.6"
+    implementation 'com.amazonaws:aws-android-sdk-ddb-mapper:2.16.6'
 }

@@ -8,7 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.txtled.gpa220.R;
 import com.txtled.gpa220.base.MvpBaseActivity;
 import com.txtled.gpa220.broadcast.BlueToothStateReceiver;
-import com.txtled.gpa220.main.MainActivity;
+import com.txtled.gpa220.login.LoginActivity;
 import com.txtled.gpa220.start.mvp.StartContract;
 import com.txtled.gpa220.start.mvp.StartPresenter;
 import com.txtled.gpa220.utils.AlertUtils;
@@ -58,7 +58,7 @@ public class StartActivity extends MvpBaseActivity<StartPresenter> implements St
     @Override
     public void onCancel() {
         unRegister();
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
         this.finish();
     }
 
@@ -94,7 +94,7 @@ public class StartActivity extends MvpBaseActivity<StartPresenter> implements St
     @Override
     public void onStateOn() {
         unRegister();
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
         this.finish();
     }
 

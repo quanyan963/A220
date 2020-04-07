@@ -19,6 +19,9 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by Mr.Quan on 2019/12/9.
  */
@@ -57,7 +60,7 @@ public class Utils {
      * @return
      */
     public static final Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap bitmap = Bitmap.createBitmap( drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(),
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(),
                 drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
@@ -65,7 +68,7 @@ public class Utils {
         return bitmap;
     }
 
-    public static String getWifiIp(int i){
+    public static String getWifiIp(int i) {
 
         return (i & 0xFF) + "." +
                 ((i >> 8) & 0xFF) + "." +
@@ -97,5 +100,16 @@ public class Utils {
         InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
+    }
+
+    public static boolean isMobileNO(String mobiles) {
+
+        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+
+        Matcher m = p.matcher(mobiles);
+
+        //System.out.println(m.matches() + "---");
+
+        return m.matches();
     }
 }

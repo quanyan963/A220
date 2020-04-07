@@ -1,15 +1,11 @@
 package com.txtled.gpa220.ble;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.view.KeyEvent;
-import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,7 +30,6 @@ import java.util.List;
 import java.util.Set;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.txtled.gpa220.utils.Constants.CONN;
 import static com.txtled.gpa220.utils.Constants.DISCONN;
