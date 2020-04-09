@@ -112,4 +112,9 @@ public class BlePresenter extends RxPresenter<BleContract.View> implements BleCo
     public void savePosition(int position) {
         dataManagerModel.setBlePosition(position);
     }
+
+    @Override
+    public void setClosed(boolean b) {
+        dataManagerModel.setClosed(b);
+    }
 }

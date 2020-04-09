@@ -35,6 +35,7 @@ import butterknife.BindView;
 import static com.txtled.gpa220.utils.Constants.ADD;
 import static com.txtled.gpa220.utils.Constants.ALL_DATA;
 import static com.txtled.gpa220.utils.Constants.CONN;
+import static com.txtled.gpa220.utils.Constants.DELETE;
 import static com.txtled.gpa220.utils.Constants.DISCONN;
 import static com.txtled.gpa220.utils.Constants.OK;
 import static com.txtled.gpa220.utils.Constants.POSITION;
@@ -178,10 +179,12 @@ public class UserInfoActivity extends MvpBaseActivity<UserPresenter> implements 
                 imgDelete.setImageDrawable(wrap);
                 ctvDelete.setTextColor(getResources().getColor(R.color.blue));
                 AlertUtils.showAlertDialog(this, R.string.conform_delete,
+                        R.string.conform,R.string.no,
                         (dialog, which) -> {
                             presenter.deleteUser(position);
+                            UserInfoActivity.this.setResult(DELETE);
                             UserInfoActivity.this.finish();
-                        },null);
+                        });
                 break;
         }
         switch (layoutId){

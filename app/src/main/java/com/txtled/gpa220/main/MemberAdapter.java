@@ -49,9 +49,9 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
 
     public void deleteData(int position) {
         data.remove(position);
-        notifyItemRemoved(position);
-        if (position != data.size())
-            notifyItemRangeChanged(position, data.size() - position);
+        notifyItemRemoved(data.size() - position - 1);
+        if (position != 0)
+            notifyItemRangeChanged(data.size() - position, position);
     }
 
     @NonNull
@@ -68,13 +68,13 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
             if (data.get(data.size() - position - 1).getData() != null){
                 List<Float> temp = data.get(data.size() - position - 1).getData();
                 holder.ctvMemberTemp.setText(temp.get(temp.size() - 1) + "℃");
-//                if (temp.get(temp.size() - 1) > 37.2f && temp.get(temp.size() - 1) < 38.0f){
-//                    holder.ctvMemberTemp.setTextColor(context.getResources().getColor(R.color.orange));
-//                }else if (temp.get(temp.size() - 1) >= 38.0f){
-//                    holder.ctvMemberTemp.setTextColor(context.getResources().getColor(R.color.red));
-//                }else {
-//                    holder.ctvMemberTemp.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-//                }
+                if (temp.get(temp.size() - 1) > 37.2f && temp.get(temp.size() - 1) < 38.0f){
+                    holder.ctvMemberTemp.setTextColor(context.getResources().getColor(R.color.orange));
+                }else if (temp.get(temp.size() - 1) >= 38.0f){
+                    holder.ctvMemberTemp.setTextColor(context.getResources().getColor(R.color.red));
+                }else {
+                    holder.ctvMemberTemp.setTextColor(context.getResources().getColor(R.color.text_black));
+                }
             }else {
                 holder.ctvMemberTemp.setText("");
             }

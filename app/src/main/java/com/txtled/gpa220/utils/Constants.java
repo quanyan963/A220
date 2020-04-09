@@ -29,6 +29,7 @@ public class Constants {
     public static final int USER = 2001;
     public static final int UNKNOWN = 2002;
     public static final int OK = 200;
+    public static final int DELETE = 201;
 
     public static final String TYPE = "type";
     public static final String SUPER_ACCOUNT = "13888888888";

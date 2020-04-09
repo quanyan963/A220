@@ -335,6 +335,7 @@ public class LineChartView extends View {
     }
 
     private void getDrawWidthAndHeight() {
+        mBrokenLineBottom = 0;
         needDrawHeight = mViewHeight - mBrokenLineTop - mBrokenLineBottom;
         needDrawWidth = mViewWidth - mBrokenLineLeft - mBrokenLineRight;
     }

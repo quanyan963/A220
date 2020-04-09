@@ -68,6 +68,8 @@
     <string name="sign_success">注册成功，即将自动登录。</string>
     <string name="sign_out_check">是否退出登录？</string>
     <string name="no_export">您将无法使用导出文件功能。</string>
+    <string name="ble_unconn_hint">设备未连接，请连接设备再执行操作。</string>
+    <string name="conn">连接</string>
 
 
 </resources>

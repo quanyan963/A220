@@ -64,8 +64,12 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
                 view.toBleView();
                 break;
             case R.id.ll_data_sync:
-                view.showLoadingView();
-                mDataManagerModel.writeCommand(SYNC);
+                if (mDataManagerModel.isClosed()){
+                    view.showLoadingView();
+                    mDataManagerModel.writeCommand(SYNC);
+                }else {
+                    view.showUnConnView();
+                }
                 break;
             case R.id.ll_inst:
                 view.toPdfView();

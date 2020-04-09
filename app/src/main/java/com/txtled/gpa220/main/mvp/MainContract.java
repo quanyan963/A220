@@ -41,6 +41,8 @@ public interface MainContract {
         void hidLoading();
 
         void showPermissionHint();
+
+        void showUnConnView();
     }
 
     interface Presenter extends BasePresenter<View> {

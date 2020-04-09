@@ -309,14 +309,13 @@ public class AlertUtils {
         }
     }
 
-    public static void showAlertDialog(Context context, int messageRes,
-                                       DialogInterface.OnClickListener listener1,
-                                       DialogInterface.OnClickListener listener2) {
+    public static void showAlertDialog(Context context, int messageRes, int positive, int negative,
+                                       DialogInterface.OnClickListener listener1) {
         if (!((Activity) context).isFinishing()) {
             AlertDialog dialog = new AlertDialog.Builder(context)
                     .setMessage(messageRes)
-                    .setPositiveButton(R.string.conform, listener1)
-                    .setNegativeButton(R.string.no, (dialog1, which) -> dialog1.dismiss())
+                    .setPositiveButton(positive, listener1)
+                    .setNegativeButton(negative, (dialog1, which) -> dialog1.dismiss())
                     .create();
             dialog.setCancelable(true);
             dialog.show();

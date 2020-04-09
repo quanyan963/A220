@@ -130,6 +130,8 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
         }else if (requestCode == USER){
             if (resultCode == OK){
                 adapter.notifyTrueItem(mPosition);
+            }else {
+                adapter.deleteData(mPosition);
             }
         }else if (requestCode == UNKNOWN){
             if (resultCode == OK){
@@ -178,6 +180,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
         runOnUiThread(() -> {
             if (event.getBleConnType() == RECONN){
                 setSecondImage(false);
+                presenter.setClosed(false);
                 if (dialog != null){
                     if (dialog.isShowing())
                         dialog.dismiss();
@@ -196,6 +199,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
                 presenter.setClosed(true);
             }else if (event.getBleConnType() == DISCONN){
                 setSecondImage(false);
+                presenter.setClosed(false);
             }
         });
     }
@@ -249,12 +253,12 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
 
     @Override
     public void toLoginView() {
-        AlertUtils.showAlertDialog(this, R.string.sign_out_check,
+        AlertUtils.showAlertDialog(this, R.string.sign_out_check,R.string.conform,R.string.no,
                 (dialog, which) -> {
                     dlMain.closeDrawer(nvMainLeft);
                     startActivity(new Intent(MainActivity.this,
                             LoginActivity.class));
-                },null);
+                });
     }
 
     @Override
@@ -269,6 +273,18 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
         hidSnack();
         showSnackBar(rlvMember,R.string.no_export);
         presenter.hidDelay();
+    }
+
+    @Override
+    public void showUnConnView() {
+        hidSnack();
+        AlertUtils.showAlertDialog(this, R.string.ble_unconn_hint, R.string.conn,
+                R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                toBleView();
+            }
+        });
     }
 
     @Override

@@ -135,6 +135,7 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
         if (isClose){
             isClose = false;
             bindInterface.setClosed();
+            presenter.setClosed(false);
             changeRightTextColor(R.color.line_bg);
         }
 
@@ -241,6 +242,7 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
                 isClose = true;
                 changeRightTextColor(R.color.blue);
                 bleAdapter.changeItem(deviceData,bleType);
+                presenter.setClosed(true);
             }else if (bleType == RECONN){
                 //断开连接，重连
                 if(isClose){
@@ -249,6 +251,9 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
                     bleType = DISCONN;
                 }
                 bleAdapter.changeItem(deviceData,bleType);
+                presenter.setClosed(false);
+            }else if (bleType == DISCONN){
+                presenter.setClosed(false);
             }
         });
 

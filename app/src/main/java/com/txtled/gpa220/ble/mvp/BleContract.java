@@ -33,5 +33,7 @@ public interface BleContract {
         int getBlePosition();
 
         void savePosition(int position);
+
+        void setClosed(boolean b);
     }
 }

@@ -4,14 +4,17 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import com.inuker.bluetooth.library.search.SearchResult;
 import com.txtled.gpa220.application.MyApplication;
+import com.txtled.gpa220.base.CommonSubscriber;
 import com.txtled.gpa220.bean.BleControlEvent;
 import com.txtled.gpa220.model.DataManagerModel;
 import com.txtled.gpa220.model.ble.BleHelper;
+import com.txtled.gpa220.utils.RxUtil;
 import com.txtled.gpa220.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,13 +25,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.txtled.gpa220.utils.BleUtils.SINGLE_RESPONSE;
 import static com.txtled.gpa220.utils.Constants.ALL_DATA;
 import static com.txtled.gpa220.utils.Constants.CONN;
 import static com.txtled.gpa220.utils.Constants.DISCONN;
+import static com.txtled.gpa220.utils.Constants.ERROR;
 import static com.txtled.gpa220.utils.Constants.FINISH_SEARCH;
 import static com.txtled.gpa220.utils.Constants.RECONN;
 import static com.txtled.gpa220.utils.Constants.SINGLE_DATA;
@@ -40,9 +47,10 @@ public class BleService extends Service {
     private DataManagerModel dataManagerModel;
     private List<SearchResult> data;
     private int type;
-    private boolean isClose;
+    private boolean isClose, reConn;
     private SearchResult deviceData;
     private List<Float> syncData;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -64,9 +72,9 @@ public class BleService extends Service {
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(subscription -> scanBle())
                 .subscribe(aLong -> {
-                    if (isClose){
+                    if (isClose) {
                         dataManagerModel.stopSearch();
-                        EventBus.getDefault().post(new BleControlEvent(FINISH_SEARCH,data));
+                        EventBus.getDefault().post(new BleControlEvent(FINISH_SEARCH, data));
                     }
 
                 });
@@ -90,9 +98,9 @@ public class BleService extends Service {
             @Override
             public void onSuccess(SearchResult device) {
 
-                if (type == DISCONN){
+                if (type == DISCONN) {
                     data.add(device);
-                }else {
+                } else {
                     deviceData = device;
                     dataManagerModel.stopSearch();
                     conn(device.getAddress());
@@ -101,10 +109,10 @@ public class BleService extends Service {
 
             @Override
             public void onScanFailure() {
-                if (type == DISCONN){
+                if (type == DISCONN) {
                     dataManagerModel.stopSearch();
-                    EventBus.getDefault().post(new BleControlEvent(FINISH_SEARCH,data));
-                }else {
+                    EventBus.getDefault().post(new BleControlEvent(FINISH_SEARCH, data));
+                } else {
                     reConn();
                 }
             }
@@ -137,7 +145,7 @@ public class BleService extends Service {
         return new BleBinder();
     }
 
-    private class BleBinder extends Binder implements BleBindInterface{
+    private class BleBinder extends Binder implements BleBindInterface {
 
         @Override
         public void searchResult(List<SearchResult> data) {
@@ -162,11 +170,12 @@ public class BleService extends Service {
         @Override
         public void setClosed() {
             isClose = false;
+            reConn = false;
             dataManagerModel.stopSearch();
             dataManagerModel.unRegisterConn();
-            if (type == DISCONN){
-                EventBus.getDefault().post(new BleControlEvent(FINISH_SEARCH,data));
-            }else {
+            if (type == DISCONN) {
+                EventBus.getDefault().post(new BleControlEvent(FINISH_SEARCH, data));
+            } else {
                 EventBus.getDefault().post(new BleControlEvent(DISCONN));
             }
         }
@@ -174,41 +183,60 @@ public class BleService extends Service {
 
     private void conn(String bleData) {
 
-        dataManagerModel.connBle(bleData, new BleHelper.OnConnBleListener() {
+        Flowable.create(new FlowableOnSubscribe<BleControlEvent>() {
             @Override
-            public void onSuccess() {
-                EventBus.getDefault().post(new BleControlEvent(CONN));
-                setListener();
-            }
+            public void subscribe(FlowableEmitter<BleControlEvent> e) throws Exception {
+                dataManagerModel.connBle(bleData, new BleHelper.OnConnBleListener() {
+                    @Override
+                    public void onSuccess() {
+                        e.onNext(new BleControlEvent(CONN));
+                    }
 
-            @Override
-            public void onFailure() {
-                if (isClose)
-                    conn(bleData);
+                    @Override
+                    public void onFailure() {
+                        e.onNext(new BleControlEvent(ERROR));
+                    }
+                });
             }
-        });
+        }, BackpressureStrategy.BUFFER)
+                .compose(RxUtil.rxSchedulerHelper())
+                .subscribeWith(new CommonSubscriber<BleControlEvent>(null) {
+                    @Override
+                    public void onNext(BleControlEvent event) {
+                        if (event.getBleConnType() == CONN) {
+                            EventBus.getDefault().post(event);
+                            if (!reConn)
+                                setListener();
+                            reConn = false;
+                        } else {
+                            if (isClose)
+                                conn(bleData);
+                        }
+                    }
+                });
+
     }
 
     private void setListener() {
         dataManagerModel.notifyBle(data -> {
 
             String result = Utils.bytesToHex(data);
-            float temp = Integer.parseInt(result.substring(12, 16),16) / 10f;
+            float temp = Integer.parseInt(result.substring(12, 16), 16) / 10f;
 
-            if (result.contains(SINGLE_RESPONSE)){
-                EventBus.getDefault().post(new BleControlEvent(SINGLE_DATA,temp));
-            }else {
+            if (result.contains(SINGLE_RESPONSE)) {
+                EventBus.getDefault().post(new BleControlEvent(SINGLE_DATA, temp));
+            } else {
                 syncData.add(temp);
-                if (syncData.size() == 99){
+                if (syncData.size() == 99) {
                     Set<Float> before = new LinkedHashSet<>(syncData);
                     syncData = new ArrayList<>(before);
                     for (int i = 0; i < syncData.size(); i++) {
-                        if (syncData.get(i) == 0.0f){
+                        if (syncData.get(i) == 0.0f) {
                             syncData.remove(i);
                             continue;
                         }
                     }
-                    EventBus.getDefault().post(new BleControlEvent(ALL_DATA,0,syncData));
+                    EventBus.getDefault().post(new BleControlEvent(ALL_DATA, 0, syncData));
                     syncData = new ArrayList<>();
                 }
             }
@@ -221,9 +249,14 @@ public class BleService extends Service {
 
             @Override
             public void onDisConn() {
+                reConn = true;
                 EventBus.getDefault().post(new BleControlEvent(RECONN));
-                if (isClose)
+                if (isClose){
                     reConn();
+                }else {
+                    reConn = false;
+                }
+
             }
         });
         dataManagerModel.readCommand(new BleHelper.OnReadListener() {
