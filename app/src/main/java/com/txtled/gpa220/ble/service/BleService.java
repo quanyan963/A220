@@ -205,8 +205,10 @@ public class BleService extends Service {
                     public void onNext(BleControlEvent event) {
                         if (event.getBleConnType() == CONN) {
                             EventBus.getDefault().post(event);
-                            if (!reConn)
-                                setListener();
+//                            if (reConn){
+//                                dataManagerModel.unRegisterConn();
+//                            }
+                            setListener();
                             reConn = false;
                         } else {
                             if (isClose)
@@ -256,7 +258,7 @@ public class BleService extends Service {
                 }else {
                     reConn = false;
                 }
-
+                dataManagerModel.detachListener();
             }
         });
         dataManagerModel.readCommand(new BleHelper.OnReadListener() {

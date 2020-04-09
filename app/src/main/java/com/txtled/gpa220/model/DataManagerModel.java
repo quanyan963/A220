@@ -127,6 +127,11 @@ public class DataManagerModel implements DBHelper, PreferencesHelper, NetHelper,
     }
 
     @Override
+    public void detachListener() {
+        mBleHelper.detachListener();
+    }
+
+    @Override
     public void setUserData(UserData data) {
         mDBDbHelper.setUserData(data);
     }

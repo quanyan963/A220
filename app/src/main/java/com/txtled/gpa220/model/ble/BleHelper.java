@@ -29,6 +29,8 @@ public interface BleHelper {
 
     void stopSearch();
 
+    void detachListener();
+
     interface OnScanBleListener {
         void onStart();
 

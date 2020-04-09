@@ -312,10 +312,7 @@ public class BleHelperImpl implements BleHelper {
     @Override
     public void unRegisterConn() {
         if (mAddress != null){
-            mBleClient.unregisterConnectStatusListener(mAddress, listener);
-            mBleClient.unnotify(mAddress, mServiceUUID, mSendCharacterUUID, code -> {
-
-            });
+            detachListener();
             mBleClient.disconnect(mAddress);
             listener = null;
             conn = false;
@@ -325,5 +322,16 @@ public class BleHelperImpl implements BleHelper {
     @Override
     public void stopSearch() {
         mBleClient.stopSearch();
+    }
+
+    @Override
+    public void detachListener() {
+        mBleClient.unnotify(mAddress, mServiceUUID, mNotifyCharacterUUID, new BleUnnotifyResponse() {
+            @Override
+            public void onResponse(int code) {
+
+            }
+        });
+        mBleClient.unregisterConnectStatusListener(mAddress, listener);
     }
 }
