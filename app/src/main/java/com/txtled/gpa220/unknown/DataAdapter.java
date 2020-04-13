@@ -40,24 +40,15 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataViewHolder
     }
 
     public void insertData(float singleData) {
-        if (data == null)
+        if (data == null){
             data = new ArrayList<>();
-        //data.add(singleData);
+            data.add(singleData);
+        }
         notifyItemChanged(data.size() - 1);
 
     }
 
     public HashMap<Integer, Boolean> getChecked() {
-//        List<Float> temps = new ArrayList<>();
-//        for (int i = 0; i < data.size(); i++) {
-//            try {
-//                if (checked.get(i)){
-//                    temps.add(data.get(i));
-//                }
-//            }catch (Exception e){
-//                temps.add(0f);
-//            }
-//        }
         return checked;
     }
 

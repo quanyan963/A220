@@ -45,8 +45,8 @@ public class UnknownPresenter extends RxPresenter<UnknownContract.View> implemen
         UserData unknown = data.get(0);
         List<Float> unknownData = unknown.getData();
         for (int i = 0; i < a.length; i++) {
-            newData.add(unknownData.get(a[i]));
-            unknownData.remove(a[i]);
+            newData.add(unknownData.get(a[i].intValue()));
+            unknownData.remove(a[i].intValue());
         }
         witch.setData(newData);
         unknown.setData(unknownData);

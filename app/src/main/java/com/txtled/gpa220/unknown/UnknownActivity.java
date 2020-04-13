@@ -99,12 +99,16 @@ public class UnknownActivity extends MvpBaseActivity<UnknownPresenter> implement
                 if (isShow){
                     rlvUnknownUser.startAnimation(show);
                     rlvUnknownUser.setVisibility(View.VISIBLE);
+                    //将控件显示在最上层
+                    rlvUnknownUser.bringToFront();
                     cbtBind.setText(R.string.bind);
                     cbtBind.startAnimation(show);
 
                 }else {
                     rlvUnknownList.startAnimation(show);
                     rlvUnknownList.setVisibility(View.VISIBLE);
+                    //将控件显示在最上层
+                    rlvUnknownList.bringToFront();
                     cbtBind.setText(R.string.bind_user);
                     cbtBind.startAnimation(show);
                 }
@@ -118,7 +122,7 @@ public class UnknownActivity extends MvpBaseActivity<UnknownPresenter> implement
         if (isShow){
             tvTitle.setText(R.string.select_member);
             rlvUnknownList.startAnimation(hid);
-            rlvUnknownList.setVisibility(View.GONE);
+            rlvUnknownList.setVisibility(View.INVISIBLE);
             cbtBind.startAnimation(hid);
         }else {
             tvTitle.setText(R.string.unbind_data);
@@ -176,7 +180,11 @@ public class UnknownActivity extends MvpBaseActivity<UnknownPresenter> implement
             @Override
             public void run() {
                 if (event.getBleConnType() == SINGLE_DATA){
-                    dataAdapter.insertData(event.getTemp());
+                    if (dataAdapter.getItemCount() == 0){
+                        dataAdapter.setData(presenter.getUnknownData());
+                    }else {
+                        dataAdapter.insertData(event.getTemp());
+                    }
                     rlvUnknownList.scrollToPosition(dataAdapter.getItemCount() - 1);
                 }else if (event.getBleConnType() == CONN){
                     setSecondImage(true);
