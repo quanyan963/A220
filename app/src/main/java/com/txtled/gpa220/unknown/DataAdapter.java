@@ -47,18 +47,18 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataViewHolder
 
     }
 
-    public List<Float> getChecked() {
-        List<Float> temps = new ArrayList<>();
-        for (int i = 0; i < data.size(); i++) {
-            try {
-                if (checked.get(i)){
-                    temps.add(data.get(i));
-                }
-            }catch (Exception e){
-
-            }
-        }
-        return temps;
+    public HashMap<Integer, Boolean> getChecked() {
+//        List<Float> temps = new ArrayList<>();
+//        for (int i = 0; i < data.size(); i++) {
+//            try {
+//                if (checked.get(i)){
+//                    temps.add(data.get(i));
+//                }
+//            }catch (Exception e){
+//                temps.add(0f);
+//            }
+//        }
+        return checked;
     }
 
     @NonNull

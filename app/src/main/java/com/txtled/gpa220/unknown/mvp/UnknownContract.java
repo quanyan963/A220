@@ -4,6 +4,7 @@ import com.txtled.gpa220.base.BasePresenter;
 import com.txtled.gpa220.base.BaseView;
 import com.txtled.gpa220.bean.UserData;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface UnknownContract {
@@ -20,7 +21,7 @@ public interface UnknownContract {
 
         List<UserData> getUserData();
 
-        void setData(int position, List<Float> checked);
+        void setData(int position, HashMap<Integer, Boolean> checked);
 
         boolean isClosed();
 

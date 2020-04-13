@@ -6,6 +6,8 @@ import com.txtled.gpa220.model.DataManagerModel;
 
 import org.reactivestreams.Subscription;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -36,21 +38,19 @@ public class UnknownPresenter extends RxPresenter<UnknownContract.View> implemen
     }
 
     @Override
-    public void setData(int position, List<Float> checked) {
-        UserData witch = data.get(position);
-        witch.getData().addAll(checked);
-        dataManagerModel.updateUserData(witch);
+    public void setData(int position, HashMap<Integer, Boolean> checked) {
+        UserData witch = data.get(position + 1);
+        Integer[] a = checked.keySet().toArray(new Integer[checked.size()]);
+        List<Float> newData = new ArrayList<>();
         UserData unknown = data.get(0);
         List<Float> unknownData = unknown.getData();
-        for (int i = 0; i < checked.size(); i++) {
-            for (int j = 0; j < unknownData.size(); j++) {
-                if (checked.get(i) == unknownData.get(j)){
-                    unknownData.remove(j);
-                    continue;
-                }
-            }
+        for (int i = 0; i < a.length; i++) {
+            newData.add(unknownData.get(a[i]));
+            unknownData.remove(a[i]);
         }
+        witch.setData(newData);
         unknown.setData(unknownData);
+        dataManagerModel.updateUserData(witch);
         dataManagerModel.updateUserData(unknown);
         addSubscribe(Flowable.timer(3, TimeUnit.SECONDS)
                 .observeOn(Schedulers.io()).subscribeOn(Schedulers.io())
