@@ -70,5 +70,7 @@ public interface MainContract {
         void init(Activity activity);
 
         void hidDelay();
+
+        int getDataSize();
     }
 }

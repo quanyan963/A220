@@ -259,7 +259,7 @@ public class LineChartView extends View {
 
     public void setSingleData(float singleData){
         initData = true;
-        data.add(singleData);
+        //data.add(singleData);
         position = data.size() - 1;
         invalidate();
     }

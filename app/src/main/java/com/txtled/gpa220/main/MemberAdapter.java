@@ -31,6 +31,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
     private List<UserData> data;
     private long exitTime;
     private OnItemClick listener;
+    private int mPosition;
+    private boolean refresh;
 
     public MemberAdapter(Context context, OnItemClick listener) {
         this.context = context;
@@ -39,12 +41,15 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
 
     public void setData(List<UserData> data) {
         this.data = data;
+        refresh = true;
+        mPosition = data.size() - 1;
         notifyDataSetChanged();
     }
 
-    public void insertData(UserData user){
-        data.add(user);
-        notifyItemInserted(0);
+    public void insertData(){
+        refresh = true;
+        mPosition = 0;
+        notifyDataSetChanged();
     }
 
     public void deleteData(int position) {
@@ -113,6 +118,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
                     break;
             }
 
+            if (refresh && position == mPosition){
+                holder.imgMember.requestFocus();
+                refresh = false;
+            }
+
             holder.imgMember.setOnTouchListener((v, event) -> {
                 if (event.getAction() == MotionEvent.ACTION_UP){
                     if (System.currentTimeMillis() - exitTime > 600){
@@ -133,11 +143,14 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
         return data == null ? 0 : data.size();
     }
 
-    public void update(int mPosition, UserData str) {
-        data.add(mPosition,str);
+    public void notifyTrueItem(int mPosition) {
+        notifyItemChanged(data.size() - 1 - mPosition);
+        //notifyDataSetChanged();
     }
 
-    public void notifyTrueItem(int mPosition) {
+    public void update(int mPosition, UserData str) {
+        //data.add(mPosition,str);
+        //refresh = true;
         notifyItemChanged(data.size() - 1 - mPosition);
     }
 

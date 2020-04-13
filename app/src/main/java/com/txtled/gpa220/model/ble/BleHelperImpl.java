@@ -53,7 +53,7 @@ import static com.txtled.gpa220.utils.BleUtils.Write;
 
 public class BleHelperImpl implements BleHelper {
     public static final String TAG = BleHelperImpl.class.getSimpleName();
-    public static final int DURATION = 1000;
+    public static final int DURATION = 3000;
     public static final int TIMES = 1000;
     private BluetoothClient mBleClient;
     private SearchRequest mRequest;
@@ -95,7 +95,12 @@ public class BleHelperImpl implements BleHelper {
                     method.setAccessible(true);
                     int state = (int) method.invoke(adapter, (Object[]) null);
 
-                    searchBleByAddress("", onScanBleListener);
+                    if (!isSpecified){
+                        searchBleByAddress("", onScanBleListener);
+                    }else {
+                        searchBleByAddress(mAddress, onScanBleListener);
+                    }
+
 //                    if (mAddress != null){
 //                        conn = false;
 //                        searchBleByAddress(mAddress, onScanBleListener);

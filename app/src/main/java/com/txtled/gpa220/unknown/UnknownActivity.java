@@ -62,7 +62,7 @@ public class UnknownActivity extends MvpBaseActivity<UnknownPresenter> implement
         rlvUnknownUser.setAdapter(userAdapter);
 
         tvTitle.setText(R.string.unbind_data);
-        rlvUnknownList.setHasFixedSize(true);
+        //rlvUnknownList.setHasFixedSize(true);
         rlvUnknownList.setLayoutManager(new LinearLayoutManager(this));
         dataAdapter = new DataAdapter(this,this);
         rlvUnknownList.setAdapter(dataAdapter);
@@ -78,6 +78,7 @@ public class UnknownActivity extends MvpBaseActivity<UnknownPresenter> implement
                 }
             }
         });
+        rlvUnknownList.scrollToPosition(dataAdapter.getItemCount() - 1);
     }
 
     private void showUserAnimation(boolean isShow) {
@@ -171,17 +172,23 @@ public class UnknownActivity extends MvpBaseActivity<UnknownPresenter> implement
 
     @Override
     public void onEventServiceThread(BleControlEvent event) {
-        if (event.getBleConnType() == SINGLE_DATA){
-            dataAdapter.insertData(event.getTemp());
-        }else if (event.getBleConnType() == CONN){
-            setSecondImage(true);
-            presenter.setClosed(true);
-        }else if (event.getBleConnType() == DISCONN){
-            setSecondImage(false);
-            presenter.setClosed(false);
-        }else if (event.getBleConnType() == RECONN){
-            setSecondImage(false);
-            presenter.setClosed(false);
-        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (event.getBleConnType() == SINGLE_DATA){
+                    dataAdapter.insertData(event.getTemp());
+                    rlvUnknownList.scrollToPosition(dataAdapter.getItemCount() - 1);
+                }else if (event.getBleConnType() == CONN){
+                    setSecondImage(true);
+                    presenter.setClosed(true);
+                }else if (event.getBleConnType() == DISCONN){
+                    setSecondImage(false);
+                    presenter.setClosed(false);
+                }else if (event.getBleConnType() == RECONN){
+                    setSecondImage(false);
+                    presenter.setClosed(false);
+                }
+            }
+        });
     }
 }

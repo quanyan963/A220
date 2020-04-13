@@ -253,18 +253,23 @@ public class UserInfoActivity extends MvpBaseActivity<UserPresenter> implements 
 
     @Override
     public void onEventServiceThread(BleControlEvent event) {
-        if (event.getBleConnType() == RECONN){
-            setSecondImage(false);
-            presenter.setClosed(false);
-        }else if (event.getBleConnType() == SINGLE_DATA){
-            //presenter.setTempData(mPosition,event.getTemp());
-            lvUserChart.setSingleData(event.getTemp());
-        }else if (event.getBleConnType() == CONN){
-            setSecondImage(true);
-            presenter.setClosed(true);
-        }else if (event.getBleConnType() == DISCONN){
-            setSecondImage(false);
-            presenter.setClosed(false);
-        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (event.getBleConnType() == RECONN){
+                    setSecondImage(false);
+                    presenter.setClosed(false);
+                }else if (event.getBleConnType() == SINGLE_DATA){
+                    //presenter.setTempData(mPosition,event.getTemp());
+                    lvUserChart.setSingleData(event.getTemp());
+                }else if (event.getBleConnType() == CONN){
+                    setSecondImage(true);
+                    presenter.setClosed(true);
+                }else if (event.getBleConnType() == DISCONN){
+                    setSecondImage(false);
+                    presenter.setClosed(false);
+                }
+            }
+        });
     }
 }

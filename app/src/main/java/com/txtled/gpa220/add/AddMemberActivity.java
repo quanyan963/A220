@@ -168,15 +168,20 @@ public class AddMemberActivity extends MvpBaseActivity<AddPresenter> implements 
 
     @Override
     public void onEventServiceThread(BleControlEvent event) {
-        if (event.getBleConnType() == CONN){
-            setSecondImage(true);
-            presenter.setClosed(true);
-        }else if (event.getBleConnType() == DISCONN){
-            setSecondImage(false);
-            presenter.setClosed(false);
-        }else if (event.getBleConnType() == RECONN){
-            setSecondImage(false);
-            presenter.setClosed(false);
-        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (event.getBleConnType() == CONN){
+                    setSecondImage(true);
+                    presenter.setClosed(true);
+                }else if (event.getBleConnType() == DISCONN){
+                    setSecondImage(false);
+                    presenter.setClosed(false);
+                }else if (event.getBleConnType() == RECONN){
+                    setSecondImage(false);
+                    presenter.setClosed(false);
+                }
+            }
+        });
     }
 }

@@ -70,7 +70,7 @@ public class BleService extends Service {
         data = new ArrayList<>();
         Flowable.timer(3, TimeUnit.SECONDS).observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(subscription -> scanBle())
+                .doOnSubscribe(subscription -> scanBle(false))
                 .subscribe(aLong -> {
                     if (isClose) {
                         dataManagerModel.stopSearch();
@@ -88,8 +88,8 @@ public class BleService extends Service {
                 .subscribe(aLong -> conn(null));
     }
 
-    private void scanBle() {
-        dataManagerModel.scanBle(false, new BleHelper.OnScanBleListener() {
+    private void scanBle(boolean b) {
+        dataManagerModel.scanBle(b, new BleHelper.OnScanBleListener() {
             @Override
             public void onStart() {
 
@@ -113,7 +113,8 @@ public class BleService extends Service {
                     dataManagerModel.stopSearch();
                     EventBus.getDefault().post(new BleControlEvent(FINISH_SEARCH, data));
                 } else {
-                    reConn();
+                    //reConn();
+                    scanBle(true);
                 }
             }
 
@@ -164,7 +165,8 @@ public class BleService extends Service {
 
         @Override
         public void doReConn() {
-            reConn();
+            //reConn();
+            scanBle(true);
         }
 
         @Override
@@ -204,10 +206,10 @@ public class BleService extends Service {
                     @Override
                     public void onNext(BleControlEvent event) {
                         if (event.getBleConnType() == CONN) {
-                            EventBus.getDefault().post(event);
 //                            if (reConn){
 //                                dataManagerModel.unRegisterConn();
 //                            }
+                            EventBus.getDefault().post(event);
                             setListener();
                             reConn = false;
                         } else {
@@ -246,27 +248,31 @@ public class BleService extends Service {
         dataManagerModel.isBleConnected(new BleHelper.BleConnListener() {
             @Override
             public void onConn() {
+                isClose = true;
                 EventBus.getDefault().post(new BleControlEvent(CONN));
             }
 
             @Override
             public void onDisConn() {
                 reConn = true;
+                dataManagerModel.unRegisterConn();
                 EventBus.getDefault().post(new BleControlEvent(RECONN));
                 if (isClose){
-                    reConn();
+                    //reConn();
+                    type = RECONN;
+                    scanBle(true);
                 }else {
                     reConn = false;
                 }
-                dataManagerModel.detachListener();
-            }
-        });
-        dataManagerModel.readCommand(new BleHelper.OnReadListener() {
-            @Override
-            public void onRead(byte[] data) {
 
             }
         });
+//        dataManagerModel.readCommand(new BleHelper.OnReadListener() {
+//            @Override
+//            public void onRead(byte[] data) {
+//
+//            }
+//        });
     }
 
     @Override

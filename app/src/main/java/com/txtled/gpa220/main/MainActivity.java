@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.google.android.material.navigation.NavigationView;
 import com.txtled.gpa220.R;
@@ -39,6 +40,7 @@ import butterknife.BindView;
 import static com.txtled.gpa220.utils.Constants.ADD;
 import static com.txtled.gpa220.utils.Constants.ALL_DATA;
 import static com.txtled.gpa220.utils.Constants.CONN;
+import static com.txtled.gpa220.utils.Constants.DELETE;
 import static com.txtled.gpa220.utils.Constants.DISCONN;
 import static com.txtled.gpa220.utils.Constants.OK;
 import static com.txtled.gpa220.utils.Constants.POSITION;
@@ -112,6 +114,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
         adapter = new MemberAdapter(this,this);
         rlvMember.setAdapter(adapter);
         adapter.setData(presenter.getUserData());
+        ((SimpleItemAnimator)rlvMember.getItemAnimator()).setSupportsChangeAnimations(false);
 
     }
 
@@ -125,13 +128,13 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == ADD) {
             if (resultCode == OK) {
-                adapter.setData(presenter.getUserData());
+                //adapter.setData(presenter.getUserData());
             }
         }else if (requestCode == USER){
-            if (resultCode == OK){
-                adapter.notifyTrueItem(mPosition);
-            }else {
+            if (resultCode == DELETE){
                 adapter.deleteData(mPosition);
+            }else if(resultCode == OK){
+                adapter.notifyTrueItem(mPosition);
             }
         }else if (requestCode == UNKNOWN){
             if (resultCode == OK){
@@ -165,9 +168,12 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
     public void onEventMainThread(UserData str) {
         if (type == 0){
             presenter.insertData(str);
-            adapter.notifyItemChanged(0);
+            adapter.insertData();
+            mPosition = presenter.getDataSize() - 1;
+
         }else if (type == 1){
             presenter.update(mPosition,str);
+            adapter.notifyTrueItem(mPosition);
         }
 
         super.onEventMainThread(str);
@@ -222,6 +228,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
     @Override
     public void refreshView() {
         adapter.notifyTrueItem(mPosition);
+        //adapter.update(mPosition,str);
     }
 
     @Override

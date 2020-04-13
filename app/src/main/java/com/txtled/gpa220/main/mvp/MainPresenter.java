@@ -213,4 +213,9 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
                     }
                 }));
     }
+
+    @Override
+    public int getDataSize() {
+        return mData.size();
+    }
 }

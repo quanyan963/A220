@@ -42,8 +42,9 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataViewHolder
     public void insertData(float singleData) {
         if (data == null)
             data = new ArrayList<>();
-        data.add(singleData);
+        //data.add(singleData);
         notifyItemChanged(data.size() - 1);
+
     }
 
     public List<Float> getChecked() {
