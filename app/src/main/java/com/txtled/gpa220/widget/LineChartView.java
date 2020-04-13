@@ -226,7 +226,7 @@ public class LineChartView extends View {
                     canvas.drawText(String.format("%02d", (i + 1)), mBrokenLineLeft + circleWidth +
                             (circleWidth + textWidth) * i + scrollX, mViewHeight - (circleHeight / 2), mTextPaint);
                 } else {
-                    canvas.drawText(String.valueOf(i), mBrokenLineLeft + circleWidth +
+                    canvas.drawText(String.valueOf(i + 1), mBrokenLineLeft + circleWidth +
                             (circleWidth + textWidth) * i + scrollX, mViewHeight - (circleHeight / 2), mTextPaint);
                 }
 
