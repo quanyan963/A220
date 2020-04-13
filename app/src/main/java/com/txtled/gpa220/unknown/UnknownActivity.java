@@ -100,6 +100,7 @@ public class UnknownActivity extends MvpBaseActivity<UnknownPresenter> implement
                     rlvUnknownUser.startAnimation(show);
                     rlvUnknownUser.setVisibility(View.VISIBLE);
                     //将控件显示在最上层
+
                     rlvUnknownUser.bringToFront();
                     cbtBind.setText(R.string.bind);
                     cbtBind.startAnimation(show);
