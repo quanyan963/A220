@@ -41,4 +41,20 @@ public class Constants {
     public static final String DB_NAME = "TEMP_USER";
     public static final String USER_ID = "UserId";
     public static final String PASSWORD = "Password";
+
+    //url
+    //登录
+    public static final String LOGIN_URL = "http://8.129.216.236:8080/gpa220/login.ups";
+    //注册
+    public static final String REGESTRUE_URL = "http://8.129.216.236:8080/gpa220/regestrue.ups";
+    //找回密码
+    public static final String FORGET_URL = "http://8.129.216.236:8080/gpa220/recoverPass.ups";
+    //查询，查重
+    public static final String SEARCH_URL = "http://8.129.216.236:8080/gpa220/queryPhone.ups";
+    //找回密码获取验证码
+    public static final String PASS_GET_CODE_URL = "http://8.129.216.236:8080/gpa220/recoverPassGetValid.ups";
+    //修改密码获取验证码
+    public static final String CHANGE_PASS_CODE_URL = "http://8.129.216.236:8080/gpa220/changePassGetValid.ups";
+    //修改密码
+    public static final String CHANGE_PASS_URL = "http://8.129.216.236:8080/gpa220/changePass.ups";
 }

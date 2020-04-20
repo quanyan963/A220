@@ -7,6 +7,7 @@ import android.os.Environment;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
+import com.lzy.okgo.OkGo;
 import com.txtled.gpa220.di.component.AppComponent;
 import com.txtled.gpa220.di.component.DaggerAppComponent;
 import com.txtled.gpa220.di.module.AppModule;
@@ -41,6 +42,8 @@ public class MyApplication extends Application {
                 IDENTITY_POOL_ID, // 身份池 ID
                 MY_REGION // 区域
         );
+
+        OkGo.getInstance().init(this);
     }
 
     public static CognitoCachingCredentialsProvider getCredentialsProvider(){

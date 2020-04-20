@@ -7,6 +7,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.GetItemRequest;
 import com.amazonaws.services.dynamodbv2.model.GetItemResult;
 import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
+import com.lzy.okgo.OkGo;
 import com.txtled.gpa220.R;
 import com.txtled.gpa220.application.MyApplication;
 import com.txtled.gpa220.base.CommonSubscriber;
@@ -76,6 +77,7 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
 
     @Override
     public void checkLogin(String number, String pass) {
+        //OkGo.<String>get()
         key.put(USER_ID, new AttributeValue().withS(number));
         if (number.equals(SUPER_ACCOUNT)){
             view.toMain();

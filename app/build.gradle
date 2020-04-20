@@ -71,4 +71,7 @@ dependencies {
     //ddb
     implementation "com.amazonaws:aws-android-sdk-ddb:2.16.6"
     implementation 'com.amazonaws:aws-android-sdk-ddb-mapper:2.16.6'
+
+    //http
+    implementation 'com.lzy.net:okgo:3.0.4'
 }

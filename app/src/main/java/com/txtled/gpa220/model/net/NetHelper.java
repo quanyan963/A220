@@ -11,5 +11,5 @@ import io.reactivex.Flowable;
  */
 
 public interface NetHelper {
-
+    void getHttp();
 }
