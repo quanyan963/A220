@@ -56,7 +56,10 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
     }
 
     @Override
-    public void init() {
+    public void
+
+
+    init() {
         provider = MyApplication.getCredentialsProvider();
         client = new AmazonDynamoDBClient(provider);
         key = new HashMap<>();

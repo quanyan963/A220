@@ -54,7 +54,7 @@ public class PdfActivity extends MvpBaseActivity<PdfPresenter> implements PdfCon
     }
 
     @Override
-    public void onEventServiceThread(BleControlEvent event) {
+    public void onEventMainThread(BleControlEvent event) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

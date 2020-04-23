@@ -8,6 +8,7 @@ import com.txtled.gpa220.di.module.ActivityModule;
 import com.txtled.gpa220.di.scope.ActivityScope;
 import com.txtled.gpa220.main.MainActivity;
 import com.txtled.gpa220.pdf.PdfActivity;
+import com.txtled.gpa220.register.RegisterActivity;
 import com.txtled.gpa220.setting.SettingActivity;
 import com.txtled.gpa220.start.StartActivity;
 import com.txtled.gpa220.unknown.UnknownActivity;
@@ -43,4 +44,6 @@ public interface ActivityComponent {
     void inject(SettingActivity settingActivity);
 
     void inject(LoginActivity loginActivity);
+
+    void inject(RegisterActivity registerActivity);
 }

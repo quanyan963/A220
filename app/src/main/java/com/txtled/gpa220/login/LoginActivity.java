@@ -152,19 +152,20 @@ public class LoginActivity extends MvpBaseActivity<LoginPresenter> implements Lo
                         cetLoginPass.getText().toString());
                 break;
             case R.id.cbt_sign:
-                if (!Utils.isMobileNO(cetLoginNumber.getText().toString().trim())) {
-                    showPhoneError();
-                    presenter.hidDelay();
-                    break;
-                }
-                if (cetLoginPass.getText().toString().isEmpty() ||
-                        cetLoginPass.getText().toString().length() < 6) {
-                    showPhoneLength();
-                    presenter.hidDelay();
-                    break;
-                }
-                dialog.show();
-                presenter.signIn(cetLoginNumber.getText().toString().trim(), cetLoginPass.getText().toString());
+                startActivity(new Intent(this,RegisterActivity.class));
+//                if (!Utils.isMobileNO(cetLoginNumber.getText().toString().trim())) {
+//                    showPhoneError();
+//                    presenter.hidDelay();
+//                    break;
+//                }
+//                if (cetLoginPass.getText().toString().isEmpty() ||
+//                        cetLoginPass.getText().toString().length() < 6) {
+//                    showPhoneLength();
+//                    presenter.hidDelay();
+//                    break;
+//                }
+//                dialog.show();
+//                presenter.signIn(cetLoginNumber.getText().toString().trim(), cetLoginPass.getText().toString());
                 break;
             case R.id.ctv_forget:
                 startActivity(new Intent(this, RegisterActivity.class));

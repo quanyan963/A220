@@ -175,7 +175,7 @@ public class AddMemberActivity extends MvpBaseActivity<AddPresenter> implements 
     }
 
     @Override
-    public void onEventServiceThread(BleControlEvent event) {
+    public void onEventMainThread(BleControlEvent event) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

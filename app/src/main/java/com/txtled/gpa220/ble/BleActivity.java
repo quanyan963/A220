@@ -222,7 +222,7 @@ public class BleActivity extends MvpBaseActivity<BlePresenter> implements BleCon
     }
 
     @Override
-    public void onEventServiceThread(BleControlEvent event) {
+    public void onEventMainThread(BleControlEvent event) {
         bleType = event.getBleConnType();
         runOnUiThread(() -> {
             if (bleType == FINISH_SEARCH){

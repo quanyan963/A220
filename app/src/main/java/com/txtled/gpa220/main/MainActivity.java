@@ -181,7 +181,7 @@ public class MainActivity extends MvpBaseActivity<MainPresenter> implements Main
 
 
     @Override
-    public void onEventServiceThread(BleControlEvent event) {
+    public void onEventMainThread(BleControlEvent event) {
         bleType = event.getBleConnType();
         runOnUiThread(() -> {
             if (event.getBleConnType() == RECONN){

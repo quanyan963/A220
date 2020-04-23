@@ -226,7 +226,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onEventServiceThread(BleControlEvent event) {
+    public void onEventMainThread(BleControlEvent event) {
 
     }
 }
