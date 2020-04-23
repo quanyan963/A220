@@ -28,6 +28,8 @@ public interface LoginContract {
         void showUserExist();
 
         void showSuccess();
+
+        void showMsg(String result);
     }
     interface Presenter extends BasePresenter<View>{
 

@@ -8,6 +8,8 @@ import com.amazonaws.services.dynamodbv2.model.GetItemRequest;
 import com.amazonaws.services.dynamodbv2.model.GetItemResult;
 import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.txtled.gpa220.R;
 import com.txtled.gpa220.application.MyApplication;
 import com.txtled.gpa220.base.CommonSubscriber;
@@ -32,8 +34,11 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.txtled.gpa220.utils.Constants.DB_NAME;
+import static com.txtled.gpa220.utils.Constants.LOGIN_URL;
 import static com.txtled.gpa220.utils.Constants.PASSWORD;
 import static com.txtled.gpa220.utils.Constants.SUPER_ACCOUNT;
+import static com.txtled.gpa220.utils.Constants.URL_PASSWORD;
+import static com.txtled.gpa220.utils.Constants.URL_USER_ID;
 import static com.txtled.gpa220.utils.Constants.USER_ID;
 
 /**
@@ -77,62 +82,81 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
 
     @Override
     public void checkLogin(String number, String pass) {
-        //OkGo.<String>get()
-        key.put(USER_ID, new AttributeValue().withS(number));
         if (number.equals(SUPER_ACCOUNT)){
             view.toMain();
         }else {
-            addSubscribe(Flowable.create((FlowableOnSubscribe<String>) e -> {
-                try {
-                    //获取数据
-                    GetItemResult itemResult = client.getItem(new GetItemRequest()
-                            .withTableName(DB_NAME).withKey(key));
-                    if (itemResult.getItem() == null) {
-                        e.onNext("no_user");
-                    } else if (itemResult.getItem().get(PASSWORD).getS().equals(pass)) {
-                        e.onNext("success");
-                    } else {
-                        e.onNext("pass_error");
+            dataManagerModel.getHttp(number, pass, new StringCallback() {
+                @Override
+                public void onSuccess(Response<String> response) {
+                    String result = response.body();
+                    if (result.contains("code")){
+                        view.toMain();
+                    }else {
+                        view.showMsg(result);
                     }
-                } catch (Exception e1) {
-                    e.onNext("error");
                 }
-            }, BackpressureStrategy.BUFFER)
-                    .compose(RxUtil.rxSchedulerHelper())
-                    .subscribeWith(new CommonSubscriber<String>(view) {
 
-                        @Override
-                        public void onNext(String s) {
-                            switch (s) {
-                                case "success":
-                                    view.toMain();
-                                    break;
-                                case "pass_error":
-
-                                    addSubscribe(Flowable.timer(3, TimeUnit.SECONDS)
-                                            .observeOn(Schedulers.io())
-                                            .subscribeOn(AndroidSchedulers.mainThread())
-                                            .doOnSubscribe(subscription -> view.showPassError())
-                                            .subscribe(aLong -> view.hidSnack()));
-                                    break;
-                                case "error":
-                                    addSubscribe(Flowable.timer(3, TimeUnit.SECONDS)
-                                            .observeOn(Schedulers.io())
-                                            .subscribeOn(AndroidSchedulers.mainThread())
-                                            .doOnSubscribe(subscription -> view.showError())
-                                            .subscribe(aLong -> view.hidSnack()));
-                                    break;
-                                case "no_user":
-                                    addSubscribe(Flowable.timer(3, TimeUnit.SECONDS)
-                                            .observeOn(Schedulers.io())
-                                            .subscribeOn(AndroidSchedulers.mainThread())
-                                            .doOnSubscribe(subscription -> view.showNoUser())
-                                            .subscribe(aLong -> view.hidSnack()));
-                                    break;
-                            }
-                        }
-                    }));
+                @Override
+                public void onError(Response<String> response) {
+                    super.onError(response);
+                }
+            });
         }
+//        key.put(USER_ID, new AttributeValue().withS(number));
+//        if (number.equals(SUPER_ACCOUNT)){
+//            view.toMain();
+//        }else {
+//            addSubscribe(Flowable.create((FlowableOnSubscribe<String>) e -> {
+//                try {
+//                    //获取数据
+//                    GetItemResult itemResult = client.getItem(new GetItemRequest()
+//                            .withTableName(DB_NAME).withKey(key));
+//                    if (itemResult.getItem() == null) {
+//                        e.onNext("no_user");
+//                    } else if (itemResult.getItem().get(PASSWORD).getS().equals(pass)) {
+//                        e.onNext("success");
+//                    } else {
+//                        e.onNext("pass_error");
+//                    }
+//                } catch (Exception e1) {
+//                    e.onNext("error");
+//                }
+//            }, BackpressureStrategy.BUFFER)
+//                    .compose(RxUtil.rxSchedulerHelper())
+//                    .subscribeWith(new CommonSubscriber<String>(view) {
+//
+//                        @Override
+//                        public void onNext(String s) {
+//                            switch (s) {
+//                                case "success":
+//                                    view.toMain();
+//                                    break;
+//                                case "pass_error":
+//
+//                                    addSubscribe(Flowable.timer(3, TimeUnit.SECONDS)
+//                                            .observeOn(Schedulers.io())
+//                                            .subscribeOn(AndroidSchedulers.mainThread())
+//                                            .doOnSubscribe(subscription -> view.showPassError())
+//                                            .subscribe(aLong -> view.hidSnack()));
+//                                    break;
+//                                case "error":
+//                                    addSubscribe(Flowable.timer(3, TimeUnit.SECONDS)
+//                                            .observeOn(Schedulers.io())
+//                                            .subscribeOn(AndroidSchedulers.mainThread())
+//                                            .doOnSubscribe(subscription -> view.showError())
+//                                            .subscribe(aLong -> view.hidSnack()));
+//                                    break;
+//                                case "no_user":
+//                                    addSubscribe(Flowable.timer(3, TimeUnit.SECONDS)
+//                                            .observeOn(Schedulers.io())
+//                                            .subscribeOn(AndroidSchedulers.mainThread())
+//                                            .doOnSubscribe(subscription -> view.showNoUser())
+//                                            .subscribe(aLong -> view.hidSnack()));
+//                                    break;
+//                            }
+//                        }
+//                    }));
+//        }
     }
 
     @Override

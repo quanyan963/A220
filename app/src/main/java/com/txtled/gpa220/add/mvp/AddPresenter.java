@@ -6,7 +6,7 @@ import com.txtled.gpa220.model.DataManagerModel;
 
 import javax.inject.Inject;
 
-public class AddPresenter extends RxPresenter<AddConteact.View> implements AddConteact.Presenter {
+public class AddPresenter extends RxPresenter<AddContract.View> implements AddContract.Presenter {
     private DataManagerModel dataManagerModel;
 
     @Inject

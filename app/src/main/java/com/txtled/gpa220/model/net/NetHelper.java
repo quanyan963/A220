@@ -2,6 +2,8 @@ package com.txtled.gpa220.model.net;
 
 import android.content.Context;
 
+import com.lzy.okgo.callback.StringCallback;
+
 import java.util.List;
 
 import io.reactivex.Flowable;
@@ -11,5 +13,5 @@ import io.reactivex.Flowable;
  */
 
 public interface NetHelper {
-    void getHttp();
+    void getHttp(String userName, String pass, StringCallback callback);
 }

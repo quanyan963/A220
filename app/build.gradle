@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'cn.leo.plugin.magic'
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
 
 android {
     compileSdkVersion 29
@@ -11,6 +18,10 @@ android {
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
     }
     buildTypes {
         release {
@@ -74,4 +85,7 @@ dependencies {
 
     //http
     implementation 'com.lzy.net:okgo:3.0.4'
+
+    //屏幕适配
+    implementation 'com.github.jarryleo:MagicScreenAdapter:v1.5'
 }

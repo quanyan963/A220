@@ -1,10 +1,12 @@
 package com.txtled.gpa220.login;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -13,12 +15,15 @@ import com.txtled.gpa220.base.MvpBaseActivity;
 import com.txtled.gpa220.login.mvp.LoginContract;
 import com.txtled.gpa220.login.mvp.LoginPresenter;
 import com.txtled.gpa220.main.MainActivity;
+import com.txtled.gpa220.register.RegisterActivity;
 import com.txtled.gpa220.utils.AlertUtils;
 import com.txtled.gpa220.utils.Utils;
 import com.txtled.gpa220.widget.CustomButton;
 import com.txtled.gpa220.widget.CustomEditText;
+import com.txtled.gpa220.widget.CustomTextView;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Mr.Quan on 2020/4/7.
@@ -33,8 +38,12 @@ public class LoginActivity extends MvpBaseActivity<LoginPresenter> implements Lo
     CustomButton cbtLogin;
     @BindView(R.id.cbt_sign)
     CustomButton cbtSign;
+    @BindView(R.id.ctv_forget)
+    CustomTextView ctvForget;
+    @BindView(R.id.ctv_change_pass)
+    CustomTextView ctvChangePass;
 
-    private boolean numberIsNull = true,passIsNull = true;
+    private boolean numberIsNull = true, passIsNull = true;
     private AlertDialog dialog;
 
     @Override
@@ -49,6 +58,8 @@ public class LoginActivity extends MvpBaseActivity<LoginPresenter> implements Lo
         tvTitle.setText(R.string.login);
         cbtLogin.setOnClickListener(this);
         cbtSign.setOnClickListener(this);
+        ctvForget.setOnClickListener(this);
+        ctvChangePass.setOnClickListener(this);
         cbtLogin.setEnabled(false);
         dialog = AlertUtils.showLoadingDialog(this);
         cetLoginNumber.addTextChangedListener(new TextWatcher() {
@@ -64,17 +75,17 @@ public class LoginActivity extends MvpBaseActivity<LoginPresenter> implements Lo
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().trim().isEmpty()){
+                if (s.toString().trim().isEmpty()) {
                     numberIsNull = true;
-                }else if (s.length() == 11){
-                    if (Utils.isMobileNO(s.toString().trim())){
+                } else if (s.length() == 11) {
+                    if (Utils.isMobileNO(s.toString().trim())) {
                         numberIsNull = false;
                         hidSnack();
-                    }else {
+                    } else {
                         numberIsNull = true;
                         showPhoneError();
                     }
-                }else {
+                } else {
                     numberIsNull = true;
                 }
                 setLoginBtnColor();
@@ -93,9 +104,9 @@ public class LoginActivity extends MvpBaseActivity<LoginPresenter> implements Lo
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().isEmpty() || s.toString().length() < 6){
+                if (s.toString().isEmpty() || s.toString().length() < 6) {
                     passIsNull = true;
-                }else {
+                } else {
                     passIsNull = false;
                 }
                 setLoginBtnColor();
@@ -104,16 +115,15 @@ public class LoginActivity extends MvpBaseActivity<LoginPresenter> implements Lo
     }
 
     private void setLoginBtnColor() {
-        if (passIsNull == false && numberIsNull == false){
+        if (passIsNull == false && numberIsNull == false) {
             cbtLogin.setEnabled(true);
             cbtLogin.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             cbtLogin.setTextColor(getResources().getColor(R.color.white));
-        }else {
+        } else {
             cbtLogin.setEnabled(false);
             cbtLogin.setBackgroundColor(getResources().getColor(R.color.line_bg));
             cbtLogin.setTextColor(getResources().getColor(R.color.gray));
         }
-
 
 
     }
@@ -135,26 +145,34 @@ public class LoginActivity extends MvpBaseActivity<LoginPresenter> implements Lo
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.cbt_login:
                 dialog.show();
                 presenter.checkLogin(cetLoginNumber.getText().toString(),
                         cetLoginPass.getText().toString());
                 break;
             case R.id.cbt_sign:
-                if (!Utils.isMobileNO(cetLoginNumber.getText().toString().trim())){
+                if (!Utils.isMobileNO(cetLoginNumber.getText().toString().trim())) {
                     showPhoneError();
                     presenter.hidDelay();
                     break;
                 }
                 if (cetLoginPass.getText().toString().isEmpty() ||
-                        cetLoginPass.getText().toString().length() < 6){
+                        cetLoginPass.getText().toString().length() < 6) {
                     showPhoneLength();
                     presenter.hidDelay();
                     break;
                 }
                 dialog.show();
-                presenter.signIn(cetLoginNumber.getText().toString().trim(),cetLoginPass.getText().toString());
+                presenter.signIn(cetLoginNumber.getText().toString().trim(), cetLoginPass.getText().toString());
+                break;
+            case R.id.ctv_forget:
+                startActivity(new Intent(this, RegisterActivity.class));
+                break;
+            case R.id.ctv_change_pass:
+                dialog.show();
+                presenter.checkLogin(cetLoginNumber.getText().toString(),
+                        cetLoginPass.getText().toString());
                 break;
         }
 
@@ -162,7 +180,7 @@ public class LoginActivity extends MvpBaseActivity<LoginPresenter> implements Lo
 
     private void showPhoneLength() {
         hideSnackBar();
-        showSnackBar(cbtLogin,R.string.pass_length);
+        showSnackBar(cbtLogin, R.string.pass_length);
     }
 
     @Override
@@ -181,7 +199,7 @@ public class LoginActivity extends MvpBaseActivity<LoginPresenter> implements Lo
     @Override
     public void showPhoneError() {
         hideSnackBar();
-        showSnackBar(cbtLogin,R.string.phone_error);
+        showSnackBar(cbtLogin, R.string.phone_error);
     }
 
     @Override
@@ -193,14 +211,14 @@ public class LoginActivity extends MvpBaseActivity<LoginPresenter> implements Lo
     public void showPassError() {
         hidLoading();
         hideSnackBar();
-        showSnackBar(cbtLogin,R.string.pass_error);
+        showSnackBar(cbtLogin, R.string.pass_error);
     }
 
     @Override
     public void showNoUser() {
         hidLoading();
         hideSnackBar();
-        showSnackBar(cbtLogin,R.string.no_user);
+        showSnackBar(cbtLogin, R.string.no_user);
     }
 
     @Override
@@ -213,20 +231,27 @@ public class LoginActivity extends MvpBaseActivity<LoginPresenter> implements Lo
     public void showError() {
         hidLoading();
         hideSnackBar();
-        showSnackBar(cbtLogin,R.string.net_error);
+        showSnackBar(cbtLogin, R.string.net_error);
     }
 
     @Override
     public void showUserExist() {
         hidLoading();
         hideSnackBar();
-        showSnackBar(cbtLogin,R.string.user_exist);
+        showSnackBar(cbtLogin, R.string.user_exist);
     }
 
     @Override
     public void showSuccess() {
         hidLoading();
         hideSnackBar();
-        showSnackBar(cbtLogin,R.string.sign_success);
+        showSnackBar(cbtLogin, R.string.sign_success);
+    }
+
+    @Override
+    public void showMsg(String result) {
+        hidLoading();
+        hideSnackBar();
+        Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
     }
 }

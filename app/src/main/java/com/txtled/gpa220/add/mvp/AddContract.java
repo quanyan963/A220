@@ -6,7 +6,7 @@ import com.txtled.gpa220.base.BasePresenter;
 import com.txtled.gpa220.base.BaseView;
 import com.txtled.gpa220.bean.UserData;
 
-public interface AddConteact {
+public interface AddContract {
     interface View extends BaseView{
 
     }

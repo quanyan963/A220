@@ -57,4 +57,8 @@ public class Constants {
     public static final String CHANGE_PASS_CODE_URL = "http://8.129.216.236:8080/gpa220/changePassGetValid.ups";
     //修改密码
     public static final String CHANGE_PASS_URL = "http://8.129.216.236:8080/gpa220/changePass.ups";
+
+    public static final String URL_USER_ID = "userid";
+
+    public static final String URL_PASSWORD = "password";
 }

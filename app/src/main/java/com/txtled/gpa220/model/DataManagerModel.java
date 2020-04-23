@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.inuker.bluetooth.library.search.SearchResult;
+import com.lzy.okgo.callback.StringCallback;
 import com.txtled.gpa220.bean.UserData;
 import com.txtled.gpa220.model.ble.BleHelper;
 import com.txtled.gpa220.model.db.DBHelper;
@@ -149,5 +150,10 @@ public class DataManagerModel implements DBHelper, PreferencesHelper, NetHelper,
     @Override
     public void updateUserData(UserData data) {
         mDBDbHelper.updateUserData(data);
+    }
+
+    @Override
+    public void getHttp(String userName, String pass, StringCallback callback) {
+        mNetHelper.getHttp(userName, pass, callback);
     }
 }

@@ -77,6 +77,32 @@
             android:layout_marginRight="@dimen/dp_32_x"/>
     </LinearLayout>
 
+    <com.txtled.gpa220.widget.CustomTextView
+        android:id="@+id/ctv_forget"
+        style="@style/main_tv"
+        app:layout_constraintTop_toBottomOf="@+id/ll_login"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dp_32_x"
+        android:paddingLeft="@dimen/dp_16_x"
+        android:paddingTop="@dimen/dp_8_x"
+        android:paddingBottom="@dimen/dp_8_x"
+        android:paddingRight="@dimen/dp_16_x"
+        android:text="忘记密码？"
+        android:textColor="@color/blue"/>
+
+    <com.txtled.gpa220.widget.CustomTextView
+        android:id="@+id/ctv_change_pass"
+        style="@style/main_tv"
+        app:layout_constraintTop_toBottomOf="@+id/ll_login"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="@dimen/dp_32_x"
+        android:paddingLeft="@dimen/dp_16_x"
+        android:paddingTop="@dimen/dp_8_x"
+        android:paddingBottom="@dimen/dp_8_x"
+        android:paddingRight="@dimen/dp_16_x"
+        android:text="修改密码"
+        android:textColor="@color/blue"/>
+
 
     <com.txtled.gpa220.widget.CustomButton
         android:id="@+id/cbt_login"

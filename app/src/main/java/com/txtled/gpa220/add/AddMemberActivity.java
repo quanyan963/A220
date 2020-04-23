@@ -8,7 +8,7 @@ import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 
 import com.txtled.gpa220.R;
-import com.txtled.gpa220.add.mvp.AddConteact;
+import com.txtled.gpa220.add.mvp.AddContract;
 import com.txtled.gpa220.add.mvp.AddPresenter;
 import com.txtled.gpa220.base.MvpBaseActivity;
 import com.txtled.gpa220.bean.BleControlEvent;
@@ -27,9 +27,8 @@ import static com.txtled.gpa220.utils.Constants.DISCONN;
 import static com.txtled.gpa220.utils.Constants.OK;
 import static com.txtled.gpa220.utils.Constants.POSITION;
 import static com.txtled.gpa220.utils.Constants.RECONN;
-import static com.txtled.gpa220.utils.Constants.SINGLE_DATA;
 
-public class AddMemberActivity extends MvpBaseActivity<AddPresenter> implements AddConteact.View {
+public class AddMemberActivity extends MvpBaseActivity<AddPresenter> implements AddContract.View {
     @BindView(R.id.img_man)
     ImageView imgMan;
     @BindView(R.id.img_woman)
@@ -49,11 +48,18 @@ public class AddMemberActivity extends MvpBaseActivity<AddPresenter> implements 
     private int position;
     private UserData data;
 
+    /**
+     * 注解activity
+     */
     @Override
     public void setInject() {
         getActivityComponent().inject(this);
     }
 
+    /**
+     * 做初始化操作，在getLayout()方法执行完后执行
+     * 主要做控件初始化，设置监听
+     */
     @Override
     public void init() {
         initToolbar();
@@ -101,10 +107,12 @@ public class AddMemberActivity extends MvpBaseActivity<AddPresenter> implements 
             }
         });
 
+        //弹出选择日期控件
         cetAddBirth.setOnClickListener(v ->
                 AlertUtils.showSheetDialog(AddMemberActivity.this,
                 date -> cetAddBirth.setText(date)));
 
+        //监听输入名称控件
         cetAddName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

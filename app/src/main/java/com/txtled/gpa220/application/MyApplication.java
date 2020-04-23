@@ -8,6 +8,7 @@ import android.os.Environment;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.https.HttpsUtils;
 import com.txtled.gpa220.di.component.AppComponent;
 import com.txtled.gpa220.di.component.DaggerAppComponent;
 import com.txtled.gpa220.di.module.AppModule;
@@ -15,6 +16,9 @@ import com.txtled.gpa220.di.module.AppModule;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.leo.magic.screen.MagicScreenAdapter;
+import okhttp3.OkHttpClient;
 
 import static com.txtled.gpa220.utils.Constants.IDENTITY_POOL_ID;
 
@@ -43,7 +47,15 @@ public class MyApplication extends Application {
                 MY_REGION // 区域
         );
 
-        OkGo.getInstance().init(this);
+
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        //方法一：信任所有证书,不安全有风险
+        HttpsUtils.SSLParams sslParams1 = HttpsUtils.getSslSocketFactory();
+        builder.sslSocketFactory(sslParams1.sSLSocketFactory, sslParams1.trustManager);
+
+        OkGo.getInstance().init(this).setOkHttpClient(builder.build());
+
+        MagicScreenAdapter.initDesignWidthInDp(360);
     }
 
     public static CognitoCachingCredentialsProvider getCredentialsProvider(){

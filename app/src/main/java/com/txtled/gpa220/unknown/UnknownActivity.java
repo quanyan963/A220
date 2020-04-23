@@ -68,14 +68,11 @@ public class UnknownActivity extends MvpBaseActivity<UnknownPresenter> implement
         rlvUnknownList.setAdapter(dataAdapter);
         dataAdapter.setData(presenter.getUnknownData());
 
-        cbtBind.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (rlvUnknownUser.getVisibility() == View.GONE){
-                    showUserAnimation(true);
-                }else {
-                    presenter.setData(position,dataAdapter.getChecked());
-                }
+        cbtBind.setOnClickListener(v -> {
+            if (rlvUnknownUser.getVisibility() == View.GONE){
+                showUserAnimation(true);
+            }else {
+                presenter.setData(position,dataAdapter.getChecked());
             }
         });
         rlvUnknownList.scrollToPosition(dataAdapter.getItemCount() - 1);
